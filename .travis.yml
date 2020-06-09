@@ -1,0 +1,17 @@
+jobs:
+  include:
+    - language: node_js
+      node_js:
+        - lts/*
+      cache: npm
+      before_install:
+        - cd frontend
+      install:
+        - npm i
+      script:
+        - npm run test
+        - npm run build
+
+notifications:
+  email:
+    enabled: false
