@@ -11,10 +11,10 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: process.env.npm_package_description || ''
-      }
+        content: process.env.npm_package_description || '',
+      },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
   /*
    ** Customize the progress-bar color
@@ -36,7 +36,7 @@ export default {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
   ],
   /*
    ** Nuxt.js modules
@@ -46,20 +46,69 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    '@nuxtjs/proxy',
   ],
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    proxy: true,
+  },
+  /*
+   ** Proxy module configuration
+   ** See https://github.com/nuxt-community/proxy-module
+   */
+  proxy: {
+    '/api': {
+      target: 'http://localhost:3333',
+      rewritePath: {
+        '^/api': '',
+      },
+    },
+  },
   /*
    ** Build configuration
    */
   build: {
+    postcss: {
+      preset: {
+        features: {
+          customProperties: false,
+        },
+      },
+      plugins: {
+        tailwindcss: require('./tailwind.config'),
+      },
+    },
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {}
-  }
+    extend(config, ctx) {
+      // Run ESLint on save
+      if (ctx.isDev) {
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(ts|js|vue)$/,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/,
+          options: {
+            fix: true,
+          },
+        })
+      }
+    },
+  },
+
+  /*
+   ** Typescript module configuration
+   ** See https://typescript.nuxtjs.org
+   */
+  typescript: {
+    typeCheck: {
+      eslint: true,
+      vue: true,
+    },
+  },
 }
