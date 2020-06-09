@@ -35,7 +35,7 @@
         ></i>
       </span>
     </div>
-    <p v-if="error" class="text-red-500 text-xs italic absolute">
+    <p v-if="error" class="text-red-500 text-sm italic absolute ml-2">
       {{ error }}
     </p>
   </div>

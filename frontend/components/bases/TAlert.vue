@@ -32,7 +32,7 @@ export default class TAlert extends Vue {
 
   @Prop({
     default: 'error',
-    validator: (type) => ['warn', 'error', 'success'][type] !== undefined,
+    validator: (type) => ['warn', 'error', 'success'].includes(type),
   })
   type!: string
 }

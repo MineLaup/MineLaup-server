@@ -101,6 +101,8 @@ export default {
         })
       }
     },
+
+    transpile: ['@nuxtjs/auth'],
   },
 
   /*
@@ -118,7 +120,35 @@ export default {
    ** Auth module configuration
    ** See https://auth.nuxtjs.org
    */
-  auth: {},
+  auth: {
+    strategies: {
+      local: false,
+      customStrategy: {
+        _scheme: '~/schemes/cookieAuth',
+        endpoints: {
+          login: {
+            method: 'POST',
+            url: '/api/user/auth',
+          },
+          user: {
+            method: 'GET',
+            url: '/api/user/auth',
+          },
+          logout: {
+            method: 'DELETE',
+            url: '/api/user/auth',
+          },
+        },
+        tokenRequired: true,
+      },
+    },
+
+    redirect: {
+      login: '/login',
+      logout: '/login',
+      home: '/',
+    },
+  },
 
   /*
    ** I18N configuration
