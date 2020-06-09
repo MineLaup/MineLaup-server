@@ -1,0 +1,19 @@
+{
+  "pages": {
+    "login": {
+      "title": "Connexion",
+      "username": "Nom d'utilisateur",
+      "password": "Mot de passe",
+      "btn": "Connexion"
+    }
+  },
+  "error": {
+    "login": {
+      "wrong_ids": "Nom d'utilisateur ou mot de passe invalide"
+    },
+    "unknown": "Une erreur inattendu est survenue.",
+    "form": {
+      "required": "Ce champ est requis"
+    }
+  }
+}

@@ -14,6 +14,7 @@
     "strict": true,
     "noEmit": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "baseUrl": ".",
     "paths": {
       "~/*": [
@@ -24,8 +25,14 @@
       ]
     },
     "types": [
-      "@types/node",
-      "@nuxt/types"
+      "@nuxt/types",
+      "@nuxtjs/auth",
+      "nuxt-i18n",
+      "@nuxtjs/axios"
+    ],
+    "typeRoots": [
+      "node_modules/@types",
+      "./types"
     ]
   },
   "exclude": [
