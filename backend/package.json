@@ -1,8 +1,8 @@
 {
-  "name": "adonis-api-app",
+  "name": "minelaup-server-backend",
   "version": "4.1.0",
   "adonis-version": "4.1.0",
-  "description": "Adonisjs boilerplate for API server with pre-configured JWT",
+  "description": "The server side of the project MineLaup.",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
@@ -12,8 +12,8 @@
     "adonisjs",
     "adonis-app"
   ],
-  "author": "",
-  "license": "UNLICENSED",
+  "author": "Bricklou",
+  "license": "gplv3",
   "private": true,
   "dependencies": {
     "@adonisjs/ace": "^5.0.8",
