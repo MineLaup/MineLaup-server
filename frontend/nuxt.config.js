@@ -23,7 +23,7 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['~/assets/scss/app.scss'],
   /*
    ** Plugins to load before mounting the App
    */
@@ -48,6 +48,8 @@ export default {
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
     '@nuxtjs/proxy',
+    '@nuxtjs/auth',
+    'nuxt-i18n',
   ],
   /*
    ** Axios module configuration
@@ -63,8 +65,8 @@ export default {
   proxy: {
     '/api': {
       target: 'http://localhost:3333',
-      rewritePath: {
-        '^/api': '',
+      pathRewrite: {
+        '^/api': '/',
       },
     },
   },
@@ -110,5 +112,44 @@ export default {
       eslint: true,
       vue: true,
     },
+  },
+
+  /*
+   ** Auth module configuration
+   ** See https://auth.nuxtjs.org
+   */
+  auth: {},
+
+  /*
+   ** I18N configuration
+   ** See https://nuxt-community.github.io/nuxt-i18n
+   */
+  i18n: {
+    defaultLocale: 'en',
+    seo: true,
+    strategy: 'no_prefix',
+    locales: [
+      {
+        code: 'fr',
+        iso: 'fr-FR',
+        name: 'Français',
+      },
+      {
+        code: 'en',
+        iso: 'en-US',
+        name: 'English',
+      },
+    ],
+    vueI18n: {
+      fallbackLocale: 'en-US',
+      messages: {
+        fr: require('./lang/fr-FR.json'),
+        en: require('./lang/en-US.json'),
+      },
+    },
+  },
+
+  router: {
+    middleware: ['auth'],
   },
 }

@@ -1,0 +1,10 @@
+{
+  "pages": {
+    "login": {
+      "title": "Connexion",
+      "username": "Nom d'utilisateur",
+      "password": "Mot de passe",
+      "btn": "Connexion"
+    }
+  }
+}
