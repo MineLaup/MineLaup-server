@@ -1,55 +1,62 @@
 <template>
-  <div>
-    <nuxt />
-  </div>
+  <ColorScheme>
+    <div class="h-screen flex flex-col">
+      <nav-bar></nav-bar>
+
+      <div class="flex flex-1 flex-row dark:text-white">
+        <div
+          class="flex-none flex flex-col items-center text-center bg-gray-900 text-gray-400 w-12"
+        >
+          <ul class="mt-2 flex-1">
+            <t-side-bar-button
+              :name="$t('layout.side-bar.launcher')"
+              icon="rocket"
+              to="/launcher"
+            />
+            <t-side-bar-button
+              :name="$t('layout.side-bar.modpacks')"
+              icon="box-open"
+              to="/modpack"
+            />
+            <t-side-bar-button
+              v-if="hasAdminPermission"
+              :name="$t('layout.side-bar.administration')"
+              icon="user-cog"
+              to="/admin"
+            />
+          </ul>
+          <ul class="mb-2">
+            <t-side-bar-button
+              :name="$t('layout.side-bar.settings')"
+              icon="cog"
+              to="/settings"
+            />
+            <t-side-bar-action
+              :name="$t('layout.side-bar.logout')"
+              icon="sign-out-alt"
+              @click="$auth.logout()"
+            />
+          </ul>
+        </div>
+
+        <nuxt class="flex-1" />
+      </div>
+    </div>
+  </ColorScheme>
 </template>
 
-<style>
-html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
+<script lang="ts">
+import { Vue, Component } from 'nuxt-property-decorator'
+import NavBar from '~/components/bases/NavBar.vue'
+import TSideBarButton from '~/components/sidebar/TSideBarButton.vue'
+import TSideBarAction from '~/components/sidebar/TSideBarAction.vue'
 
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-  margin: 0;
-}
-
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-}
-</style>
+@Component({
+  components: {
+    NavBar,
+    TSideBarButton,
+    TSideBarAction,
+  },
+})
+export default class Default extends Vue {}
+</script>

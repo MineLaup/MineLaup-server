@@ -1,10 +1,19 @@
 {
+  "app-name": "MineLaup server",
   "pages": {
     "login": {
       "title": "Login",
       "username": "Username",
       "password": "Password",
       "btn": "Login"
+    }
+  },
+  "layout": {
+    "side-bar": {
+      "launcher": "Launchers",
+      "modpacks": "Modpacks",
+      "settings": "Settings",
+      "logout": "Logout"
     }
   },
   "error": {

@@ -1,10 +1,19 @@
 {
+  "app-name": "MineLaup server",
   "pages": {
     "login": {
       "title": "Connexion",
       "username": "Nom d'utilisateur",
       "password": "Mot de passe",
       "btn": "Connexion"
+    }
+  },
+  "layout": {
+    "side-bar": {
+      "launcher": "Launchers",
+      "modpacks": "Modpacks",
+      "settings": "Paramètres",
+      "logout": "Déconnexion"
     }
   },
   "error": {
