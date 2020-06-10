@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="flex items-center justify-between flex-wrap px-4 py-2 bg-gray-800 text-white h-32 md:h-20"
+    class="flex items-center justify-between flex-wrap px-4 py-2 bg-gray-800 text-white h-20"
   >
     <div class="flex items-center flex-shrink-0 text-grey-900 mr-6">
       <img

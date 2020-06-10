@@ -17,7 +17,7 @@
       <input
         :id="id"
         :type="currentType"
-        class="appearance-none w-full bg-gray-300 rounded-full pl-10 py-2 px-4 placeholder-gray-700 dark-placeholder:text-gray-300 focus:outline-none text-black dark:text-white shadow focus:shadow-lg transition-shadow ease-out duration-700"
+        class="appearance-none w-full bg-gray-300 dark:bg-gray-900 rounded-full pl-10 py-2 px-4 placeholder-gray-700 dark-placeholder:text-gray-300 focus:outline-none text-black dark:text-white shadow focus:shadow-lg transition-shadow ease-out duration-700"
         :class="{ 'pr-10': type === 'password' }"
         :placeholder="label"
         :value="value"

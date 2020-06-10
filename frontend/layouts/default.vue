@@ -50,6 +50,7 @@ import { Vue, Component } from 'nuxt-property-decorator'
 import NavBar from '~/components/bases/NavBar.vue'
 import TSideBarButton from '~/components/sidebar/TSideBarButton.vue'
 import TSideBarAction from '~/components/sidebar/TSideBarAction.vue'
+import { UserRole } from '~/types/UserRole'
 
 @Component({
   components: {
@@ -58,5 +59,13 @@ import TSideBarAction from '~/components/sidebar/TSideBarAction.vue'
     TSideBarAction,
   },
 })
-export default class Default extends Vue {}
+export default class Default extends Vue {
+  get hasAdminPermission() {
+    return this.$auth.user.role >= UserRole.admin
+  }
+
+  mounted() {
+    this.$colorMode.preference = this.$auth.user.color_mode.toLowerCase()
+  }
+}
 </script>
