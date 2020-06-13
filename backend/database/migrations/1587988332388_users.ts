@@ -15,6 +15,7 @@ export default class UsersSchema extends BaseSchema {
       table.enum('color-mode', ['light', 'dark']).defaultTo('light').notNullable()
       table.boolean('disabled').defaultTo(false).notNullable()
       table.string('remember_me_token').nullable()
+      table.integer('role').defaultTo(0)
       table.timestamps(true)
     })
   }
