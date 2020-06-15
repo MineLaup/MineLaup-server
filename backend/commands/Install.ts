@@ -1,16 +1,14 @@
 import { BaseCommand, Kernel } from '@adonisjs/ace'
 import { inject } from '@adonisjs/fold'
-import { DatabaseContract } from '@ioc:Adonis/Lucid/Database'
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
 import User from 'App/Models/User'
-import { schema, validator, rules } from '@ioc:Adonis/Core/Validator'
 
 @inject([null, null, 'Adonis/Lucid/Database'])
 export default class Install extends BaseCommand {
   public static commandName = 'install'
   public static description = 'Install all the necessary for the project.'
 
-  constructor (app: ApplicationContract, kernel: Kernel, private db: DatabaseContract) {
+  constructor (app: ApplicationContract, kernel: Kernel) {
     super(app, kernel)
   }
 
@@ -44,7 +42,7 @@ export default class Install extends BaseCommand {
         role: 3,
       })
 
-      this.logger.complete(`The admin user named ${user.username} have been create. Enjoy ! 😊`)
+      this.logger.success(`The admin user named ${user.username} have been create. Enjoy ! 😊`)
       process.exit(0)
     } catch(error) {
       throw error
