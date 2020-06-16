@@ -31,11 +31,13 @@
     "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/proxy": "^2.0.0",
     "@nuxtjs/pwa": "^3.0.0-beta.20",
+    "autosize": "^4.0.2",
     "lodash": "^4.17.15",
     "nuxt": "^2.12.2",
     "nuxt-i18n": "^6.12.2",
     "nuxt-property-decorator": "^2.7.2",
-    "tailwindcss-dark-mode": "^1.1.4"
+    "tailwindcss-dark-mode": "^1.1.4",
+    "vuex-module-decorators": "^0.17.0"
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^1.0.2",
@@ -43,6 +45,7 @@
     "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/stylelint-module": "^4.0.0",
     "@nuxtjs/tailwindcss": "^2.0.0",
+    "@types/autosize": "^3.0.7",
     "@types/lodash": "^4.14.155",
     "@types/nuxtjs__auth": "^4.8.4",
     "@vue/test-utils": "^1.0.3",
