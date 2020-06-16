@@ -29,3 +29,8 @@ Route.group(() => {
   Route.get('/auth', 'AuthController.user').middleware('auth')
   Route.delete('/auth', 'AuthController.logout').middleware('auth')
 }).prefix('/user')
+
+Route.group(() => {
+  Route.get('/', 'TeamsController.list')
+  Route.post('/', 'TeamsController.create')
+}).prefix('/teams').middleware('auth')

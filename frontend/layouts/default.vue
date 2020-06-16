@@ -63,11 +63,29 @@
           <h1
             class="text-2xl uppercase font-bold mt-4 ml-10 sm:text-xl sm:ml-4"
           >
-            Test
+            {{ $t($store.getters['menu/getTitle']) }}
           </h1>
           <ul class="mt-8 sm:mt-4">
-            <t-side-bar-item to="/teams/4">
-              coucou
+            <t-side-bar-item
+              v-if="$store.getters['menu/getAdditional']"
+              :to="$store.getters['menu/getAdditional'].path"
+            >
+              <span class="w-14 h-14">
+                <i
+                  class="fas"
+                  :class="'fa-' + $store.getters['menu/getAdditional'].icon"
+                />
+              </span>
+              <span>
+                {{ $t($store.getters['menu/getAdditional'].name) }}
+              </span>
+            </t-side-bar-item>
+            <t-side-bar-item
+              v-for="(item, index) in $store.getters['menu/getList']"
+              :key="index"
+              :to="item.path"
+            >
+              {{ item.name }}
             </t-side-bar-item>
           </ul>
         </div>

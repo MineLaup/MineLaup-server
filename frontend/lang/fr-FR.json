@@ -6,6 +6,14 @@
       "username": "Nom d'utilisateur",
       "password": "Mot de passe",
       "btn": "Connexion"
+    },
+    "teams": {
+      "create": {
+        "title": "Créer une nouvelle équipe",
+        "name": "Nom",
+        "summary": "Description",
+        "submit": "Créer"
+      }
     }
   },
   "layout": {
@@ -14,6 +22,10 @@
       "modpacks": "Modpacks",
       "settings": "Paramètres",
       "logout": "Déconnexion"
+    },
+    "side-menu": {
+      "team-title": "Équipes",
+      "team-new": "Nouvelle équipe"
     }
   },
   "error": {
