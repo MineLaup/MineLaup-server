@@ -89,7 +89,17 @@ export default class TeamCreate extends Vue {
 
     this.$axios
       .post('/api/teams', this.form)
-      .then(({ data }) => {
+      .then(async ({ data }) => {
+        const teams = await this.$axios.$get('/api/teams')
+        await this.$store.commit(
+          'menu/setList',
+          teams.map((team: Partial<any>) => {
+            return {
+              name: team.name,
+              path: `/teams/${team.id}`,
+            }
+          })
+        )
         this.$router.push(`/teams/${data.id}`)
       })
       .catch((error) => {

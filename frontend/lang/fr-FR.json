@@ -18,10 +18,13 @@
   },
   "layout": {
     "side-bar": {
+      "teams": "Équipes",
       "launcher": "Launchers",
       "modpacks": "Modpacks",
+      "administration": "Administration",
       "settings": "Paramètres",
-      "logout": "Déconnexion"
+      "logout": "Déconnexion",
+      "menu": "Menu"
     },
     "side-menu": {
       "team-title": "Équipes",

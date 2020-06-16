@@ -36,6 +36,10 @@ export default class Menu extends VuexModule {
     return this.additional
   }
 
+  get hasAdditional() {
+    return Object.keys(this.additional).length !== 0
+  }
+
   get getList() {
     return this.list
   }

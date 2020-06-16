@@ -51,7 +51,7 @@
         </ul>
 
         <div
-          class="sm:w-64 bg-gray-900 absolute sm:relative z-50 sm:z-0 w-screen h-screen text-white top-0 sm:block"
+          class="sm:w-64 bg-gray-900 absolute sm:relative z-50 sm:z-0 sm:z-0 w-screen h-screen text-white top-0 sm:block"
           :class="{ hidden: !menuOpen }"
         >
           <span
@@ -67,7 +67,7 @@
           </h1>
           <ul class="mt-8 sm:mt-4">
             <t-side-bar-item
-              v-if="$store.getters['menu/getAdditional']"
+              v-if="$store.getters['menu/hasAdditional']"
               :to="$store.getters['menu/getAdditional'].path"
             >
               <span class="w-14 h-14">
