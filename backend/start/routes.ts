@@ -33,4 +33,5 @@ Route.group(() => {
 Route.group(() => {
   Route.get('/', 'TeamsController.list')
   Route.post('/', 'TeamsController.create')
+  Route.get('/:id', 'TeamsController.get').where('id', /^[0-9]+$/)
 }).prefix('/teams').middleware('auth')

@@ -1,19 +1,19 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import Team from 'App/Models/Team'
+import User from 'App/Models/User'
 import Permission from 'App/Models/Permission'
 import Role from 'App/Models/Role'
 import TeamUser from 'App/Models/TeamUser'
-import Team from 'App/Models/Team'
 
 export default class TeamsController {
-  public async list ({ auth, response }: HttpContextContract) {
-    const user_teams = await (await TeamUser.query().select('id').where('user_id', auth.user!.id)).map(team => {
-      return team.id
-    })
+  public async list ({ response, auth }: HttpContextContract) {
+    const user = await User
+      .query()
+      .preload('teams')
+      .where('id', auth.user!.id).firstOrFail()
 
-    const teams = await Team.query().whereIn('id', user_teams)
-
-    response.send(teams)
+    response.send(user.teams)
   }
 
   public async create ({ request, auth, response }: HttpContextContract) {
@@ -54,11 +54,23 @@ export default class TeamsController {
     })
 
     await TeamUser.create({
-      userId: auth.user!.id,
       teamId: team.id,
+      userId: auth.user!.id,
       roleId: role.id,
     })
 
     response.send(team)
+  }
+
+  public async get ({ response, auth, params }: HttpContextContract) {
+    const id = params.id
+
+    const query = await TeamUser.query().preload('team').where('user_id', auth.user!.id).andWhere('team_id', id).first()
+
+    if (!query) {
+      return response.status(403)
+    }
+
+    response.send(query.team)
   }
 }

@@ -4,6 +4,8 @@ import Team from './Team'
 import Role from './Role'
 
 export default class TeamUser extends BaseModel {
+  public static table = 'team_user'
+
   @column({ isPrimary: true })
   public id: number
 
