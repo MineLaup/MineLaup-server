@@ -13,6 +13,13 @@
         "name": "Name",
         "summary": "Summary",
         "submit": "Create"
+      },
+      "view": {
+        "index": {
+          "name": "Team name",
+          "summary": "Summary",
+          "update-btn": "Update"
+        }
       }
     }
   },

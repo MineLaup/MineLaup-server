@@ -8,7 +8,7 @@
 
       <div class="flex flex-1 flex-col md:flex-row dark:text-white">
         <ul
-          class="flex flex-row sm:flex-col items-center text-center bg-gray-900 text-gray-400 h-10 sm:h-full sm:w-12"
+          class="flex flex-row md:flex-col items-center text-center bg-gray-900 text-gray-400 h-10 md:h-full md:w-12"
         >
           <t-side-bar-button
             :name="$t('layout.side-bar.teams')"
@@ -45,59 +45,61 @@
           <t-side-bar-action
             :name="$t('layout.side-bar.menu')"
             icon="bars"
-            class="ml-auto mr-4 md:hidden"
+            class="ml-auto mr-4 sm:hidden"
             @click="menuOpen = true"
           />
         </ul>
 
-        <div
-          class="sm:w-64 bg-gray-900 absolute sm:relative z-50 sm:z-0 sm:z-0 w-screen h-screen text-white top-0 sm:block"
-          :class="{ hidden: !menuOpen }"
-        >
-          <span
-            class="absolute top-0 right-0 mt-6 mr-6 cursor-pointer sm:hidden"
-            @click="menuOpen = false"
+        <div class="flex-1 flex flex-row">
+          <div
+            class="sm:w-64 bg-gray-900 absolute sm:relative z-50 sm:z-0 sm:z-0 w-screen h-screen text-white top-0 sm:block"
+            :class="{ hidden: !menuOpen }"
           >
-            <i class="fas fa-times fa-lg"></i>
-          </span>
-          <h1
-            class="text-2xl uppercase font-bold mt-4 ml-10 sm:text-xl sm:ml-4"
-          >
-            {{ $t($store.getters['menu/getTitle']) }}
-          </h1>
-          <ul class="mt-8 sm:mt-4">
-            <t-side-bar-item
-              v-if="$store.getters['menu/hasAdditional']"
-              :to="$store.getters['menu/getAdditional'].path"
+            <span
+              class="absolute top-0 right-0 mt-6 mr-6 cursor-pointer sm:hidden"
+              @click="menuOpen = false"
             >
-              <span class="w-14 h-14">
-                <i
-                  class="fas"
-                  :class="'fa-' + $store.getters['menu/getAdditional'].icon"
-                />
-              </span>
-              <span>
-                {{ $t($store.getters['menu/getAdditional'].name) }}
-              </span>
-            </t-side-bar-item>
-            <t-side-bar-item
-              v-for="(item, index) in $store.getters['menu/getList']"
-              :key="index"
-              :to="item.path"
+              <i class="fas fa-times fa-lg"></i>
+            </span>
+            <h1
+              class="text-2xl uppercase font-bold mt-4 ml-10 sm:text-xl sm:ml-4"
             >
-              {{ item.name }}
-            </t-side-bar-item>
-          </ul>
-        </div>
+              {{ $t($store.getters['menu/getTitle']) }}
+            </h1>
+            <ul class="mt-8 sm:mt-4">
+              <t-side-bar-item
+                v-if="$store.getters['menu/hasAdditional']"
+                :to="$store.getters['menu/getAdditional'].path"
+              >
+                <span class="w-14 h-14">
+                  <i
+                    class="fas"
+                    :class="'fa-' + $store.getters['menu/getAdditional'].icon"
+                  />
+                </span>
+                <span>
+                  {{ $t($store.getters['menu/getAdditional'].name) }}
+                </span>
+              </t-side-bar-item>
+              <t-side-bar-item
+                v-for="(item, index) in $store.getters['menu/getList']"
+                :key="index"
+                :to="item.path"
+              >
+                {{ item.name }}
+              </t-side-bar-item>
+            </ul>
+          </div>
 
-        <nuxt class="flex-1" />
+          <nuxt class="flex-1" />
+        </div>
       </div>
     </div>
   </ColorScheme>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'nuxt-property-decorator'
+import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import NavBar from '~/components/bases/NavBar.vue'
 import TSideBarButton from '~/components/sidebar/TSideBarButton.vue'
 import TSideBarAction from '~/components/sidebar/TSideBarAction.vue'
@@ -121,6 +123,11 @@ export default class Default extends Vue {
 
   mounted() {
     this.$colorMode.preference = this.$auth.user.color_mode.toLowerCase()
+  }
+
+  @Watch('$route')
+  onRouteChange() {
+    this.menuOpen = false
   }
 }
 </script>

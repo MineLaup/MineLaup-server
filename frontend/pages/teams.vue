@@ -20,15 +20,17 @@ export default class Teams extends Vue {
       icon: 'plus',
     })
 
-    store.commit(
-      'menu/setList',
-      teams.map((team: Partial<any>) => {
-        return {
-          name: team.name,
-          path: `/teams/${team.id}`,
-        }
-      })
-    )
+    if (teams) {
+      store.commit(
+        'menu/setList',
+        teams.map((team: Partial<any>) => {
+          return {
+            name: team.name,
+            path: `/teams/${team.id}`,
+          }
+        })
+      )
+    }
   }
 }
 </script>
