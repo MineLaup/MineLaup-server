@@ -1,14 +1,14 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
-export default class TeamUser extends BaseSchema {
-  protected tableName = 'team_user'
+export default class TeamRoles extends BaseSchema {
+  protected tableName = 'team_roles'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.integer('user_id').notNullable().references('users.id')
+      table.string('name', 50)
+      table.integer('permission_id').notNullable().references('permissions.id').onDelete('cascade')
       table.integer('team_id').notNullable().references('teams.id')
-      table.integer('role_id').notNullable().references('roles.id')
     })
   }
 

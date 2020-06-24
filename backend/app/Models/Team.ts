@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo, BelongsTo, manyToMany, ManyToMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, belongsTo, BelongsTo, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
-import Role from './Role'
+import TeamRole from './TeamRole'
 
 export default class Team extends BaseModel {
   @column({ isPrimary: true })
@@ -21,13 +21,8 @@ export default class Team extends BaseModel {
   @column()
   public ownerId: number
 
-  @manyToMany(() => User)
-  public users: ManyToMany<typeof User>
-
-  @manyToMany(() => Role, {
-    pivotTable: 'team_user',
-  })
-  public roles: ManyToMany<typeof Role>
+  @hasMany(() => TeamRole)
+  public roles: HasMany<typeof TeamRole>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
