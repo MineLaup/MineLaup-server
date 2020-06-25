@@ -52,7 +52,7 @@
 
         <div class="flex-1 flex flex-row">
           <div
-            class="sm:w-64 bg-gray-900 absolute sm:relative z-50 sm:z-0 sm:z-0 w-screen h-screen text-white top-0 sm:block"
+            class="sm:w-64 bg-gray-900 absolute sm:relative z-50 sm:z-0 sm:z-0 w-screen h-screen md:h-auto text-white top-0 sm:block"
             :class="{ hidden: !menuOpen }"
           >
             <span
@@ -91,7 +91,7 @@
             </ul>
           </div>
 
-          <nuxt class="flex-1" />
+          <nuxt class="flex-1 overflow-auto full-height" />
         </div>
       </div>
     </div>
@@ -131,3 +131,9 @@ export default class Default extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.full-height {
+  height: calc(100vh - 5rem);
+}
+</style>

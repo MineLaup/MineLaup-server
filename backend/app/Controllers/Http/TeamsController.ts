@@ -82,7 +82,7 @@ export default class TeamsController {
     response.send(query.team)
   }
 
-  public async fetchUsers ({ request, params, response }: HttpContextContract) {
+  public async fetchUsers ({ request, params, response, auth }: HttpContextContract) {
     const id = params.id
     const page = request.input('page') || 1
     const limit = request.input('limit') || 10
@@ -90,12 +90,36 @@ export default class TeamsController {
     const query = await TeamUser
       .query()
       .where('team_id', id)
+      .andWhere('userId', auth.user!.id)
       .preload('user')
       .preload('teamRole')
       .paginate(page, limit)
 
-    console.log(query.toJSON())
+    const roleQuery = await TeamRole
+      .query()
+      .where('teamId', id)
 
-    response.send(query.toJSON())
+    response.send({
+      users: query.toJSON(),
+      roles: roleQuery,
+    })
+  }
+
+  public async deleteTeam ({ params, auth, response }: HttpContextContract) {
+    const id = params.id
+
+    const query = await Team.find(id)
+
+    if (!query) {
+      return response.status(404)
+    }
+
+    if (query.ownerId !== auth.user!.id) {
+      return response.status(403)
+    }
+
+    await query.delete()
+
+    return response.status(200)
   }
 }

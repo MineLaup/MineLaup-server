@@ -1,5 +1,11 @@
 {
   "app-name": "MineLaup server",
+  "components": {
+    "modal": {
+      "yes": "I'm sure !",
+      "no": "Forget it"
+    }
+  },
   "pages": {
     "login": {
       "title": "Login",
@@ -18,7 +24,18 @@
         "index": {
           "name": "Team name",
           "summary": "Summary",
-          "update-btn": "Update"
+          "update-btn": "Update",
+          "users": "Users",
+          "list": {
+            "username": "Username",
+            "role": "Role",
+            "actions": "Actions",
+            "previous": "Previous",
+            "next": "Next",
+            "cant-edit-self": "You can't edit yourself"
+          },
+          "confirmDelete": "Are you sure that you want delete this team ?",
+          "delete": "Delete"
         }
       }
     }
