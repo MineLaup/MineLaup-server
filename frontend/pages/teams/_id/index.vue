@@ -77,6 +77,7 @@
                       <div class="ml-3">
                         <p class="text-gray-900 whitespace-no-wrap">
                           {{ user.user.username }}
+                          <i class="fas fa-crown text-yellow-500"></i>
                         </p>
                       </div>
                     </div>
@@ -154,7 +155,7 @@
         </t-button>
       </div>
     </div>
-    <t-modal v-if="Object.keys(modal).length > 0">
+    <t-modal v-if="Object.keys(modal).length > 0" @close-modal="modal = {}">
       <h1 slot="title">{{ $t(modal.title) }}</h1>
       <div slot="actions" class="flex flex-col">
         <t-button

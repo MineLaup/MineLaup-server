@@ -22,5 +22,15 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 
 @Component
-export default class TModal extends Vue {}
+export default class TModal extends Vue {
+  mounted() {
+    document
+      .querySelector('.bg-opacity-75')
+      .addEventListener('click', (event: MouseEvent) => {
+        if (event?.target.classList.contains('bg-opacity-75')) {
+          this.$emit('close-modal')
+        }
+      })
+  }
+}
 </script>
