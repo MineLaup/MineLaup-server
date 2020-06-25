@@ -6,7 +6,7 @@
   >
     <nuxt-link
       tag="span"
-      class="text-white w-12 h-10 flex hover:text-green-400 cursor-pointer border-l-2 border-transparent"
+      class="text-white w-12 h-10 flex hover:text-green-400 cursor-pointer md:border-l-2 md:border-t-0 border-t-2 border-transparent"
       :to="to"
       :class="{ 'border-green-400 text-green-400': isCurrentRoute }"
     >
@@ -16,7 +16,7 @@
     </nuxt-link>
     <span
       v-if="showTitle"
-      class="absolute bg-gray-800 px-1 rounded top-0 left-0 mt-2 ml-12 whitespace-no-wrap"
+      class="absolute bg-gray-800 px-1 rounded top-0 left-0 mt-10 md:mt-2 md:ml-12 z-20 whitespace-no-wrap"
     >
       {{ name }}
     </span>

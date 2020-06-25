@@ -1,19 +1,58 @@
 {
   "app-name": "MineLaup server",
+  "components": {
+    "modal": {
+      "yes": "Je suis sûr !",
+      "no": "Laisse tomber"
+    }
+  },
   "pages": {
     "login": {
       "title": "Connexion",
       "username": "Nom d'utilisateur",
       "password": "Mot de passe",
       "btn": "Connexion"
+    },
+    "teams": {
+      "create": {
+        "title": "Créer une nouvelle équipe",
+        "name": "Nom",
+        "summary": "Description",
+        "submit": "Créer"
+      },
+      "view": {
+        "index": {
+          "name": "Nom de l'équipe",
+          "summary": "Description",
+          "update-btn": "Mettre à jours",
+          "users": "Utilisateurs",
+          "list": {
+            "username": "Nom d'utilisateur",
+            "role": "Rôle",
+            "actions": "Actions",
+            "previous": "Précédent",
+            "next": "Suivant",
+            "cant-edit-self": "Vous ne pouvez pas vous éditer vous même"
+          },
+          "confirmDelete": "Êtes vous sûr de vouloir supprimer cet utilisateur ?",
+          "delete": "Supprimer"
+        }
+      }
     }
   },
   "layout": {
     "side-bar": {
+      "teams": "Équipes",
       "launcher": "Launchers",
       "modpacks": "Modpacks",
+      "administration": "Administration",
       "settings": "Paramètres",
-      "logout": "Déconnexion"
+      "logout": "Déconnexion",
+      "menu": "Menu"
+    },
+    "side-menu": {
+      "team-title": "Équipes",
+      "team-new": "Nouvelle équipe"
     }
   },
   "error": {

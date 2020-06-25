@@ -1,55 +1,109 @@
 <template>
   <ColorScheme>
-    <div class="h-screen flex flex-col">
+    <div
+      class="h-screen flex flex-col"
+      :class="{ 'overflow-hidden': menuOpen }"
+    >
       <nav-bar></nav-bar>
 
-      <div class="flex flex-1 flex-row dark:text-white">
-        <div
-          class="flex-none flex flex-col items-center text-center bg-gray-900 text-gray-400 w-12"
+      <div class="flex flex-1 flex-col md:flex-row dark:text-white">
+        <ul
+          class="flex flex-row md:flex-col items-center text-center bg-gray-900 text-gray-400 h-10 md:h-full md:w-12"
         >
-          <ul class="mt-2 flex-1">
-            <t-side-bar-button
-              :name="$t('layout.side-bar.launcher')"
-              icon="rocket"
-              to="/launcher"
-            />
-            <t-side-bar-button
-              :name="$t('layout.side-bar.modpacks')"
-              icon="box-open"
-              to="/modpack"
-            />
-            <t-side-bar-button
-              v-if="hasAdminPermission"
-              :name="$t('layout.side-bar.administration')"
-              icon="user-cog"
-              to="/admin"
-            />
-          </ul>
-          <ul class="mb-2">
-            <t-side-bar-button
-              :name="$t('layout.side-bar.settings')"
-              icon="cog"
-              to="/settings"
-            />
-            <t-side-bar-action
-              :name="$t('layout.side-bar.logout')"
-              icon="sign-out-alt"
-              @click="$auth.logout()"
-            />
-          </ul>
-        </div>
+          <t-side-bar-button
+            :name="$t('layout.side-bar.teams')"
+            icon="users"
+            to="/teams"
+          />
+          <t-side-bar-button
+            :name="$t('layout.side-bar.launcher')"
+            icon="rocket"
+            to="/launcher"
+          />
+          <t-side-bar-button
+            :name="$t('layout.side-bar.modpacks')"
+            icon="box-open"
+            to="/modpack"
+          />
+          <t-side-bar-button
+            v-if="hasAdminPermission"
+            :name="$t('layout.side-bar.administration')"
+            icon="user-cog"
+            to="/admin"
+          />
+          <t-side-bar-button
+            :name="$t('layout.side-bar.settings')"
+            icon="cog"
+            to="/settings"
+          />
+          <t-side-bar-action
+            :name="$t('layout.side-bar.logout')"
+            icon="sign-out-alt"
+            @click="$auth.logout()"
+          />
 
-        <nuxt class="flex-1" />
+          <t-side-bar-action
+            :name="$t('layout.side-bar.menu')"
+            icon="bars"
+            class="ml-auto mr-4 sm:hidden"
+            @click="menuOpen = true"
+          />
+        </ul>
+
+        <div class="flex-1 flex flex-row">
+          <div
+            class="sm:w-64 bg-gray-900 absolute sm:relative z-50 sm:z-0 sm:z-0 w-screen h-screen md:h-auto text-white top-0 sm:block"
+            :class="{ hidden: !menuOpen }"
+          >
+            <span
+              class="absolute top-0 right-0 mt-6 mr-6 cursor-pointer sm:hidden"
+              @click="menuOpen = false"
+            >
+              <i class="fas fa-times fa-lg"></i>
+            </span>
+            <h1
+              class="text-2xl uppercase font-bold mt-4 ml-10 sm:text-xl sm:ml-4"
+            >
+              {{ $t($store.getters['menu/getTitle']) }}
+            </h1>
+            <ul class="mt-8 sm:mt-4">
+              <t-side-bar-item
+                v-if="$store.getters['menu/hasAdditional']"
+                :to="$store.getters['menu/getAdditional'].path"
+              >
+                <span class="w-14 h-14">
+                  <i
+                    class="fas"
+                    :class="'fa-' + $store.getters['menu/getAdditional'].icon"
+                  />
+                </span>
+                <span>
+                  {{ $t($store.getters['menu/getAdditional'].name) }}
+                </span>
+              </t-side-bar-item>
+              <t-side-bar-item
+                v-for="(item, index) in $store.getters['menu/getList']"
+                :key="index"
+                :to="item.path"
+              >
+                {{ item.name }}
+              </t-side-bar-item>
+            </ul>
+          </div>
+
+          <nuxt class="flex-1 overflow-auto full-height" />
+        </div>
       </div>
     </div>
   </ColorScheme>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'nuxt-property-decorator'
+import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import NavBar from '~/components/bases/NavBar.vue'
 import TSideBarButton from '~/components/sidebar/TSideBarButton.vue'
 import TSideBarAction from '~/components/sidebar/TSideBarAction.vue'
+import TSideBarItem from '~/components/sidebar/TSideBarItem.vue'
 import { UserRole } from '~/types/UserRole'
 
 @Component({
@@ -57,9 +111,12 @@ import { UserRole } from '~/types/UserRole'
     NavBar,
     TSideBarButton,
     TSideBarAction,
+    TSideBarItem,
   },
 })
 export default class Default extends Vue {
+  menuOpen: boolean = false
+
   get hasAdminPermission() {
     return this.$auth.user.role >= UserRole.admin
   }
@@ -67,5 +124,16 @@ export default class Default extends Vue {
   mounted() {
     this.$colorMode.preference = this.$auth.user.color_mode.toLowerCase()
   }
+
+  @Watch('$route')
+  onRouteChange() {
+    this.menuOpen = false
+  }
 }
 </script>
+
+<style lang="scss">
+.full-height {
+  height: calc(100vh - 5rem);
+}
+</style>

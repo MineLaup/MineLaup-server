@@ -15,7 +15,7 @@
     </a>
     <span
       v-if="showTitle"
-      class="absolute bg-gray-800 px-1 rounded top-0 left-0 mt-2 ml-12 whitespace-no-wrap"
+      class="absolute bg-gray-800 px-1 rounded top-0 left-0 mt-10 sm:mt-2 sm:ml-12 z-20 whitespace-no-wrap"
     >
       {{ name }}
     </span>
