@@ -37,3 +37,8 @@ Route.group(() => {
   Route.get('/:id/users', 'TeamsController.fetchUsers').where('id', /^[0-9]+$/)
   Route.delete('/:id', 'TeamsController.deleteTeam').where('id', /^[0-9]+$/)
 }).prefix('/teams').middleware('auth')
+
+Route.group(() => {
+  Route.get('/users', 'AdminController.fetchUsers')
+  Route.delete('/user', 'AdminController.deleteUser')
+}).prefix('/admin').middleware(['auth', 'admin'])

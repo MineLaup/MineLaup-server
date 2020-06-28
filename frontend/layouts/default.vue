@@ -86,7 +86,7 @@
                 :key="index"
                 :to="item.path"
               >
-                {{ item.name }}
+                {{ !item.nameI18n ? item.name : $t(item.nameI18n) }}
               </t-side-bar-item>
             </ul>
           </div>
@@ -118,7 +118,7 @@ export default class Default extends Vue {
   menuOpen: boolean = false
 
   get hasAdminPermission() {
-    return this.$auth.user.role >= UserRole.admin
+    return this.$auth.user?.role >= UserRole.admin
   }
 
   mounted() {

@@ -34,8 +34,25 @@
             "next": "Suivant",
             "cant-edit-self": "Vous ne pouvez pas vous éditer vous même"
           },
-          "confirmDelete": "Êtes vous sûr de vouloir supprimer cet utilisateur ?",
+          "confirmDelete": "Êtes vous sûr de vouloir supprimer cet équipe ?",
           "delete": "Supprimer"
+        }
+      }
+    },
+    "admin": {
+      "users": {
+        "title": "Utilisateurs",
+        "new-user": "Nouvel utilisateur",
+        "confirmDelete": "Êtes vous sûr de vouloir supprimer \"{username}\" ?",
+        "search": "Recherche",
+        "list": {
+          "username": "Nom d'utilisateur",
+          "role": "Rôle",
+          "email": "Adresse Email",
+          "state": "État",
+          "actions": "Actions",
+          "active": "Actif",
+          "disabled": "Désactivé"
         }
       }
     }

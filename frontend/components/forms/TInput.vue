@@ -22,6 +22,8 @@
         :placeholder="label"
         :value="value"
         :autocomplete="autocomplete"
+        :max="max"
+        :min="min"
         @input="$emit('input', $event.target.value)"
       />
       <span
@@ -66,6 +68,12 @@ export default class TInput extends Vue {
   showPass: boolean = false
   @Prop({ default: 'on' })
   autocomplete!: string
+
+  @Prop()
+  max!: number
+
+  @Prop()
+  min!: number
 
   get currentType() {
     if (this.type === 'password') {

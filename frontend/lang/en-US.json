@@ -38,6 +38,23 @@
           "delete": "Delete"
         }
       }
+    },
+    "admin": {
+      "users": {
+        "title": "Users",
+        "new-user": "New user",
+        "confirmDelete": "Are you sure that you want delete \"{username}\" ?",
+        "search": "Search",
+        "list": {
+          "username": "Username",
+          "role": "Role",
+          "email": "Email Address",
+          "state": "State",
+          "actions": "Actions",
+          "active": "Active",
+          "disabled": "Disabled"
+        }
+      }
     }
   },
   "layout": {
@@ -52,7 +69,9 @@
     },
     "side-menu": {
       "team-title": "Teams",
-      "team-new": "New team"
+      "team-new": "New team",
+      "administration-title": "Administration",
+      "users": "Users"
     }
   },
   "error": {
