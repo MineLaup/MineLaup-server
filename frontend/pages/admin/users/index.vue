@@ -101,7 +101,7 @@
                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                   <p class="text-gray-900 whitespace-no-wrap">
                     {{
-                      user.state
+                      user.disabled
                         ? $t('pages.admin.users.list.disabled')
                         : $t('pages.admin.users.list.active')
                     }}
@@ -130,11 +130,11 @@
             </tbody>
           </table>
           <div
-            v-if="pagination.total > 1"
+            v-if="pagination.last_page > 1"
             class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between"
           >
             <span class="text-xs xs:text-sm text-gray-900">
-              {{ `${pagination.current_page}/${pagination.total}` }}
+              {{ `${pagination.current_page}/${pagination.last_page}` }}
             </span>
             <div class="inline-flex mt-2 xs:mt-0">
               <button
@@ -237,6 +237,7 @@ export default class AdminUsersView extends Vue {
       })
       .then(() => {
         this.$fetch()
+        this.modal = {}
       })
       .catch((error) => {
         console.log(error)

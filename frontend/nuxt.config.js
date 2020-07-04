@@ -65,7 +65,7 @@ export default {
    */
   proxy: {
     '/api': {
-      target: 'http://localhost:3333',
+      target: process.env.API_URL,
       pathRewrite: {
         '^/api': '/',
       },
