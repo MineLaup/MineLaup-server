@@ -1,6 +1,9 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
-import { schema } from '@ioc:Adonis/Core/Validator'
+import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import View from '@ioc:Adonis/Core/View'
+import nodemailer from 'nodemailer'
+import hat from 'hat'
 
 export default class AdminController {
   public async fetchUsers ({ request, response }: HttpContextContract) {
@@ -45,5 +48,72 @@ export default class AdminController {
     }
 
     await user.delete()
+  }
+
+  public async createUser ({ request, response }: HttpContextContract) {
+    const data = await request.validate({
+      schema: schema.create({
+        username: schema.string({
+          escape: true,
+          trim: true,
+        }, [
+          rules.alpha(),
+          rules.maxLength(45),
+          rules.unique({
+            column: 'username',
+            table: 'users',
+          }),
+        ]),
+        email: schema.string({
+          escape: true,
+          trim: true,
+        }, [
+          rules.email(),
+        ]),
+        role: schema.string({
+          escape: true,
+          trim: true,
+        },
+        [
+          rules.regex(/^[0-3]$/),
+        ]),
+      }),
+    })
+
+    await User.create({
+      username: data.username,
+      email: data.email,
+      password: Buffer.from(Math.random().toString()).toString('hex'),
+      disabled: true,
+    })
+
+    const token = hat()
+
+    // TODO: send a mail to the user to let him change is password
+    const template = View.render('mail/set_password', {
+      username: data.username,
+      hostname: (process.env.HTTPS === 'true' ? 'https://' : 'http://') + process.env.HOSTNAME,
+      token: token,
+    })
+
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT as string),
+      secure: parseInt(process.env.SMTP_PORT as string) === 465,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    })
+
+    await transporter.sendMail({
+      from: `"MineLaup" <minelaup@${process.env.HOSTNAME}>`,
+      to: data.email,
+      subject: 'Your account have been registered !',
+      text: template.toString(),
+      html: template,
+    })
+
+    response.status(200)
   }
 }

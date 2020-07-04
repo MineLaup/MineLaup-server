@@ -19,6 +19,7 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import hat from 'hat'
 
 Route.get('/', async () => {
   return { hello: 'world' }
@@ -41,4 +42,14 @@ Route.group(() => {
 Route.group(() => {
   Route.get('/users', 'AdminController.fetchUsers')
   Route.delete('/user', 'AdminController.deleteUser')
+  Route.post('/user', 'AdminController.createUser')
 }).prefix('/admin').middleware(['auth', 'admin'])
+
+Route.get('/email', async ({ view }) => {
+  return view.render('mail/set_password', {
+    username: 'test',
+    hostname: (process.env.HTTPS === 'true' ? 'https://' : 'http://') + process.env.HOSTNAME,
+    api_host: `${process.env.HOST}:${process.env.PORT}`,
+    token: hat(),
+  })
+})
