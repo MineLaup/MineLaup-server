@@ -53,8 +53,22 @@
           "actions": "Actions",
           "active": "Active",
           "disabled": "Disabled"
+        },
+        "create": {
+          "title": "Create a new user",
+          "username": "Username",
+          "email": "Email Address",
+          "role":"Role",
+          "submit": "Create"
         }
       }
+    },
+    "set-password": {
+      "title": "Hello {username}",
+      "description": "Please define your password !",
+      "new-password": "New password",
+      "new-password-confirmation": "Password confirmation",
+      "btn": "Set"
     }
   },
   "layout": {
