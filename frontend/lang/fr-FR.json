@@ -48,7 +48,11 @@
       "administration": "Administration",
       "settings": "Paramètres",
       "logout": "Déconnexion",
-      "menu": "Menu"
+      "menu": "Menu",
+      "dark-mode": {
+        "enable": "Enable dark mode",
+        "disable": "Disable dark mode"
+      }
     },
     "side-menu": {
       "team-title": "Équipes",

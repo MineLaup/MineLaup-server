@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-row justify-center">
     <div class="flex-1 p-4 max-w-4xl">
-      <h1 class="font-bold text-3xl text-gray-900 uppercase">
+      <h1 class="font-bold text-3xl text-gray-900 dark:text-white uppercase">
         {{ $t('pages.teams.create.title') }}
       </h1>
 

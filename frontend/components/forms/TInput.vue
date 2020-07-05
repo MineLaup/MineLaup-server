@@ -2,7 +2,7 @@
   <div>
     <label
       :for="id"
-      class="block uppercase tracking-wide text-gray-600 font-bold mb-2"
+      class="block uppercase tracking-wide text-gray-600 dark:text-gray-400 font-bold mb-2"
     >
       {{ label }}
     </label>
@@ -12,7 +12,10 @@
         v-if="icon"
         class="absolute inset-y-0 left-0 flex items-center pl-4"
       >
-        <i class="fas text-gray-700 w-4 h-4" :class="'fa-' + icon"></i>
+        <i
+          class="fas text-gray-700 dark:text-gray-300 w-4 h-4"
+          :class="'fa-' + icon"
+        ></i>
       </span>
       <input
         :id="id"

@@ -8,7 +8,14 @@ module.exports = {
     },
   },
   variants: {
-    borderColor: ['dark', 'dark-focus', 'dark-focus-within', 'hover', 'last'],
+    borderColor: [
+      'dark',
+      'dark-hover',
+      'dark-focus',
+      'dark-focus-within',
+      'hover',
+      'last',
+    ],
     backgroundColor: [
       'dark',
       'dark-hover',

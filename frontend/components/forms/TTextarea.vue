@@ -19,7 +19,7 @@
         :placeholder="label"
         :value="value"
         :autocomplete="autocomplete"
-        class="appearance-none w-full bg-gray-300 dark:bg-gray-800 rounded-lg pl-10 py-2 px-4 placeholder-gray-700 dark-placeholder:text-gray-300 focus:outline-none text-black dark:text-white shadow focus:shadow-lg transition-shadow ease-out duration-700 min-h-1"
+        class="appearance-none w-full bg-gray-300 dark:bg-gray-900 rounded-lg pl-10 py-2 px-4 placeholder-gray-700 dark-placeholder:text-gray-300 focus:outline-none text-black dark:text-white shadow focus:shadow-lg transition-shadow ease-out duration-700 min-h-1"
         :cols="cols"
         :rows="rows"
         @input="$emit('input', $event.target.value)"

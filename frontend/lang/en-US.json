@@ -48,7 +48,11 @@
       "administration": "Administration",
       "settings": "Settings",
       "logout": "Logout",
-      "menu": "Menu"
+      "menu": "Menu",
+      "dark-mode": {
+        "enable": "Activer le mode sombre",
+        "disable": "Désactiver le mode sombre"
+      }
     },
     "side-menu": {
       "team-title": "Teams",
