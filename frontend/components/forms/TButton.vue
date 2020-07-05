@@ -2,8 +2,8 @@
   <button
     class="px-4 py-2 border rounded-full focus:outline-none transition ease-out duration-300"
     :class="[
-      !disabled ? 'hover:text-' + hoverColor : '',
       'border-' + bgHoverColor,
+      'dark:border-' + darkBgHoverColor,
       {
         'border-gray-600 text-gray-500 cursor-auto': disabled,
         [currentColor]: !disabled,

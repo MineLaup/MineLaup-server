@@ -41,7 +41,7 @@
 
       <div>
         <h2
-          class="text-xl font-semibold leading-tight uppercase text-gray-900 py-4"
+          class="text-xl font-semibold leading-tight uppercase text-gray-900 dark:text-white py-4"
         >
           {{ $t('pages.teams.view.index.users') }}
         </h2>
@@ -52,30 +52,36 @@
               <thead>
                 <tr>
                   <th
-                    class="w-1/3 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    class="w-1/3 px-5 py-3 border-b-2 border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider"
                   >
                     {{ $t('pages.teams.view.index.list.username') }}
                   </th>
                   <th
-                    class="w-1/3 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    class="w-1/3 px-5 py-3 border-b-2 border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider"
                   >
                     {{ $t('pages.teams.view.index.list.role') }}
                   </th>
                   <th
-                    class="w-1/3 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider text-right"
+                    class="w-1/3 px-5 py-3 border-b-2 border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900 text-xs font-semibold text-gray-600 uppercase dark:text-gray-400 tracking-wider text-right"
                   >
                     {{ $t('pages.teams.view.index.list.actions') }}
                   </th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(user, index) in users" :key="index">
+                <tr
+                  v-for="(user, index) in users"
+                  :key="index"
+                  class="bg-white dark:bg-gray-800"
+                >
                   <td
-                    class="px-5 py-5 border-b border-gray-200 bg-white text-sm"
+                    class="px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm"
                   >
                     <div class="flex items-center">
                       <div class="ml-3">
-                        <p class="text-gray-900 whitespace-no-wrap">
+                        <p
+                          class="text-gray-900 whitespace-no-wrap dark:text-white"
+                        >
                           {{ user.user.username }}
                           <i class="fas fa-crown text-yellow-500"></i>
                         </p>
@@ -83,14 +89,14 @@
                     </div>
                   </td>
                   <td
-                    class="px-5 py-5 border-b border-gray-200 bg-white text-sm"
+                    class="px-5 py-5 border-b border-gray-200 dark:border-gray-800 bg-white text-sm dark:bg-gray-800"
                   >
-                    <p class="text-gray-900 whitespace-no-wrap">
+                    <p class="text-gray-900 whitespace-no-wrap dark:text-white">
                       {{ user.teamRole.name }}
                     </p>
                   </td>
                   <td
-                    class="px-10 py-5 border-b border-gray-200 bg-white text-sm text-right"
+                    class="px-10 py-5 border-b border-gray-200 dark:border-gray-800 bg-white text-sm text-right dark:bg-gray-800"
                   >
                     <div
                       v-if="team.owner_id !== user.user.id"
@@ -109,7 +115,7 @@
                         <i class="fas fa-trash"></i>
                       </span>
                     </div>
-                    <div v-else class="text-gray-700 italic">
+                    <div v-else class="text-gray-700 italic dark:text-gray-300">
                       {{ $t('pages.teams.view.index.list.cant-edit-self') }}
                     </div>
                   </td>
@@ -169,7 +175,9 @@
         <t-button
           class="mb-2"
           bg-hover-color="gray-900"
-          dark-bg-hover-color="gray-900"
+          dark-color="white"
+          dark-bg-hover-color="white"
+          dark-hover-color="gray-900"
           @click="modal = {}"
         >
           {{ $t('components.modal.no') }}

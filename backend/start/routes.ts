@@ -28,6 +28,7 @@ Route.group(() => {
   Route.post('/auth', 'AuthController.login')
   Route.get('/auth', 'AuthController.user').middleware('auth')
   Route.delete('/auth', 'AuthController.logout').middleware('auth')
+  Route.post('/color-mode', 'AuthController.setColor').middleware('auth')
 }).prefix('/user')
 
 Route.group(() => {

@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { schema } from '@ioc:Adonis/Core/Validator'
+import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import User from 'App/Models/User'
 
 export default class AuthController {
   public async login ({ auth, request }: HttpContextContract) {
@@ -26,5 +27,30 @@ export default class AuthController {
     await auth.logout()
 
     return 200
+  }
+
+  public async setColor ({ request, auth, response }: HttpContextContract) {
+    const data = await request.validate({
+      schema: schema.create({
+        color: schema.string({
+          escape: true,
+          trim: true,
+        },
+        [
+          rules.required(),
+          rules.regex(/^(dark|light)$/),
+        ]),
+      }),
+    })
+
+    const user = await User.find(auth.user!.id)
+
+    if (user) {
+      user.colorMode = data.color
+      user.save()
+      return response.status(200)
+    }
+
+    return response.status(401)
   }
 }

@@ -6,9 +6,11 @@
     >
       <nav-bar></nav-bar>
 
-      <div class="flex flex-1 flex-col md:flex-row dark:text-white">
+      <div
+        class="flex flex-1 flex-col md:flex-row dark:text-white dark:bg-gray-700"
+      >
         <ul
-          class="flex flex-row md:flex-col items-center text-center bg-gray-900 text-gray-400 h-10 md:h-full md:w-12"
+          class="flex flex-row md:flex-col items-center text-center bg-gray-900 text-gray-400 h-10 md:h-full md:w-12 overflow-x-auto md:overflow-visible"
         >
           <t-side-bar-button
             :name="$t('layout.side-bar.teams')"
@@ -40,6 +42,15 @@
             :name="$t('layout.side-bar.logout')"
             icon="sign-out-alt"
             @click="$auth.logout()"
+          />
+          <t-side-bar-action
+            :name="
+              isDarkMode
+                ? $t('layout.side-bar.dark-mode.disable')
+                : $t('layout.side-bar.dark-mode.enable')
+            "
+            :icon="isDarkMode ? 'moon' : 'sun'"
+            @click="toggleColorMode"
           />
 
           <t-side-bar-action
@@ -100,6 +111,7 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
+import debounce from 'lodash/debounce'
 import NavBar from '~/components/bases/NavBar.vue'
 import TSideBarButton from '~/components/sidebar/TSideBarButton.vue'
 import TSideBarAction from '~/components/sidebar/TSideBarAction.vue'
@@ -118,7 +130,7 @@ export default class Default extends Vue {
   menuOpen: boolean = false
 
   get hasAdminPermission() {
-    return this.$auth.user.role >= UserRole.admin
+    return this.$auth.user?.role >= UserRole.admin
   }
 
   mounted() {
@@ -129,6 +141,21 @@ export default class Default extends Vue {
   onRouteChange() {
     this.menuOpen = false
   }
+
+  get isDarkMode() {
+    return this.$colorMode.preference === 'dark'
+  }
+
+  toggleColorMode = debounce(() => {
+    const newColor = this.$colorMode.preference === 'light' ? 'dark' : 'light'
+    this.$axios
+      .post('/api/user/color-mode', {
+        color: newColor,
+      })
+      .then(() => {
+        this.$colorMode.preference = newColor
+      })
+  }, 500)
 }
 </script>
 

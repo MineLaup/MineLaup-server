@@ -1,14 +1,15 @@
 {
   "folders": [
     {
-      "path": "."
-    },
-    {
+      // This first is place because of the vetur extension (https://github.com/vuejs/vetur/issues/762#issuecomment-623755808)
       "path": "frontend"
     },
     {
       "path": "backend"
-    }
+    },
+    {
+      "path": "."
+    },
 	],
 	"settings": {
 		"i18n-ally.localesPaths": "frontend/lang"
