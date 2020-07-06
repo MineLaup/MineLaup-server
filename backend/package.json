@@ -5,6 +5,7 @@
   "description": "The server side of the project MineLaup.",
   "scripts": {
     "build": "node ace build",
+    "prod": "node ace serve",
     "start": "node ace serve --watch",
     "lint": "eslint . --ext=.ts",
     "lint:fix": "eslint . --ext=.ts",
