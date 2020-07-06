@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-row justify-center">
     <div class="flex-1 p-4 max-w-4xl overflow-y-auto">
-      <h1 class="text-2xl uppercase text-gray-900 font-bold">
+      <h1 class="text-2xl uppercase text-gray-900 dark:text-white font-bold">
         {{ $t('pages.admin.users.title') }}
       </h1>
 
@@ -51,55 +51,80 @@
             <thead>
               <tr>
                 <th
-                  class="w-1/5 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                  class="w-1/5 px-5 py-3 border-b-2 border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider"
                 >
                   {{ $t('pages.admin.users.list.username') }}
                 </th>
                 <th
-                  class="w-4 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                  class="w-4 px-5 py-3 border-b-2 border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider"
                 >
                   {{ $t('pages.admin.users.list.role') }}
                 </th>
                 <th
-                  class="w-1/4 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                  class="w-1/4 px-5 py-3 border-b-2 border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider"
                 >
                   {{ $t('pages.admin.users.list.email') }}
                 </th>
                 <th
-                  class="w-2 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                  class="w-2 px-5 py-3 border-b-2 border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider"
                 >
                   {{ $t('pages.admin.users.list.state') }}
                 </th>
                 <th
-                  class="w-1/5 px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider text-right"
+                  class="w-1/5 px-5 py-3 border-b-2 border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-right"
                 >
                   {{ $t('pages.admin.users.list.actions') }}
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(user, index) in users" :key="index">
-                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+              <tr
+                v-for="(user, index) in users"
+                :key="index"
+                class="bg-white dark:bg-gray-800"
+              >
+                <td
+                  class="px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm"
+                >
                   <div class="flex items-center">
                     <div class="ml-3">
-                      <p class="text-gray-900 whitespace-no-wrap">
+                      <p
+                        class="text-gray-900 whitespace-no-wrap dark:text-white"
+                      >
                         {{ user.username }}
                       </p>
                     </div>
                   </div>
                 </td>
-                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                  <p class="text-gray-900 whitespace-no-wrap">
+                <td
+                  class="px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm"
+                >
+                  <p class="text-gray-900 whitespace-no-wrap dark:text-white">
                     {{ user.role }}
                   </p>
                 </td>
-                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                  <p class="text-gray-900 whitespace-no-wrap">
+                <td
+                  class="px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm"
+                >
+                  <p class="text-gray-900 whitespace-no-wrap dark:text-white">
                     {{ user.email }}
                   </p>
                 </td>
-                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                  <p class="text-gray-900 whitespace-no-wrap">
+                <td
+                  class="px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-sm"
+                >
+                  <p
+                    class="text-gray-900 whitespace-no-wrap dark:text-white select-none"
+                    :class="{
+                      'hover:text-green-600 dark-hover:text-green-400 cursor-pointer':
+                        $auth.user.id !== user.id,
+                    }"
+                    @click="
+                      $auth.user.id === user.id
+                        ? () => {}
+                        : toggleState(user.id, user.disabled)
+                    "
+                  >
                     {{
                       user.disabled
                         ? $t('pages.admin.users.list.disabled')
@@ -108,11 +133,11 @@
                   </p>
                 </td>
                 <td
-                  class="px-10 py-5 border-b border-gray-200 bg-white text-sm text-right"
+                  class="px-10 py-5 border-b border-gray-200 dark:border-gray-800 text-sm text-right"
                 >
                   <div class="flex flex-row justify-end">
                     <span
-                      class="cursor-pointer text-gray-800 w-5 h-5 hover:text-gray-700"
+                      class="cursor-pointer text-gray-800 dark:text-gray-200 w-5 h-5 hover:text-gray-600 dark-hover:text-green-400"
                       @click="editUser(user.id)"
                     >
                       <i class="fas fa-pen"></i>
@@ -169,7 +194,9 @@
         <t-button
           class="mb-2"
           bg-hover-color="gray-900"
-          dark-bg-hover-color="gray-900"
+          dark-color="white"
+          dark-bg-hover-color="white"
+          dark-hover-color="gray-900"
           @click="modal = {}"
         >
           {{ $t('components.modal.no') }}
@@ -247,6 +274,17 @@ export default class AdminUsersView extends Vue {
   closeDeleteModal() {
     this.selected = null
     this.modal = {}
+  }
+
+  toggleState(id: number, isDisabled: boolean) {
+    this.$axios
+      .post(`/api/admin/user/${id}/state`, {
+        state: !isDisabled,
+      })
+      .then(() => {
+        const index = this.users.findIndex((user) => user.id === id)
+        this.users[index].disabled = !isDisabled
+      })
   }
 
   searchUsers = debounce(() => this.$fetch(), 250)

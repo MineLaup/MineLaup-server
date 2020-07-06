@@ -44,6 +44,7 @@ Route.group(() => {
   Route.get('/users', 'AdminController.fetchUsers')
   Route.delete('/user', 'AdminController.deleteUser')
   Route.post('/user', 'AdminController.createUser')
+  Route.post('/user/:id/state', 'AdminController.updateState').where('id', /^[0-9]+$/)
 }).prefix('/admin').middleware(['auth', 'admin'])
 
 Route.get('/email', async ({ view }) => {

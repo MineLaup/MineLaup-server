@@ -48,6 +48,8 @@ export default class AdminController {
     }
 
     await user.delete()
+
+    return response.status(200)
   }
 
   public async createUser ({ request, response }: HttpContextContract) {
@@ -115,5 +117,32 @@ export default class AdminController {
     })
 
     response.status(200)
+  }
+
+  public async updateState ({ params, request, response, auth }: HttpContextContract) {
+    const id = params.id
+
+    const data = await request.validate({
+      schema: schema.create({
+        state: schema.boolean([
+          rules.required(),
+        ]),
+      }),
+    })
+
+    if (auth.user!.id === id) {
+      return response.status(403)
+    }
+
+    const user = await User.find(id)
+
+    if (!user) {
+      return response.status(404)
+    }
+
+    user.disabled = !data.state
+    await user.save()
+
+    return response.status(200)
   }
 }

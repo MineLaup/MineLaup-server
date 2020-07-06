@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-row justify-center">
     <div class="flex-1 p-4 max-w-4xl">
-      <h1 class="font-bold text-3xl text-gray-900 uppercase">
+      <h1 class="font-bold text-3xl text-gray-900 dark:text-white uppercase">
         {{ $t('pages.admin.users.create.title') }}
       </h1>
 
@@ -126,7 +126,7 @@ export default class AdminUserCreate extends Vue {
               this.errors = parsedErrors
               break
             case 500:
-              this.errorMsg = error.response.data.errors[0].message
+              this.errorMsg = error.response.data.errors.message
               break
             default:
               this.errorMsg = 'error.unknown'
