@@ -1,113 +1,118 @@
 {
-  "app-name": "MineLaup server",
-  "components": {
-    "modal": {
-      "yes": "I'm sure !",
-      "no": "Forget it"
-    }
-  },
-  "pages": {
-    "login": {
-      "title": "Login",
-      "username": "Username",
-      "password": "Password",
-      "btn": "Login"
-    },
-    "teams": {
-      "create": {
-        "title": "Create a new team",
-        "name": "Name",
-        "summary": "Summary",
-        "submit": "Create"
-      },
-      "view": {
-        "index": {
-          "name": "Team name",
-          "summary": "Summary",
-          "update-btn": "Update",
-          "users": "Users",
-          "list": {
-            "username": "Username",
-            "role": "Role",
-            "actions": "Actions",
-            "previous": "Previous",
-            "next": "Next",
-            "cant-edit-self": "You can't edit yourself"
-          },
-          "confirmDelete": "Are you sure that you want delete this team ?",
-          "delete": "Delete"
-        }
-      }
-    },
-    "admin": {
-      "users": {
-        "title": "Users",
-        "new-user": "New user",
-        "confirmDelete": "Are you sure that you want delete \"{username}\" ?",
-        "search": "Search",
-        "list": {
-          "username": "Username",
-          "role": "Role",
-          "email": "Email Address",
-          "state": "State",
-          "actions": "Actions",
-          "active": "Active",
-          "disabled": "Disabled"
-        },
-        "create": {
-          "title": "Create a new user",
-          "username": "Username",
-          "email": "Email Address",
-          "role":"Role",
-          "submit": "Create"
-        },
-        "update": {
-          "title": "Update account",
-          "username": "Username",
-          "first_name": "First name",
-          "last_name": "Last name",
-          "email": "Email Address",
-          "role":"Role",
-          "submit": "Update"
-        }
-      }
-    },
-    "set-password": {
-      "title": "Hello {username}",
-      "description": "Please define your password !",
-      "new-password": "New password",
-      "new-password-confirmation": "Password confirmation",
-      "btn": "Set"
-    }
-  },
-  "layout": {
-    "side-bar": {
-      "teams": "Teams",
-      "launcher": "Launchers",
-      "modpacks": "Modpacks",
-      "administration": "Administration",
-      "settings": "Settings",
-      "logout": "Logout",
-      "menu": "Menu",
-      "dark-mode": {
-        "enable": "Activer le mode sombre",
-        "disable": "Désactiver le mode sombre"
-      }
-    },
-    "side-menu": {
-      "team-title": "Teams",
-      "team-new": "New team",
-      "administration-title": "Administration",
-      "users": "Users"
-    }
-  },
-  "error": {
-    "login": {
-      "wrong_ids": "Invalid username or password"
-    },
-    "unknown": "An unexpected error happened",
-    "form": {
-      "required": "This field is required"
-    }
-  }
+	"app-name": "MineLaup server",
+	"components": {
+		"modal": {
+			"no": "Forget it",
+			"yes": "I'm sure !"
+		}
+	},
+	"error": {
+		"form": {
+			"required": "This field is required"
+		},
+		"login": {
+			"wrong_ids": "Invalid username or password"
+		},
+		"unknown": "An unexpected error happened"
+	},
+	"layout": {
+		"side-bar": {
+			"administration": "Administration",
+			"dark-mode": {
+				"disable": "Désactiver le mode sombre",
+				"enable": "Activer le mode sombre"
+			},
+			"launcher": "Launchers",
+			"logout": "Logout",
+			"menu": "Menu",
+			"modpacks": "Modpacks",
+			"settings": "Settings",
+			"teams": "Teams"
+		},
+		"side-menu": {
+			"administration-title": "Administration",
+			"settings": "Settings",
+			"team-new": "New team",
+			"team-title": "Teams",
+			"users": "Users"
+		}
+	},
+	"pages": {
+		"admin": {
+			"settings": {
+        "title": "Settings",
+        "nothing": "There is no settings available for now."
+			},
+			"users": {
+				"confirmDelete": "Are you sure that you want delete \"{username}\" ?",
+				"create": {
+					"email": "Email Address",
+					"role": "Role",
+					"submit": "Create",
+					"title": "Create a new user",
+					"username": "Username"
+				},
+				"list": {
+					"actions": "Actions",
+					"active": "Active",
+					"disabled": "Disabled",
+					"email": "Email Address",
+					"role": "Role",
+					"state": "State",
+					"username": "Username"
+				},
+				"new-user": "New user",
+				"search": "Search",
+				"title": "Users",
+				"update": {
+					"email": "Email Address",
+					"first_name": "First name",
+					"last_name": "Last name",
+					"role": "Role",
+					"submit": "Update",
+					"title": "Update account",
+					"username": "Username"
+				}
+			}
+		},
+		"login": {
+			"btn": "Login",
+			"password": "Password",
+			"title": "Login",
+			"username": "Username"
+		},
+		"set-password": {
+			"btn": "Set",
+			"description": "Please define your password !",
+			"new-password": "New password",
+			"new-password-confirmation": "Password confirmation",
+			"title": "Hello {username}"
+		},
+		"teams": {
+			"create": {
+				"name": "Name",
+				"submit": "Create",
+				"summary": "Summary",
+				"title": "Create a new team"
+			},
+			"view": {
+				"index": {
+					"confirmDelete": "Are you sure that you want delete this team ?",
+					"delete": "Delete",
+					"list": {
+						"actions": "Actions",
+						"cant-edit-self": "You can't edit yourself",
+						"next": "Next",
+						"previous": "Previous",
+						"role": "Role",
+						"username": "Username"
+					},
+					"name": "Team name",
+					"summary": "Summary",
+					"update-btn": "Update",
+					"users": "Users"
+				}
+			}
+		}
+	}
 }

@@ -1,111 +1,118 @@
 {
-  "app-name": "MineLaup server",
-  "components": {
-    "modal": {
-      "yes": "Je suis sûr !",
-      "no": "Laisse tomber"
-    }
-  },
-  "pages": {
-    "login": {
-      "title": "Connexion",
-      "username": "Nom d'utilisateur",
-      "password": "Mot de passe",
-      "btn": "Connexion"
-    },
-    "teams": {
-      "create": {
-        "title": "Créer une nouvelle équipe",
-        "name": "Nom",
-        "summary": "Description",
-        "submit": "Créer"
-      },
-      "view": {
-        "index": {
-          "name": "Nom de l'équipe",
-          "summary": "Description",
-          "update-btn": "Mettre à jours",
-          "users": "Utilisateurs",
-          "list": {
-            "username": "Nom d'utilisateur",
-            "role": "Rôle",
-            "actions": "Actions",
-            "previous": "Précédent",
-            "next": "Suivant",
-            "cant-edit-self": "Vous ne pouvez pas vous éditer vous même"
-          },
-          "confirmDelete": "Êtes vous sûr de vouloir supprimer cet équipe ?",
-          "delete": "Supprimer"
-        }
-      }
-    },
-    "admin": {
-      "users": {
-        "title": "Utilisateurs",
-        "new-user": "Nouvel utilisateur",
-        "confirmDelete": "Êtes vous sûr de vouloir supprimer \"{username}\" ?",
-        "search": "Recherche",
-        "list": {
-          "username": "Nom d'utilisateur",
-          "role": "Rôle",
-          "email": "Adresse Email",
-          "state": "État",
-          "actions": "Actions",
-          "active": "Actif",
-          "disabled": "Désactivé"
-        },
-        "create": {
-          "title": "Créer un nouvel utilisateur",
-          "username": "Nom d'utilisateur",
-          "email": "Adresse Email",
-          "role":"Rôle",
-          "submit": "Créer"
-        },
-        "update": {
-          "title": "Mise à jours du compte",
-          "username": "Nom d'utilisateur",
-          "first_name": "Prénom",
-          "last_name": "Nom",
-          "email": "Adresse Email",
-          "role":"Rôle",
-          "submit": "Mettre à jours"
-        }
-      }
-    },
-    "set-password": {
-      "title": "Bonjour {username}",
-      "description": "Merci de définir votre mot de passe !",
-      "new-password": "Nouveau mot de passe",
-      "new-password-confirmation": "Confirmation du mot de passe",
-      "btn": "Définir"
-    }
-  },
-  "layout": {
-    "side-bar": {
-      "teams": "Équipes",
-      "launcher": "Launchers",
-      "modpacks": "Modpacks",
-      "administration": "Administration",
-      "settings": "Paramètres",
-      "logout": "Déconnexion",
-      "menu": "Menu",
-      "dark-mode": {
-        "enable": "Enable dark mode",
-        "disable": "Disable dark mode"
-      }
-    },
-    "side-menu": {
-      "team-title": "Équipes",
-      "team-new": "Nouvelle équipe"
-    }
-  },
-  "error": {
-    "login": {
-      "wrong_ids": "Nom d'utilisateur ou mot de passe invalide"
-    },
-    "unknown": "Une erreur inattendu est survenue.",
-    "form": {
-      "required": "Ce champ est requis"
-    }
-  }
+	"app-name": "MineLaup server",
+	"components": {
+		"modal": {
+			"no": "Laisse tomber",
+			"yes": "Je suis sûr !"
+		}
+	},
+	"error": {
+		"form": {
+			"required": "Ce champ est requis"
+		},
+		"login": {
+			"wrong_ids": "Nom d'utilisateur ou mot de passe invalide"
+		},
+		"unknown": "Une erreur inattendu est survenue."
+	},
+	"layout": {
+		"side-bar": {
+			"administration": "Administration",
+			"dark-mode": {
+				"disable": "Désactiver le mode sombre",
+				"enable": "Activer le mode sombre"
+			},
+			"launcher": "Launchers",
+			"logout": "Déconnexion",
+			"menu": "Menu",
+			"modpacks": "Modpacks",
+			"settings": "Paramètres",
+			"teams": "Équipes"
+		},
+		"side-menu": {
+			"administration-title": "Administration",
+			"settings": "Paramètres",
+			"team-new": "Nouvelle équipe",
+			"team-title": "Équipes",
+			"users": "Utilisateurs"
+		}
+	},
+	"pages": {
+		"admin": {
+			"settings": {
+				"title": "Paramètres",
+        "nothing": "Il n'y a aucun paramètre disponible pour l'instant."
+			},
+			"users": {
+				"confirmDelete": "Êtes vous sûr de vouloir supprimer \"{username}\" ?",
+				"create": {
+					"email": "Adresse Email",
+					"role": "Rôle",
+					"submit": "Créer",
+					"title": "Créer un nouvel utilisateur",
+					"username": "Nom d'utilisateur"
+				},
+				"list": {
+					"actions": "Actions",
+					"active": "Actif",
+					"disabled": "Désactivé",
+					"email": "Adresse Email",
+					"role": "Rôle",
+					"state": "État",
+					"username": "Nom d'utilisateur"
+				},
+				"new-user": "Nouvel utilisateur",
+				"search": "Recherche",
+				"title": "Utilisateurs",
+				"update": {
+					"email": "Adresse Email",
+					"first_name": "Prénom",
+					"last_name": "Nom",
+					"role": "Rôle",
+					"submit": "Mettre à jours",
+					"title": "Mise à jours du compte",
+					"username": "Nom d'utilisateur"
+				}
+			}
+		},
+		"login": {
+			"btn": "Connexion",
+			"password": "Mot de passe",
+			"title": "Connexion",
+			"username": "Nom d'utilisateur"
+		},
+		"set-password": {
+			"btn": "Définir",
+			"description": "Merci de définir votre mot de passe !",
+			"new-password": "Nouveau mot de passe",
+			"new-password-confirmation": "Confirmation du mot de passe",
+			"title": "Bonjour {username}"
+		},
+		"teams": {
+			"create": {
+				"name": "Nom",
+				"submit": "Créer",
+				"summary": "Description",
+				"title": "Créer une nouvelle équipe"
+			},
+			"view": {
+				"index": {
+					"confirmDelete": "Êtes vous sûr de vouloir supprimer cet équipe ?",
+					"delete": "Supprimer",
+					"list": {
+						"actions": "Actions",
+						"cant-edit-self": "Vous ne pouvez pas vous éditer vous même",
+						"next": "Suivant",
+						"previous": "Précédent",
+						"role": "Rôle",
+						"username": "Nom d'utilisateur"
+					},
+					"name": "Nom de l'équipe",
+					"summary": "Description",
+					"update-btn": "Mettre à jours",
+					"users": "Utilisateurs"
+				}
+			}
+		}
+	}
 }
