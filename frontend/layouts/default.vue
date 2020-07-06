@@ -97,7 +97,7 @@
                 :key="index"
                 :to="item.path"
               >
-                {{ item.name }}
+                {{ !item.nameI18n ? item.name : $t(item.nameI18n) }}
               </t-side-bar-item>
             </ul>
           </div>

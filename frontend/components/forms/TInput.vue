@@ -25,6 +25,9 @@
         :placeholder="label"
         :value="value"
         :autocomplete="autocomplete"
+        :max="max"
+        :min="min"
+        :disabled="disabled"
         @input="$emit('input', $event.target.value)"
       />
       <span
@@ -70,6 +73,15 @@ export default class TInput extends Vue {
   @Prop({ default: 'on' })
   autocomplete!: string
 
+  @Prop()
+  max!: number
+
+  @Prop()
+  min!: number
+
+  @Prop({ type: Boolean })
+  disabled!: boolean
+
   get currentType() {
     if (this.type === 'password') {
       return this.showPass ? 'text' : 'password'
@@ -79,3 +91,9 @@ export default class TInput extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+input:disabled {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+</style>

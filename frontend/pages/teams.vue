@@ -13,6 +13,7 @@ export default class Teams extends Vue {
   async asyncData({ $axios, store }: Context) {
     const teams = await $axios.$get('/api/teams')
 
+    store.commit('menu/clear')
     store.commit('menu/setTitle', 'layout.side-menu.team-title')
     store.commit('menu/setAdditional', {
       name: 'layout.side-menu.team-new',

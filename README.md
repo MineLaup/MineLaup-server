@@ -10,10 +10,9 @@
       alt="Chat on Discord"></a>
 </span>
 
+## Build setup
 
-## Front-End
-
-### Build setup
+### Front-End
 
 ```sh
 # move to frontend/ folder
@@ -30,7 +29,28 @@ $ npm run build
 $ npm run start
 ```
 
-### Contribute
+### Back-End
+
+```sh
+# move to backend/ folder
+$ cd backend
+
+# install dependencies
+$ npm install
+
+# server with hot reload at localhost:3333
+$ npm run start
+
+# build for production
+$ npm run build
+$ npm run prod
+```
+
+## Installation
+
+See at [INSTALL.md](./INSTALL.md) to install the server.
+
+## Contribute
 
 Please see [CONTRIBUTING.md](./CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md).
 

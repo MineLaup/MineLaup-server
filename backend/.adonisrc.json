@@ -20,10 +20,13 @@
     "@adonisjs/core",
     "@adonisjs/lucid",
     "@adonisjs/auth",
-    "@adonisjs/session"
+    "@adonisjs/session",
+    "@adonisjs/view"
   ],
   "metaFiles": [
     ".env",
-    ".adonisrc.json"
+    ".adonisrc.json",
+    "resources/views/**/*.edge",
+    "public/**"
   ]
 }

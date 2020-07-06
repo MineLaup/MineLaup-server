@@ -1,7 +1,6 @@
 <template>
   <nuxt-link
-    class="cursor-pointer px-4 py-3 transition-colors ease-out duration-100"
-    tag="div"
+    class="cursor-pointer px-4 py-3 transition-colors ease-out duration-100 block"
     :class="{
       'bg-green-400 text-white': isCurrentRoute,
       'hover:bg-gray-800': !isCurrentRoute,

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="http://{{api_host}}/css/app.css">
+</head>
+<body class="select-none">
+  <nav
+    class="flex items-center justify-between flex-wrap px-4 py-2 bg-gray-800 text-white h-20"
+  >
+    <div class="flex items-center flex-shrink-0 text-grey-900 mx-auto md:ml-0">
+      <img
+        src="/images/logo-1024.png"
+        alt="App logo"
+        class="h-16 w-16 mr-2"
+      />
+      <span class="font-semibold text-xl tracking-thight">
+        MineLaup
+      </span>
+    </div>
+  </nav>
+  <main class="p-4 md:w-3/4 lg:w-1/2 md:mx-auto mt-5 md:mt-20">
+    @!section('content')
+  </main>
+</body>
+</html>

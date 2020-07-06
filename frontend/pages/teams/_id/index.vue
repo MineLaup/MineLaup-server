@@ -4,7 +4,7 @@
       <form
         ref="create_team_form"
         class="p-10 items-center"
-        @submit.prevent="createTeam"
+        @submit.prevent="updateTeam"
       >
         <t-alert v-if="errorMsg" :message="$t(errorMsg)" />
 
@@ -259,6 +259,51 @@ export default class TeamViewIndex extends Vue {
     this.modal = {
       title: 'pages.teams.view.index.confirmDelete',
     }
+  }
+
+  updateTeam() {
+    this.errors = {}
+    this.errorMsg = ''
+
+    this.$axios
+      .put('/api/teams', this.form)
+      .then(async () => {
+        const teams = await this.$axios.$get('/api/teams')
+        await this.$store.commit(
+          'menu/setList',
+          teams.map((team: Partial<any>) => {
+            return {
+              name: team.name,
+              path: `/teams/${team.id}`,
+            }
+          })
+        )
+      })
+      .catch((error) => {
+        if (error.response?.status) {
+          const parsedErrors: Partial<String> = {}
+          switch (error.response.status) {
+            case 400:
+              this.errors = Object.assign({}, error.response.data.errors)
+              break
+            case 422:
+              for (const e of error.response.data.errors) {
+                parsedErrors[e.field] = `error.form.${e.rule}`
+              }
+              this.errors = parsedErrors
+              break
+            case 500:
+              this.errorMsg = error.response.data.errors[0].message
+              break
+            default:
+              this.errorMsg = 'error.unknown'
+          }
+        } else {
+          // eslint-disable-next-line
+          console.error(error)
+          this.errorMsg = 'error.unknown'
+        }
+      })
   }
 
   deleteTeam() {
