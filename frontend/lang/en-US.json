@@ -60,6 +60,15 @@
           "email": "Email Address",
           "role":"Role",
           "submit": "Create"
+        },
+        "update": {
+          "title": "Update account",
+          "username": "Username",
+          "first_name": "First name",
+          "last_name": "Last name",
+          "email": "Email Address",
+          "role":"Role",
+          "submit": "Update"
         }
       }
     },

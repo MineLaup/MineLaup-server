@@ -5,7 +5,6 @@
     @mouseleave="showTitle = false"
   >
     <a
-      tag="span"
       class="text-white w-12 h-10 flex hover:text-green-400 cursor-pointer border-l-2 border-transparent"
       @click="$emit('click')"
     >
@@ -31,9 +30,6 @@ export default class TSideBarAction extends Vue {
 
   @Prop({ required: true })
   icon!: string
-
-  @Prop()
-  exact!: boolean
 
   showTitle: boolean = false
 }

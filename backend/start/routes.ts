@@ -42,9 +42,11 @@ Route.group(() => {
 
 Route.group(() => {
   Route.get('/users', 'AdminController.fetchUsers')
+  Route.get('/user', 'AdminController.getUser')
   Route.delete('/user', 'AdminController.deleteUser')
   Route.post('/user', 'AdminController.createUser')
-  Route.post('/user/:id/state', 'AdminController.updateState').where('id', /^[0-9]+$/)
+  Route.post('/user/state', 'AdminController.updateState')
+  Route.put('/user', 'AdminController.updateUser')
 }).prefix('/admin').middleware(['auth', 'admin'])
 
 Route.get('/email', async ({ view }) => {

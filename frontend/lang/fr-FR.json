@@ -60,6 +60,15 @@
           "email": "Adresse Email",
           "role":"Rôle",
           "submit": "Créer"
+        },
+        "update": {
+          "title": "Mise à jours du compte",
+          "username": "Nom d'utilisateur",
+          "first_name": "Prénom",
+          "last_name": "Nom",
+          "email": "Adresse Email",
+          "role":"Rôle",
+          "submit": "Mettre à jours"
         }
       }
     },

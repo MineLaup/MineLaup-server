@@ -136,12 +136,13 @@
                   class="px-10 py-5 border-b border-gray-200 dark:border-gray-800 text-sm text-right"
                 >
                   <div class="flex flex-row justify-end">
-                    <span
+                    <nuxt-link
                       class="cursor-pointer text-gray-800 dark:text-gray-200 w-5 h-5 hover:text-gray-600 dark-hover:text-green-400"
+                      :to="'/admin/users/' + user.id"
                       @click="editUser(user.id)"
                     >
                       <i class="fas fa-pen"></i>
-                    </span>
+                    </nuxt-link>
                     <span
                       v-if="user.id !== $auth.user.id"
                       class="text-red-600 cursor-pointer w-5 h-5 hover:text-red-500"
@@ -278,9 +279,17 @@ export default class AdminUsersView extends Vue {
 
   toggleState(id: number, isDisabled: boolean) {
     this.$axios
-      .post(`/api/admin/user/${id}/state`, {
-        state: !isDisabled,
-      })
+      .post(
+        '/api/admin/user/state',
+        {
+          state: !isDisabled,
+        },
+        {
+          params: {
+            id,
+          },
+        }
+      )
       .then(() => {
         const index = this.users.findIndex((user) => user.id === id)
         this.users[index].disabled = !isDisabled

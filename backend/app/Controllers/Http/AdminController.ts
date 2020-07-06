@@ -52,6 +52,22 @@ export default class AdminController {
     return response.status(200)
   }
 
+  public async getUser ({ request, response }: HttpContextContract) {
+    const data = await request.validate({
+      schema: schema.create({
+        id: schema.number(),
+      }),
+    })
+
+    const user = await User.find(data.id)
+
+    if (!user) {
+      return response.status(404)
+    }
+
+    return response.json(user.toJSON())
+  }
+
   public async createUser ({ request, response }: HttpContextContract) {
     const data = await request.validate({
       schema: schema.create({
@@ -119,22 +135,21 @@ export default class AdminController {
     response.status(200)
   }
 
-  public async updateState ({ params, request, response, auth }: HttpContextContract) {
-    const id = params.id
-
+  public async updateState ({ request, response, auth }: HttpContextContract) {
     const data = await request.validate({
       schema: schema.create({
+        id: schema.number(),
         state: schema.boolean([
           rules.required(),
         ]),
       }),
     })
 
-    if (auth.user!.id === id) {
+    if (auth.user!.id === data.id) {
       return response.status(403)
     }
 
-    const user = await User.find(id)
+    const user = await User.find(data.id)
 
     if (!user) {
       return response.status(404)
@@ -142,6 +157,52 @@ export default class AdminController {
 
     user.disabled = !data.state
     await user.save()
+
+    return response.status(200)
+  }
+
+  public async updateUser ({ request, response }: HttpContextContract) {
+    const data = await request.validate({
+      schema: schema.create({
+        id: schema.number(),
+        username: schema.string({
+          escape: true,
+          trim: true,
+        }, [
+          rules.alpha(),
+          rules.maxLength(45),
+        ]),
+        first_name: schema.string({
+          escape: true,
+          trim: true,
+        }),
+        last_name: schema.string({
+          escape: true,
+          trim: true,
+        }),
+        email: schema.string({
+          escape: true,
+          trim: true,
+        }, [
+          rules.email(),
+        ]),
+        role: schema.string({
+          escape: true,
+          trim: true,
+        },
+        [
+          rules.regex(/^[0-3]$/),
+        ]),
+      }),
+    })
+
+    const user = await User.find(data.id)
+
+    if (!user) {
+      return response.status(404)
+    }
+
+    await User.query().where('id', data.id).update(data)
 
     return response.status(200)
   }

@@ -5,7 +5,6 @@
     @mouseleave="showTitle = false"
   >
     <nuxt-link
-      tag="span"
       class="text-white w-12 h-10 flex hover:text-green-400 cursor-pointer md:border-l-2 md:border-t-0 border-t-2 border-transparent"
       :to="to"
       :class="{ 'border-green-400 text-green-400': isCurrentRoute }"
