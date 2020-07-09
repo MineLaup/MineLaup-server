@@ -4,7 +4,7 @@
     class="flex flex-row justify-center content-center bg-gray-100 dark:bg-gray-700"
   >
     <div
-      class="rounded-md shadow-lg p-8 bg-gray-800 text-white my-auto lg:w-1/2 md:w-2/3 w-full md:mx-4 mx-2 shadow shadow-2xl"
+      class="rounded-md p-8 bg-gray-800 text-white my-auto lg:w-1/2 md:w-2/3 w-full md:mx-4 mx-2 shadow-2xl"
     >
       <div>
         <div class="relative text-white border-b-2 border-white w-16 ml-auto">
