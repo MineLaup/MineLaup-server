@@ -112,8 +112,16 @@ export default {
    */
   typescript: {
     typeCheck: {
-      eslint: true,
-      vue: true,
+      eslint: {
+        enabled: true,
+        files: './**/*.{ts,vue}',
+      },
+      typescript: {
+        extensions: {
+          vue: true,
+          configFile: './tsconfig.json',
+        },
+      },
     },
   },
 
