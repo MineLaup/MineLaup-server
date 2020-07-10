@@ -24,7 +24,8 @@
       "@adonisjs/lucid",
       "@adonisjs/auth",
       "@adonisjs/session",
-      "@adonisjs/view"
+      "@adonisjs/view",
+      "@adonisjs/mail"
     ]
   }
 }

@@ -1,8 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
-import View from '@ioc:Adonis/Core/View'
-import nodemailer from 'nodemailer'
+import Mail from '@ioc:Adonis/Addons/Mail'
 import hat from 'hat'
 
 export default class AdminController {
@@ -87,6 +86,10 @@ export default class AdminController {
           trim: true,
         }, [
           rules.email(),
+          rules.unique({
+            column: 'email',
+            table: 'users',
+          }),
         ]),
         role: schema.string({
           escape: true,
@@ -107,30 +110,22 @@ export default class AdminController {
 
     const token = hat()
 
-    // TODO: send a mail to the user to let him change is password
-    const template = View.render('mail/set_password', {
-      username: data.username,
-      hostname: (process.env.HTTPS === 'true' ? 'https://' : 'http://') + process.env.HOSTNAME,
-      token: token,
+    await Mail.use('smtp').sendLater(message => {
+      message.to(data.email),
+      message.from(`minelaup@${process.env.HOSTNAME}`)
+      message.subject('Your account have been registered !')
+      message.htmlView('mail/set_password', {
+        username: data.username,
+        hostname: (process.env.HTTPS === 'true' ? 'https://' : 'http://') + process.env.HOSTNAME,
+        token: token,
+      })
     })
-
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT as string),
-      secure: parseInt(process.env.SMTP_PORT as string) === 465,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    })
-
-    await transporter.sendMail({
-      from: `"MineLaup" <minelaup@${process.env.HOSTNAME}>`,
-      to: data.email,
-      subject: 'Your account have been registered !',
-      text: template.toString(),
-      html: template,
-    })
+      .then((data) => {
+        console.log(data)
+      })
+      .catch(error => {
+        console.error(error)
+      })
 
     response.status(200)
   }
