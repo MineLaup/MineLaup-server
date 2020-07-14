@@ -43,7 +43,7 @@
           type="number"
           max="3"
           min="0"
-          :error="errors.email ? $t(errors.email) : ''"
+          :error="errors.role ? $t(errors.role) : ''"
         />
 
         <div class="text-center mt-4">

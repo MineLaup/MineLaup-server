@@ -1,118 +1,153 @@
 {
-	"app-name": "MineLaup server",
-	"components": {
-		"modal": {
-			"no": "Forget it",
-			"yes": "I'm sure !"
-		}
-	},
-	"error": {
-		"form": {
-			"required": "This field is required"
-		},
-		"login": {
-			"wrong_ids": "Invalid username or password"
-		},
-		"unknown": "An unexpected error happened"
-	},
-	"layout": {
-		"side-bar": {
-			"administration": "Administration",
-			"dark-mode": {
-				"disable": "Désactiver le mode sombre",
-				"enable": "Activer le mode sombre"
-			},
-			"launcher": "Launchers",
-			"logout": "Logout",
-			"menu": "Menu",
-			"modpacks": "Modpacks",
-			"settings": "Settings",
-			"teams": "Teams"
-		},
-		"side-menu": {
-			"administration-title": "Administration",
-			"settings": "Settings",
-			"team-new": "New team",
-			"team-title": "Teams",
-			"users": "Users"
-		}
-	},
-	"pages": {
-		"admin": {
-			"settings": {
+  "app-name": "MineLaup server",
+  "components": {
+    "modal": {
+      "no": "Forget it",
+      "yes": "I'm sure !"
+    }
+  },
+  "error": {
+    "form": {
+      "required": "This field is required",
+      "unique": "The value already exist"
+    },
+    "login": {
+      "wrong_ids": "Invalid username or password"
+    },
+    "unknown": "An unexpected error happened"
+  },
+  "layout": {
+    "side-bar": {
+      "administration": "Administration",
+      "dark-mode": {
+        "disable": "Désactiver le mode sombre",
+        "enable": "Activer le mode sombre"
+      },
+      "launcher": "Launchers",
+      "logout": "Logout",
+      "menu": "Menu",
+      "modpacks": "Modpacks",
+      "settings": "Settings",
+      "teams": "Teams"
+    },
+    "side-menu": {
+      "administration-title": "Administration",
+      "settings": "Settings",
+      "team-new": "New team",
+      "team-title": "Teams",
+      "users": "Users"
+    }
+  },
+  "pages": {
+    "admin": {
+      "settings": {
         "title": "Settings",
         "nothing": "There is no settings available for now."
-			},
-			"users": {
-				"confirmDelete": "Are you sure that you want delete \"{username}\" ?",
-				"create": {
-					"email": "Email Address",
-					"role": "Role",
-					"submit": "Create",
-					"title": "Create a new user",
-					"username": "Username"
-				},
-				"list": {
-					"actions": "Actions",
-					"active": "Active",
-					"disabled": "Disabled",
-					"email": "Email Address",
-					"role": "Role",
-					"state": "State",
-					"username": "Username"
-				},
-				"new-user": "New user",
-				"search": "Search",
-				"title": "Users",
-				"update": {
-					"email": "Email Address",
-					"first_name": "First name",
-					"last_name": "Last name",
-					"role": "Role",
-					"submit": "Update",
-					"title": "Update account",
-					"username": "Username"
-				}
-			}
-		},
-		"login": {
-			"btn": "Login",
-			"password": "Password",
-			"title": "Login",
-			"username": "Username"
-		},
-		"set-password": {
-			"btn": "Set",
-			"description": "Please define your password !",
-			"new-password": "New password",
-			"new-password-confirmation": "Password confirmation",
-			"title": "Hello {username}"
-		},
-		"teams": {
-			"create": {
-				"name": "Name",
-				"submit": "Create",
-				"summary": "Summary",
-				"title": "Create a new team"
-			},
-			"view": {
-				"index": {
-					"confirmDelete": "Are you sure that you want delete this team ?",
-					"delete": "Delete",
-					"list": {
-						"actions": "Actions",
-						"cant-edit-self": "You can't edit yourself",
-						"next": "Next",
-						"previous": "Previous",
-						"role": "Role",
-						"username": "Username"
-					},
-					"name": "Team name",
-					"summary": "Summary",
-					"update-btn": "Update",
-					"users": "Users"
-				}
-			}
-		}
-	}
+      },
+      "users": {
+        "confirmDelete": "Are you sure that you want delete \"{username}\" ?",
+        "create": {
+          "email": "Email Address",
+          "role": "Role",
+          "submit": "Create",
+          "title": "Create a new user",
+          "username": "Username"
+        },
+        "list": {
+          "actions": "Actions",
+          "active": "Active",
+          "disabled": "Disabled",
+          "email": "Email Address",
+          "role": "Role",
+          "state": "State",
+          "username": "Username"
+        },
+        "new-user": "New user",
+        "search": "Search",
+        "title": "Users",
+        "update": {
+          "email": "Email Address",
+          "first_name": "First name",
+          "last_name": "Last name",
+          "role": "Role",
+          "submit": "Update",
+          "title": "Update account",
+          "username": "Username"
+        }
+      }
+    },
+    "login": {
+      "btn": "Login",
+      "password": "Password",
+      "title": "Login",
+      "username": "Username"
+    },
+    "set-password": {
+      "btn": "Set",
+      "description": "Please define your password !",
+      "new-password": "New password",
+      "new-password-confirmation": "Password confirmation",
+      "title": "Hello {username}"
+    },
+    "teams": {
+      "create": {
+        "name": "Name",
+        "submit": "Create",
+        "summary": "Summary",
+        "title": "Create a new team"
+      },
+      "view": {
+        "index": {
+          "confirmDelete": "Are you sure that you want delete this team ?",
+          "delete": "Delete",
+          "list": {
+            "actions": "Actions",
+            "cant-edit-self": "You can't edit yourself",
+            "next": "Next",
+            "previous": "Previous",
+            "role": "Role",
+            "username": "Username"
+          },
+          "name": "Team name",
+          "summary": "Summary",
+          "update-btn": "Update",
+          "users": "Users",
+          "roles": "Roles",
+          "owner": "Owner"
+        },
+        "roles": {
+          "title": "\"{name}\" team's roles",
+          "roles": "Roles",
+          "role_name": "Name",
+          "save": "Save",
+          "reset": "Reset",
+          "delete": "Delete"
+        }
+      }
+    }
+  },
+  "roles": {
+    "permissions": {
+      "manage_teams": {
+        "text": "Allow the user to manage the team",
+        "enabled": "The user can manage the team",
+        "disabled": "The user can't manage the team"
+      },
+      "manage_launcher": {
+        "text": "Allow the user to manage launchers",
+        "enabled": "The user can manage launchers",
+        "disabled": "The user can't manage launchers"
+      },
+      "manage_modpacks": {
+        "text": "Allow the user to manage modpacks",
+        "enabled": "The user can manage modpacks",
+        "disabled": "The user can't manage modpacks"
+      },
+      "manage_users": {
+        "text": "Allow user to manage users",
+        "enabled": "The user can manager users",
+        "disabled": "The user can't manage users"
+      }
+    }
+  }
 }

@@ -2,7 +2,7 @@
   <div>
     <label
       :for="id"
-      class="block uppercase tracking-wide text-gray-600 font-bold mb-2"
+      class="block uppercase tracking-wide text-gray-600 dark:text-gray-400 font-bold mb-2"
     >
       {{ label }}
     </label>

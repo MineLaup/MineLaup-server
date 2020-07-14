@@ -8,7 +8,7 @@ export default class TeamUser extends BaseSchema {
       table.increments('id')
       table.integer('user_id').references('users.id').notNullable()
       table.integer('team_id').references('teams.id').notNullable()
-      table.integer('team_role_id').references('team_roles.id').notNullable()
+      table.integer('team_role_id').references('team_roles.id').nullable()
     })
   }
 

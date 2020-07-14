@@ -40,11 +40,19 @@
       </form>
 
       <div>
-        <h2
-          class="text-xl font-semibold leading-tight uppercase text-gray-900 dark:text-white py-4"
-        >
-          {{ $t('pages.teams.view.index.users') }}
-        </h2>
+        <div class="flex flex-row py-4">
+          <h2
+            class="text-xl font-semibold leading-tight uppercase text-gray-900 dark:text-white mr-4"
+          >
+            {{ $t('pages.teams.view.index.users') }}
+          </h2>
+          <span
+            class="text-green-500 hover:text-green-400 transition-colors duration-150 cursor-pointer"
+            @click="openSearchUserModal"
+          >
+            <i class="fas fa-plus"></i>
+          </span>
+        </div>
 
         <div class="overflow-x-auto">
           <div class="inline-block min-w-full overflow-hidden">
@@ -92,7 +100,13 @@
                     class="px-5 py-5 border-b border-gray-200 dark:border-gray-800 bg-white text-sm dark:bg-gray-800"
                   >
                     <p class="text-gray-900 whitespace-no-wrap dark:text-white">
-                      {{ user.teamRole.name }}
+                      {{
+                        team.owner_id === user.user.id
+                          ? $t('pages.teams.view.index.owner')
+                          : user.teamRole
+                          ? user.teamRole.name
+                          : ''
+                      }}
                     </p>
                   </td>
                   <td
@@ -151,6 +165,18 @@
         class="py-4 mt-10 text-center"
       >
         <t-button
+          class="w-1/2 mb-8"
+          icon="user-tag"
+          color="gray-900"
+          hover-color="white"
+          bg-hover-color="gray-900"
+          dark-bg-hover-color="white"
+          dark-hover-color="gray-800"
+          @click="$router.push('/teams/' + $route.params.id + '/roles')"
+        >
+          {{ $t('pages.teams.view.index.roles') }}
+        </t-button>
+        <t-button
           class="w-1/2"
           icon="trash"
           bg-hover-color="red-500"
@@ -161,8 +187,11 @@
         </t-button>
       </div>
     </div>
-    <t-modal v-if="Object.keys(modal).length > 0" @close-modal="modal = {}">
-      <h1 slot="title">{{ $t(modal.title) }}</h1>
+    <t-modal
+      v-if="Object.keys(deleteModal).length > 0"
+      @close-modal="deleteModal = {}"
+    >
+      <h1 slot="title">{{ $t(deleteModal.title) }}</h1>
       <div slot="actions" class="flex flex-col">
         <t-button
           class="mb-2"
@@ -213,33 +242,30 @@ export default class TeamViewIndex extends Vue {
   errors: Partial<any> = {}
   errorMsg: string = ''
 
-  modal: Partial<any> = {}
+  deleteModal: Partial<any> = {}
+  searchModal: Partial<any> = {}
 
   users: Array<Partial<any>> = []
   pagination: Partial<any> = {}
 
-  async asyncData({ route, redirect, $axios }: Context) {
-    if (!route.params?.id?.match(/^[0-9]+$/)) {
-      return redirect('/teams/create')
-    }
-
-    const team = await $axios
-      .$get(`/api/teams/${route.params.id}`)
-      .catch(() => {
+  async asyncData({ params, redirect, $axios }: Context) {
+    if (params?.id?.match(/^[0-9]+$/)) {
+      const team = await $axios.$get(`/api/teams/${params.id}`).catch(() => {
         return redirect('/teams/create')
       })
 
-    const { users, roles } = await $axios
-      .$get(`/api/teams/${route.params.id}/users`)
-      .catch(() => {
-        return []
-      })
+      const { users, roles } = await $axios
+        .$get(`/api/teams/${params.id}/users`)
+        .catch(() => {
+          return []
+        })
 
-    return {
-      team,
-      pagination: users.meta,
-      users: users.data,
-      roles,
+      return {
+        team,
+        pagination: users.meta,
+        users: users.data,
+        roles,
+      }
     }
   }
 
@@ -256,8 +282,14 @@ export default class TeamViewIndex extends Vue {
   deleteUser(_id: number) {}
 
   openDeleteTeamModal() {
-    this.modal = {
+    this.deleteModal = {
       title: 'pages.teams.view.index.confirmDelete',
+    }
+  }
+
+  openSearchUserModal() {
+    this.searchModal = {
+      title: '',
     }
   }
 

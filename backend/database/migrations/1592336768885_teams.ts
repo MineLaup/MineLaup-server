@@ -9,6 +9,7 @@ export default class Teams extends BaseSchema {
       table.string('name', 50).notNullable()
       table.string('summary', 200).notNullable()
       table.integer('owner_id').references('users.id').notNullable()
+      table.integer('permission_id').references('permissions.id').notNullable()
       table.timestamps(true)
     })
   }

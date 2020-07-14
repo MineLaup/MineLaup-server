@@ -6,10 +6,10 @@ export default class Permissions extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.boolean('can_create').notNullable().defaultTo(false)
-      table.boolean('can_read').notNullable().defaultTo(true)
-      table.boolean('can_update').notNullable().defaultTo(false)
-      table.boolean('can_delete').notNullable().defaultTo(false)
+      table.boolean('manage_team').notNullable().defaultTo(false)
+      table.boolean('manage_launchers').notNullable().defaultTo(false)
+      table.boolean('manage_modpacks').notNullable().defaultTo(false)
+      table.boolean('manage_users').notNullable().defaultTo(false)
     })
   }
 
