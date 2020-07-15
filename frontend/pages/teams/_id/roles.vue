@@ -1,9 +1,17 @@
 <template>
   <div class="flex flex-row justify-center full-height">
     <div class="flex flex-col flex-1 p-4 overflow-y-auto">
-      <h1 class="text-2xl uppercase text-gray-900 dark:text-white font-bold">
-        {{ $t('pages.teams.view.roles.title', { name }) }}
-      </h1>
+      <span class="text-2xl text-gray-900 dark:text-white">
+        <nuxt-link
+          :to="'/teams/' + $route.params.id"
+          class="mr-2 hover:text-green-400"
+        >
+          <i class="fas fa-arrow-left"></i>
+        </nuxt-link>
+        <h1 class="uppercase font-bold inline">
+          {{ $t('pages.teams.view.roles.title', { name }) }}
+        </h1>
+      </span>
 
       <div class="flex flex-row mt-16 flex-1">
         <div class="md:border-r md:w-64 h-full">
@@ -141,11 +149,7 @@ export default class TeamRole extends Vue {
 
   async asyncData({ redirect, $axios, route }: Context) {
     const team = await $axios
-      .$get(`/api/teams/${route.params.id}`, {
-        params: {
-          with_permissions: true,
-        },
-      })
+      .$get(`/api/teams/${route.params.id}`)
       .catch(() => {
         return redirect('/teams/create')
       })
