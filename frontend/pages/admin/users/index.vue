@@ -157,19 +157,25 @@
           </table>
           <div
             v-if="pagination.last_page > 1"
-            class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between"
+            class="px-5 py-5 bg-white dark:bg-gray-800 flex flex-col xs:flex-row items-center xs:justify-between"
           >
-            <span class="text-xs xs:text-sm text-gray-900">
-              {{ `${pagination.current_page}/${pagination.last_page}` }}
+            <span
+              class="text-sm xs:text-sm text-gray-600 dark:text-gray-400 font-bold"
+            >
+              {{ `${pagination.current_page} / ${pagination.last_page}` }}
             </span>
             <div class="inline-flex mt-2 xs:mt-0">
               <button
                 class="px-4 py-2 border rounded-l-full border-r-0 focus:outline-none transition ease-out duration-300 border-green-400 hover:text-white hover:bg-green-400 w-32"
+                :disabled="pagination.current_page === pagination.first_page"
+                @click="previousPage"
               >
                 {{ $t('pages.teams.view.index.list.previous') }}
               </button>
               <button
                 class="px-4 py-2 border rounded-r-full border-l-0 focus:outline-none transition ease-out duration-300 border-green-400 hover:text-white hover:bg-green-400 w-32"
+                :disabled="pagination.current_page === pagination.last_page"
+                @click="nextPage"
               >
                 {{ $t('pages.teams.view.index.list.next') }}
               </button>
@@ -246,7 +252,7 @@ export default class AdminUsersView extends Vue {
     this.pagination = meta
   }
 
-  editUser(_id) {}
+  editUser(_id: number) {}
 
   openDeleteModal(user: Partial<any>) {
     this.modal = {
@@ -282,7 +288,7 @@ export default class AdminUsersView extends Vue {
       .post(
         '/api/admin/user/state',
         {
-          state: !isDisabled,
+          state: isDisabled,
         },
         {
           params: {
@@ -296,6 +302,23 @@ export default class AdminUsersView extends Vue {
       })
   }
 
-  searchUsers = debounce(() => this.$fetch(), 250)
+  searchUsers = debounce(() => {
+    this.search.page = 1
+    this.$fetch()
+  }, 250)
+
+  nextPage() {
+    if (this.search.page < this.pagination.last_page) {
+      this.search.page++
+      this.$fetch()
+    }
+  }
+
+  previousPage() {
+    if (this.search.page > 1) {
+      this.search.page--
+      this.$fetch()
+    }
+  }
 }
 </script>

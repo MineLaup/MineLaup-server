@@ -133,7 +133,10 @@ export default class AdminController {
   public async updateState ({ request, response, auth }: HttpContextContract) {
     const data = await request.validate({
       schema: schema.create({
-        id: schema.number(),
+        id: schema.number([
+          rules.required(),
+          rules.unsigned(),
+        ]),
         state: schema.boolean([
           rules.required(),
         ]),
