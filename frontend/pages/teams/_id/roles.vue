@@ -31,7 +31,7 @@
               v-for="(role, index) in roles"
               :key="index"
               class="flex-1 py-2 px-4 select-none cursor-pointer"
-              :class="{ 'bg-green-400': selected == index }"
+              :class="{ 'bg-green-400 text-white': selected == index }"
               @click="setRole(index)"
             >
               {{ role.name || 'default' }}
@@ -80,12 +80,12 @@
             :off-text="$t('roles.permissions.manage_users.disabled')"
           />
           <div class="py-4 mt-10 text-center">
-            <t-button icon="save" class="w-1/2 mb-8" @click="saveRole">
+            <t-button icon="save" class="w-1/2 mb-4" @click="saveRole">
               {{ $t('pages.teams.view.roles.save') }}
             </t-button>
             <t-button
               icon="undo-alt"
-              class="w-1/2 mb-8"
+              class="w-1/2 mb-4"
               bg-hover-color="red-500"
               dark-bg-hover-color="red-500"
               @click="resetRole"
@@ -95,7 +95,7 @@
             <t-button
               v-if="!form.name_disabled"
               icon="trash"
-              class="w-1/2 mb-8"
+              class="w-1/2"
               bg-hover-color="red-500"
               dark-bg-hover-color="red-500"
               @click="deleteRole(selected)"

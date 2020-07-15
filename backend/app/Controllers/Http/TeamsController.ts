@@ -218,8 +218,10 @@ export default class TeamsController {
         .andWhere('id', data.id)
         .firstOrFail()
       if (role) {
+        console.log(data.name)
         if (data.name && data.name !== 'default') {
           role.name = data.name
+          await role.save()
         }
         role.permission.manage_team = data.permission.manage_team
         role.permission.manage_launchers = data.permission.manage_launchers
