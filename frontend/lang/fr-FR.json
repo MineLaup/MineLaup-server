@@ -102,7 +102,6 @@
           "delete": "Supprimer",
           "list": {
             "actions": "Actions",
-            "cant-edit-self": "Vous ne pouvez pas vous éditer vous même",
             "next": "Suivant",
             "previous": "Précédent",
             "role": "Rôle",
@@ -113,7 +112,8 @@
           "update-btn": "Mettre à jours",
           "users": "Utilisateurs",
           "roles": "Rôles",
-          "owner": "Propriétaire"
+          "owner": "Propriétaire",
+          "default_role": "Rôle par défaut"
         },
         "roles": {
           "title": "Role de l'équipe \"{name}\"",

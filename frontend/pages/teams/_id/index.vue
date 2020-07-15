@@ -16,6 +16,7 @@
           class="w-2/3 mb-4"
           autocomplete="off"
           :error="errors.name ? $t(errors.name) : ''"
+          :disabled="!(team.userPerms.owner || team.userPerms.manage_team)"
         />
 
         <t-textarea
@@ -24,11 +25,13 @@
           icon="info-circle"
           :label="$t('pages.teams.view.index.summary')"
           :error="errors.summary ? $t(errors.summary) : ''"
+          :disabled="!(team.userPerms.owner || team.userPerms.manage_team)"
         >
         </t-textarea>
 
         <div class="text-center mt-4">
           <t-button
+            v-if="team.userPerms.owner || team.userPerms.manage_team"
             class="w-1/2"
             icon="pen"
             type="submit"
@@ -47,6 +50,7 @@
             {{ $t('pages.teams.view.index.users') }}
           </h2>
           <span
+            v-if="team.userPerms.owner || team.userPerms.manage_users"
             class="text-green-500 hover:text-green-400 transition-colors duration-150 cursor-pointer"
             @click="openSearchUserModal"
           >
@@ -91,7 +95,10 @@
                           class="text-gray-900 whitespace-no-wrap dark:text-white"
                         >
                           {{ user.user.username }}
-                          <i class="fas fa-crown text-yellow-500"></i>
+                          <i
+                            v-if="team.owner_id === user.user.id"
+                            class="fas fa-crown text-yellow-500"
+                          ></i>
                         </p>
                       </div>
                     </div>
@@ -105,7 +112,7 @@
                           ? $t('pages.teams.view.index.owner')
                           : user.teamRole
                           ? user.teamRole.name
-                          : ''
+                          : $t('pages.teams.view.index.default_role')
                       }}
                     </p>
                   </td>
@@ -113,11 +120,11 @@
                     class="px-10 py-5 border-b border-gray-200 dark:border-gray-800 bg-white text-sm text-right dark:bg-gray-800"
                   >
                     <div
-                      v-if="team.owner_id !== user.user.id"
+                      v-if="team.userPerms.owner || team.userPerms.manage_users"
                       class="flex flex-row justify-end"
                     >
                       <span
-                        class="cursor-pointer text-gray-800 w-5 h-5 hover:text-gray-700"
+                        class="cursor-pointer text-gray-800 w-5 h-5 hover:text-gray-700 dark:text-white dark-hover:text-gray-400"
                         @click="editUser(user.user.id)"
                       >
                         <i class="fas fa-pen"></i>
@@ -129,28 +136,31 @@
                         <i class="fas fa-trash"></i>
                       </span>
                     </div>
-                    <div v-else class="text-gray-700 italic dark:text-gray-300">
-                      {{ $t('pages.teams.view.index.list.cant-edit-self') }}
-                    </div>
                   </td>
                 </tr>
               </tbody>
             </table>
             <div
-              v-if="pagination.total > 1"
-              class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between"
+              v-if="pagination.last_page > 1"
+              class="px-5 py-5 bg-white dark:bg-gray-800 flex flex-col xs:flex-row items-center xs:justify-between"
             >
-              <span class="text-xs xs:text-sm text-gray-900">
-                {{ `${pagination.current_page}/${pagination.total}` }}
+              <span
+                class="text-sm xs:text-sm text-gray-600 dark:text-gray-400 font-bold"
+              >
+                {{ `${pagination.current_page} / ${pagination.last_page}` }}
               </span>
               <div class="inline-flex mt-2 xs:mt-0">
                 <button
                   class="px-4 py-2 border rounded-l-full border-r-0 focus:outline-none transition ease-out duration-300 border-green-400 hover:text-white hover:bg-green-400 w-32"
+                  :disabled="pagination.current_page === pagination.first_page"
+                  @click="previousPage"
                 >
                   {{ $t('pages.teams.view.index.list.previous') }}
                 </button>
                 <button
                   class="px-4 py-2 border rounded-r-full border-l-0 focus:outline-none transition ease-out duration-300 border-green-400 hover:text-white hover:bg-green-400 w-32"
+                  :disabled="pagination.current_page === pagination.last_page"
+                  @click="nextPage"
                 >
                   {{ $t('pages.teams.view.index.list.next') }}
                 </button>
@@ -161,7 +171,7 @@
       </div>
 
       <div
-        v-if="$auth.user.id === team.owner_id"
+        v-if="team.userPerms.owner || team.userPerms.manage_team"
         class="py-4 mt-10 text-center"
       >
         <t-button
@@ -241,11 +251,13 @@ export default class TeamViewIndex extends Vue {
   team: Partial<any> = {}
   errors: Partial<any> = {}
   errorMsg: string = ''
+  page: number = 1
 
   deleteModal: Partial<any> = {}
   searchModal: Partial<any> = {}
 
   users: Array<Partial<any>> = []
+  roles: Array<Partial<any>> = []
   pagination: Partial<any> = {}
 
   async asyncData({ params, redirect, $axios }: Context) {
@@ -254,19 +266,26 @@ export default class TeamViewIndex extends Vue {
         return redirect('/teams/create')
       })
 
-      const { users, roles } = await $axios
-        .$get(`/api/teams/${params.id}/users`)
-        .catch(() => {
-          return []
-        })
-
       return {
         team,
-        pagination: users.meta,
-        users: users.data,
-        roles,
       }
     }
+  }
+
+  async fetch() {
+    const { users, roles } = await this.$axios
+      .$get(`/api/teams/${this.$route.params.id}/users`, {
+        params: {
+          page: this.page,
+        },
+      })
+      .catch(() => {
+        return []
+      })
+
+    this.pagination = users.meta
+    this.users = users.data
+    this.roles = roles
   }
 
   mounted() {
@@ -279,7 +298,20 @@ export default class TeamViewIndex extends Vue {
 
   editUser(_id: number) {}
 
-  deleteUser(_id: number) {}
+  deleteUser(id: number) {
+    this.$axios
+      .$delete(`/api/teams/${this.$route.params.id}/user`, {
+        params: {
+          id,
+        },
+      })
+      .then(() => {
+        this.$fetch()
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
 
   openDeleteTeamModal() {
     this.deleteModal = {
@@ -357,6 +389,20 @@ export default class TeamViewIndex extends Vue {
       .catch((error) => {
         console.error(error)
       })
+  }
+
+  nextPage() {
+    if (this.page < this.pagination.last_page) {
+      this.page++
+      this.$fetch()
+    }
+  }
+
+  previousPage() {
+    if (this.page > 1) {
+      this.page--
+      this.$fetch()
+    }
   }
 }
 </script>

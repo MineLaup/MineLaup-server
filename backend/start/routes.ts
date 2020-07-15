@@ -48,6 +48,11 @@ Route.group(() => {
   Route.delete('/:id', 'TeamsController.deleteTeam').where('id', /^[0-9]+$/)
 
   /**
+   * Users management
+   */
+  Route.delete('/:id/user', 'TeamsController.deleteUser').where('id', /^[0-9]+$/)
+
+  /**
    * Role management
    */
   // Get team roles

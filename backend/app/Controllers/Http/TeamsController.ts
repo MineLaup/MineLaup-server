@@ -55,47 +55,65 @@ export default class TeamsController {
     response.send(team)
   }
 
-  public async get ({ response, auth, params, request }: HttpContextContract) {
+  public async get ({ response, auth, params }: HttpContextContract) {
     const id = params.id
 
     let query: Team | null
 
-    await TeamUser
+    const teamUser = await TeamUser
       .query()
+      .preload('teamRole')
       .where('user_id', auth.user!.id)
       .andWhere('team_id', id)
       .firstOrFail()
 
-    if (request.input('with_permissions')) {
-      query = await Team
-        .query()
-        .preload('defaultPermission')
-        .where('id', id)
-        .first()
-    } else {
-      query = await Team
-        .query()
-        .preload('roles')
-        .where('id', id)
-        .first()
-    }
+    query = await Team
+      .query()
+      .preload('defaultPermission')
+      .where('id', id)
+      .first()
 
     if (!query) {
       return response.status(403)
     }
 
-    response.send(query)
+    let userPerms: any = null
+
+    if (teamUser.teamRoleId) {
+      const role = await TeamRole
+        .query()
+        .preload('permission')
+        .where('id', teamUser.teamRoleId)
+        .first()
+
+      const perm = role?.permission
+
+      userPerms = perm
+    } else {
+      if (query.ownerId === auth.user!.id) {
+        userPerms = {
+          owner: true,
+        }
+      } else {
+        userPerms = query.defaultPermission
+      }
+    }
+
+    response.send({
+      ...query.toJSON(),
+      userPerms,
+    })
   }
 
-  public async fetchUsers ({ request, params, response, auth }: HttpContextContract) {
+  public async fetchUsers ({ request, params, response }: HttpContextContract) {
     const id = params.id
     const page = request.input('page') || 1
     const limit = request.input('limit') || 10
 
+    // TODO: check if user is in the team
     const query = await TeamUser
       .query()
       .where('team_id', id)
-      .andWhere('userId', auth.user!.id)
       .preload('user')
       .preload('teamRole')
       .paginate(page, limit)
@@ -294,5 +312,66 @@ export default class TeamsController {
     }
 
     return response.status(404)
+  }
+
+  public async deleteUser ({ params, request, response, auth}: HttpContextContract) {
+    const id = params.id
+
+    const data = await request.validate({
+      schema: schema.create({
+        id: schema.number([
+          rules.unsigned(),
+          rules.exists({
+            column: 'id',
+            table: 'users',
+          }),
+        ]),
+      }),
+    })
+
+    const team = await Team
+      .query()
+      .preload('defaultPermission')
+      .where('id', id)
+      .firstOrFail()
+
+    if (!team) {
+      return response.status(404)
+    }
+
+    if(team.ownerId === auth.user!.id) {
+      const tUser = await TeamUser
+        .query()
+        .preload('teamRole')
+        .where('teamId', id)
+        .andWhere('userId', data.id)
+        .firstOrFail()
+
+      await tUser.delete()
+
+      return response.status(200)
+    } else {
+      const tUser = await TeamUser
+        .query()
+        .preload('teamRole')
+        .where('teamId', id)
+        .andWhere('userId', auth.user!.id)
+        .firstOrFail()
+
+      if (tUser.teamRole || team.defaultPermission.manage_users) {
+        const tUser = await TeamUser
+          .query()
+          .preload('teamRole')
+          .where('teamId', id)
+          .andWhere('userId', data.id)
+          .firstOrFail()
+
+        await tUser.delete()
+
+        return response.status(200)
+      } else {
+        return response.status(403)
+      }
+    }
   }
 }

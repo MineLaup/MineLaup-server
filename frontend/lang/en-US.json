@@ -102,7 +102,6 @@
           "delete": "Delete",
           "list": {
             "actions": "Actions",
-            "cant-edit-self": "You can't edit yourself",
             "next": "Next",
             "previous": "Previous",
             "role": "Role",
@@ -113,7 +112,8 @@
           "update-btn": "Update",
           "users": "Users",
           "roles": "Roles",
-          "owner": "Owner"
+          "owner": "Owner",
+          "default_role": "Default role"
         },
         "roles": {
           "title": "\"{name}\" team's roles",
