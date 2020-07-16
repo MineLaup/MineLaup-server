@@ -5,7 +5,7 @@ import User from 'App/Models/User'
 import TeamRole from 'App/Models/TeamRole'
 import TeamUser from 'App/Models/TeamUser'
 import Permission from 'App/Models/Permission'
-import names from 'utils/names-repo'
+import names from '../../../utils/names-repo'
 
 export default class TeamsController {
   /**
