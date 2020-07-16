@@ -24,6 +24,7 @@ import { Vue, Component } from 'nuxt-property-decorator'
 @Component
 export default class TModal extends Vue {
   mounted() {
+    // When the component is mounted, if the user click outside the modal then a `close-modal` event is emitted
     const el: Element = document.querySelector('.bg-opacity-75') as Element
     el.addEventListener('click', (event: any) => {
       if (event?.target.classList.contains('bg-opacity-75')) {

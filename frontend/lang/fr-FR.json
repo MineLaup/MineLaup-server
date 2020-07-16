@@ -1,118 +1,165 @@
 {
-	"app-name": "MineLaup server",
-	"components": {
-		"modal": {
-			"no": "Laisse tomber",
-			"yes": "Je suis sûr !"
-		}
-	},
-	"error": {
-		"form": {
-			"required": "Ce champ est requis"
-		},
-		"login": {
-			"wrong_ids": "Nom d'utilisateur ou mot de passe invalide"
-		},
-		"unknown": "Une erreur inattendu est survenue."
-	},
-	"layout": {
-		"side-bar": {
-			"administration": "Administration",
-			"dark-mode": {
-				"disable": "Désactiver le mode sombre",
-				"enable": "Activer le mode sombre"
-			},
-			"launcher": "Launchers",
-			"logout": "Déconnexion",
-			"menu": "Menu",
-			"modpacks": "Modpacks",
-			"settings": "Paramètres",
-			"teams": "Équipes"
-		},
-		"side-menu": {
-			"administration-title": "Administration",
-			"settings": "Paramètres",
-			"team-new": "Nouvelle équipe",
-			"team-title": "Équipes",
-			"users": "Utilisateurs"
-		}
-	},
-	"pages": {
-		"admin": {
-			"settings": {
-				"title": "Paramètres",
+  "app-name": "MineLaup server",
+  "components": {
+    "modal": {
+      "no": "Laisse tomber",
+      "yes": "Je suis sûr !",
+      "close": "Fermer"
+    }
+  },
+  "error": {
+    "form": {
+      "required": "Ce champ est requis",
+      "unique": "La valeur existe déjà",
+      "exists": "La valeur n'existe pas"
+    },
+    "login": {
+      "wrong_ids": "Nom d'utilisateur ou mot de passe invalide"
+    },
+    "unknown": "Une erreur inattendu est survenue."
+  },
+  "layout": {
+    "side-bar": {
+      "administration": "Administration",
+      "dark-mode": {
+        "disable": "Désactiver le mode sombre",
+        "enable": "Activer le mode sombre"
+      },
+      "launcher": "Launchers",
+      "logout": "Déconnexion",
+      "menu": "Menu",
+      "modpacks": "Modpacks",
+      "settings": "Paramètres",
+      "teams": "Équipes"
+    },
+    "side-menu": {
+      "administration-title": "Administration",
+      "settings": "Paramètres",
+      "team-new": "Nouvelle équipe",
+      "team-title": "Équipes",
+      "users": "Utilisateurs"
+    }
+  },
+  "pages": {
+    "admin": {
+      "settings": {
+        "title": "Paramètres",
         "nothing": "Il n'y a aucun paramètre disponible pour l'instant."
-			},
-			"users": {
-				"confirmDelete": "Êtes vous sûr de vouloir supprimer \"{username}\" ?",
-				"create": {
-					"email": "Adresse Email",
-					"role": "Rôle",
-					"submit": "Créer",
-					"title": "Créer un nouvel utilisateur",
-					"username": "Nom d'utilisateur"
-				},
-				"list": {
-					"actions": "Actions",
-					"active": "Actif",
-					"disabled": "Désactivé",
-					"email": "Adresse Email",
-					"role": "Rôle",
-					"state": "État",
-					"username": "Nom d'utilisateur"
-				},
-				"new-user": "Nouvel utilisateur",
-				"search": "Recherche",
-				"title": "Utilisateurs",
-				"update": {
-					"email": "Adresse Email",
-					"first_name": "Prénom",
-					"last_name": "Nom",
-					"role": "Rôle",
-					"submit": "Mettre à jours",
-					"title": "Mise à jours du compte",
-					"username": "Nom d'utilisateur"
-				}
-			}
-		},
-		"login": {
-			"btn": "Connexion",
-			"password": "Mot de passe",
-			"title": "Connexion",
-			"username": "Nom d'utilisateur"
-		},
-		"set-password": {
-			"btn": "Définir",
-			"description": "Merci de définir votre mot de passe !",
-			"new-password": "Nouveau mot de passe",
-			"new-password-confirmation": "Confirmation du mot de passe",
-			"title": "Bonjour {username}"
-		},
-		"teams": {
-			"create": {
-				"name": "Nom",
-				"submit": "Créer",
-				"summary": "Description",
-				"title": "Créer une nouvelle équipe"
-			},
-			"view": {
-				"index": {
-					"confirmDelete": "Êtes vous sûr de vouloir supprimer cet équipe ?",
-					"delete": "Supprimer",
-					"list": {
-						"actions": "Actions",
-						"cant-edit-self": "Vous ne pouvez pas vous éditer vous même",
-						"next": "Suivant",
-						"previous": "Précédent",
-						"role": "Rôle",
-						"username": "Nom d'utilisateur"
-					},
-					"name": "Nom de l'équipe",
-					"summary": "Description",
-					"update-btn": "Mettre à jours",
-					"users": "Utilisateurs"
-				}
-			}
-		}
-	}
+      },
+      "users": {
+        "confirmDelete": "Êtes vous sûr de vouloir supprimer \"{username}\" ?",
+        "create": {
+          "email": "Adresse Email",
+          "role": "Rôle",
+          "submit": "Créer",
+          "title": "Créer un nouvel utilisateur",
+          "username": "Nom d'utilisateur"
+        },
+        "list": {
+          "actions": "Actions",
+          "active": "Actif",
+          "disabled": "Désactivé",
+          "email": "Adresse Email",
+          "role": "Rôle",
+          "state": "État",
+          "username": "Nom d'utilisateur"
+        },
+        "new-user": "Nouvel utilisateur",
+        "search": "Recherche",
+        "title": "Utilisateurs",
+        "update": {
+          "email": "Adresse Email",
+          "first_name": "Prénom",
+          "last_name": "Nom",
+          "role": "Rôle",
+          "submit": "Mettre à jours",
+          "title": "Mise à jours du compte",
+          "username": "Nom d'utilisateur"
+        }
+      }
+    },
+    "login": {
+      "btn": "Connexion",
+      "password": "Mot de passe",
+      "title": "Connexion",
+      "username": "Nom d'utilisateur"
+    },
+    "set-password": {
+      "btn": "Définir",
+      "description": "Merci de définir votre mot de passe !",
+      "new-password": "Nouveau mot de passe",
+      "new-password-confirmation": "Confirmation du mot de passe",
+      "title": "Bonjour {username}"
+    },
+    "teams": {
+      "create": {
+        "name": "Nom",
+        "submit": "Créer",
+        "summary": "Description",
+        "title": "Créer une nouvelle équipe"
+      },
+      "view": {
+        "index": {
+          "confirmDelete": "Êtes vous sûr de vouloir supprimer cet équipe ?",
+          "delete": "Supprimer",
+          "list": {
+            "actions": "Actions",
+            "next": "Suivant",
+            "previous": "Précédent",
+            "role": "Rôle",
+            "username": "Nom d'utilisateur"
+          },
+          "name": "Nom de l'équipe",
+          "summary": "Description",
+          "update-btn": "Mettre à jours",
+          "users": "Utilisateurs",
+          "roles": "Rôles",
+          "owner": "Propriétaire",
+          "default_role": "Rôle par défaut",
+          "add-user-to-team": "Ajouter un utilisateur à l'équipe",
+          "username": "Nom d'utilisateur"
+        },
+        "roles": {
+          "title": "Role de l'équipe \"{name}\"",
+          "roles": "Rôles",
+          "role_name": "Nom",
+          "save": "Enregistrer",
+          "reset": "Réinitialiser",
+          "delete": "Supprimer"
+        }
+      }
+    },
+    "team": {
+      "view": {
+        "index": {
+          "add-user-info": "Entrez le nom d'utilisateur de la personne que vous voulez inviter dans l'équipe.",
+          "invite-user": "Inviter l'utilisateur"
+        }
+      }
+    }
+  },
+  "roles": {
+    "permissions": {
+      "manage_teams": {
+        "text": "Autoriser l'utilisateur à gérer l'équipe",
+        "enabled": "L'utilisateur peut gérer l'équipe",
+        "disabled": "L'utilisateur ne peut pas gérer l'équipe"
+      },
+      "manage_launcher": {
+        "text": "Autoriser l'utilisateur à gérer les launchers",
+        "enabled": "L'utilisateur peut gérer les launchers",
+        "disabled": "L'utilisateur ne peut pas gérer les launchers"
+      },
+      "manage_modpacks": {
+        "text": "Autoriser l'utilisateur à gérer les modpacks",
+        "enabled": "L'utilisateur peut gérer les modpacks",
+        "disabled": "L'utilisateur ne peut pas gérer les modpacks"
+      },
+      "manage_users": {
+        "text": "Autoriser l'utilisateur à gérer les utilisateurs",
+        "enabled": "L'utilisateur peut gérer les utilisateurs",
+        "disabled": "L'utilisateur ne peut pas gérer les utilisateurs"
+      }
+    }
+  }
 }

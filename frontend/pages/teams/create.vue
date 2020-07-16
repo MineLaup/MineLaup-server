@@ -72,6 +72,7 @@ export default class TeamCreate extends Vue {
   errors: Partial<String> = {}
 
   mounted() {
+    // Submit the form when the user press CTRL+ENTER
     document.addEventListener('keypress', (event: KeyboardEvent) => {
       if (event.keyCode !== 10 || !event.ctrlKey) return
 
@@ -79,17 +80,21 @@ export default class TeamCreate extends Vue {
     })
   }
 
+  // Check if the form is valid
   get formValid() {
     return this.form.name.length > 0 && this.form.summary.length > 0
   }
 
+  // Called when the form is submited
   createTeam() {
     this.errors = {}
     this.errorMsg = ''
 
+    // Request the API to create a new team
     this.$axios
       .post('/api/teams', this.form)
       .then(async ({ data }) => {
+        // On success, fetch teams list and update it in side bar
         const teams = await this.$axios.$get('/api/teams')
         await this.$store.commit(
           'menu/setList',
@@ -100,28 +105,31 @@ export default class TeamCreate extends Vue {
             }
           })
         )
+        // Redirect the user to the new team page
         this.$router.push(`/teams/${data.id}`)
       })
       .catch((error) => {
+        // On failed, check the response state
         if (error.response?.status) {
           const parsedErrors: Partial<String> = {}
           switch (error.response.status) {
-            case 400:
-              this.errors = Object.assign({}, error.response.data.errors)
-              break
+            // 422: data validation error
             case 422:
               for (const e of error.response.data.errors) {
                 parsedErrors[e.field] = `error.form.${e.rule}`
               }
               this.errors = parsedErrors
               break
+            // 500: server error
             case 500:
               this.errorMsg = error.response.data.errors[0].message
               break
+            // Unknown error
             default:
               this.errorMsg = 'error.unknown'
           }
         } else {
+          // Unknown error
           // eslint-disable-next-line
           console.error(error)
           this.errorMsg = 'error.unknown'

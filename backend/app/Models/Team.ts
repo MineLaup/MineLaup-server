@@ -1,7 +1,16 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo, BelongsTo, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import {
+  BaseModel,
+  column,
+  belongsTo,
+  BelongsTo,
+  HasMany,
+  hasMany,
+  beforeDelete,
+} from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 import TeamRole from './TeamRole'
+import Permission from './Permission'
 
 export default class Team extends BaseModel {
   @column({ isPrimary: true })
@@ -24,9 +33,34 @@ export default class Team extends BaseModel {
   @hasMany(() => TeamRole)
   public roles: HasMany<typeof TeamRole>
 
+  @column()
+  public permissionId: number
+
+  @belongsTo(() => Permission)
+  public defaultPermission: BelongsTo<typeof Permission>
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @beforeDelete()
+  public static async deletePermission (team: Team) {
+    const perm = await Permission.find(team.permissionId)
+
+    if (perm) {
+      await perm.delete()
+    }
+
+    const roles = await TeamRole
+      .query()
+      .preload('permission')
+      .where('team_id', team.id)
+
+    roles.forEach(async role => {
+      await role.permission.delete()
+      await role.delete()
+    })
+  }
 }

@@ -63,7 +63,7 @@
 
         <div class="flex-1 flex flex-row">
           <div
-            class="sm:w-64 bg-gray-900 absolute sm:relative z-50 sm:z-0 sm:z-0 w-screen h-screen md:h-auto text-white top-0 sm:block"
+            class="sm:w-64 bg-gray-900 absolute sm:relative z-50 sm:z-0 w-screen h-screen md:h-auto text-white top-0 sm:block"
             :class="{ hidden: !menuOpen }"
           >
             <span
@@ -129,30 +129,38 @@ import { UserRole } from '~/types/UserRole'
 export default class Default extends Vue {
   menuOpen: boolean = false
 
+  // Getter used to know if the user have permissions
   get hasAdminPermission() {
     return this.$auth.user?.role >= UserRole.admin
   }
 
   mounted() {
+    // When the component is mounted, the color theme is set to the user preference
     this.$colorMode.preference = this.$auth.user.color_mode.toLowerCase()
   }
 
+  // When the route change the navigation menu is closed
   @Watch('$route')
   onRouteChange() {
     this.menuOpen = false
   }
 
+  // Check if the color theme is dark mode
   get isDarkMode() {
     return this.$colorMode.preference === 'dark'
   }
 
+  // Debounced function to change the color mode
   toggleColorMode = debounce(() => {
+    // Get the new color state from the current
     const newColor = this.$colorMode.preference === 'light' ? 'dark' : 'light'
+    // Send a request to the server to update the user preference
     this.$axios
       .post('/api/user/color-mode', {
         color: newColor,
       })
       .then(() => {
+        // If the requst is fine then change the color mode
         this.$colorMode.preference = newColor
       })
   }, 500)

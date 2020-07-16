@@ -1,11 +1,13 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
-import View from '@ioc:Adonis/Core/View'
-import nodemailer from 'nodemailer'
+import Mail from '@ioc:Adonis/Addons/Mail'
 import hat from 'hat'
 
 export default class AdminController {
+  /**
+   * Fetch user function
+   */
   public async fetchUsers ({ request, response }: HttpContextContract) {
     const text: string = request.input('text') || ''
     const page: number = request.input('page') || 1
@@ -13,7 +15,9 @@ export default class AdminController {
 
     let query: Partial<any> = {}
 
+    // If a search text is provided
     if (text) {
+      // Search an user by the text and return the list
       query = await User
         .query()
         .where('username', 'like', `%${text}%`)
@@ -30,52 +34,68 @@ export default class AdminController {
     response.send(query.toJSON())
   }
 
+  /**
+   * Delete user function
+   */
   public async deleteUser ({ request, response, auth }: HttpContextContract) {
+    // Validate data
     const data = await request.validate({
       schema: schema.create({
         id: schema.number(),
       }),
     })
 
+    // If the deleted user and the current user are the same, cancel the process
     if (auth.user!.id === data.id) {
       return response.status(403)
     }
 
-    const user = await User.find(data.id)
+    // Get the user instance
+    const user = await User.findOrFail(data.id)
 
-    if (!user) {
-      return response.status(404)
-    }
-
+    // Delete the instance
     await user.delete()
 
+    // Give a feedback
     return response.status(200)
   }
 
+  /**
+   * Get an user function
+   */
   public async getUser ({ request, response }: HttpContextContract) {
+    // Validate the data (check if the id is a number and exist in the user table)
     const data = await request.validate({
       schema: schema.create({
-        id: schema.number(),
+        id: schema.number([
+          rules.exists({
+            column: 'id',
+            table: 'users',
+          }),
+        ]),
       }),
     })
 
-    const user = await User.find(data.id)
+    // Get the user instance
+    const user = await User.findOrFail(data.id)
 
-    if (!user) {
-      return response.status(404)
-    }
-
+    // Give back the user information
     return response.json(user.toJSON())
   }
 
+  /**
+   * Create user function
+   */
   public async createUser ({ request, response }: HttpContextContract) {
+    // Validate given datas
     const data = await request.validate({
       schema: schema.create({
         username: schema.string({
           escape: true,
           trim: true,
         }, [
-          rules.alpha(),
+          // The username has to be unique, with a max length of 45 characters and to be alphanumeric
+          rules.regex(/^[a-z0-9_-]+$/),
           rules.maxLength(45),
           rules.unique({
             column: 'username',
@@ -86,8 +106,14 @@ export default class AdminController {
           escape: true,
           trim: true,
         }, [
+          // The email has to be unique
           rules.email(),
+          rules.unique({
+            column: 'email',
+            table: 'users',
+          }),
         ]),
+        // The role has to be a string which contain a single number
         role: schema.string({
           escape: true,
           trim: true,
@@ -98,78 +124,98 @@ export default class AdminController {
       }),
     })
 
+    // Create the user
     await User.create({
       username: data.username,
       email: data.email,
+      // Fill a random password
       password: Buffer.from(Math.random().toString()).toString('hex'),
       disabled: true,
     })
 
+    // Generate an unique random token
     const token = hat()
 
-    // TODO: send a mail to the user to let him change is password
-    const template = View.render('mail/set_password', {
-      username: data.username,
-      hostname: (process.env.HTTPS === 'true' ? 'https://' : 'http://') + process.env.HOSTNAME,
-      token: token,
+    // Send a mail to the user to signal him that an account has been created
+    await Mail.use('smtp').sendLater(message => {
+      message.to(data.email),
+      message.from(`minelaup@${process.env.HOSTNAME}`)
+      message.subject('Your account have been registered !')
+      message.htmlView('mail/set_password', {
+        username: data.username,
+        hostname: (process.env.HTTPS === 'true' ? 'https://' : 'http://') + process.env.HOSTNAME,
+        token: token,
+      })
     })
-
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT as string),
-      secure: parseInt(process.env.SMTP_PORT as string) === 465,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    })
-
-    await transporter.sendMail({
-      from: `"MineLaup" <minelaup@${process.env.HOSTNAME}>`,
-      to: data.email,
-      subject: 'Your account have been registered !',
-      text: template.toString(),
-      html: template,
-    })
+      .then((data) => {
+        console.log(data)
+      })
+      .catch(error => {
+        console.error(error)
+      })
 
     response.status(200)
   }
 
+  /**
+   * Update user state function
+   */
   public async updateState ({ request, response, auth }: HttpContextContract) {
+    // Validate datas
     const data = await request.validate({
       schema: schema.create({
-        id: schema.number(),
+        // The id has to be an unsigned number and exist in the user table
+        id: schema.number([
+          rules.required(),
+          rules.unsigned(),
+          rules.exists({
+            column: 'id',
+            table: 'users',
+          }),
+        ]),
+        // The state has to be a boolean
         state: schema.boolean([
           rules.required(),
         ]),
       }),
     })
 
+    // If the current user and the updated user are the same, cancel the process
     if (auth.user!.id === data.id) {
       return response.status(403)
     }
 
-    const user = await User.find(data.id)
+    // Get the user instance
+    const user = await User.findOrFail(data.id)
 
-    if (!user) {
-      return response.status(404)
-    }
-
+    // Update the value
     user.disabled = !data.state
     await user.save()
 
+    // Give a feedback
     return response.status(200)
   }
 
+  /**
+   * Update user function
+   */
   public async updateUser ({ request, response }: HttpContextContract) {
+    // Validate dates
     const data = await request.validate({
       schema: schema.create({
-        id: schema.number(),
+        // The ID has to exist in the user table
+        id: schema.number([
+          rules.exists({
+            column: 'id',
+            table: 'users',
+          }),
+        ]),
         username: schema.string({
           escape: true,
           trim: true,
         }, [
-          rules.alpha(),
+          // The username has to be unique, with a max length of 45 characters and to be alphanumeric
+          rules.regex(/^[a-z0-9_-]+$/),
           rules.maxLength(45),
         ]),
         first_name: schema.string({
@@ -196,14 +242,10 @@ export default class AdminController {
       }),
     })
 
-    const user = await User.find(data.id)
-
-    if (!user) {
-      return response.status(404)
-    }
-
+    // Update the user with the given datas
     await User.query().where('id', data.id).update(data)
 
+    // Send feedback
     return response.status(200)
   }
 }

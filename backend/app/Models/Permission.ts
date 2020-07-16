@@ -5,14 +5,14 @@ export default class Permission extends BaseModel {
   public id: number
 
   @column()
-  public can_create: boolean
+  public manage_team: boolean
 
   @column()
-  public can_read: boolean
+  public manage_launchers: boolean
 
   @column()
-  public can_update: boolean
+  public manage_modpacks: boolean
 
   @column()
-  public can_delete: boolean
+  public manage_users: boolean
 }

@@ -89,6 +89,7 @@ import TButton from '~/components/forms/TButton.vue'
 import TTextarea from '~/components/forms/TTextarea.vue'
 import TInput from '~/components/forms/TInput.vue'
 import TAlert from '~/components/bases/TAlert.vue'
+import { UserRole } from '~/types/UserRole'
 
 @Component({
   components: {
@@ -114,6 +115,7 @@ export default class AdminUserUpdate extends Vue {
   errors: Partial<String> = {}
 
   async asyncData({ params, $axios }: Context) {
+    // Fetching user informations
     const user = await $axios.$get('/api/admin/user', {
       params: {
         id: params.id,
@@ -123,6 +125,7 @@ export default class AdminUserUpdate extends Vue {
   }
 
   mounted() {
+    // Fill the form with user informations
     this.form = {
       username: this.user.username,
       first_name: this.user.first_name,
@@ -131,6 +134,7 @@ export default class AdminUserUpdate extends Vue {
       role: '' + this.user.role,
     }
 
+    // Submit the form if the user press CTRL+ENTER
     document.addEventListener('keypress', (event: KeyboardEvent) => {
       if (event.keyCode !== 10 || !event.ctrlKey) return
 
@@ -138,14 +142,16 @@ export default class AdminUserUpdate extends Vue {
     })
   }
 
+  // Getter to check if the form is valid
   get formValid() {
     return (
       this.form.username.length > 0 &&
       this.form.email.length > 0 &&
-      [0, 1, 2, 3].includes(parseInt(this.form.role))
+      Object.values(UserRole).includes(parseInt(this.form.role))
     )
   }
 
+  // Function called when the form is submited
   updateUser() {
     this.errors = {}
     this.errorMsg = ''
@@ -157,28 +163,32 @@ export default class AdminUserUpdate extends Vue {
         },
       })
       .then(() => {
+        // If the request ran successfuly, redirect the user
         this.$router.push(`/admin/users`)
       })
       .catch((error) => {
+        // else, check the error type
         if (error.response?.status) {
           const parsedErrors: Partial<String> = {}
+          // Get the error status code
           switch (error.response.status) {
-            case 400:
-              this.errors = Object.assign({}, error.response.data.errors)
-              break
+            // 402: data validation error
             case 422:
               for (const e of error.response.data.errors) {
                 parsedErrors[e.field] = `error.form.${e.rule}`
               }
               this.errors = parsedErrors
               break
+            // 500: server error
             case 500:
               this.errorMsg = error.response.data.errors.message
               break
+            // unknown error
             default:
               this.errorMsg = 'error.unknown'
           }
         } else {
+          // the error is unknown
           // eslint-disable-next-line
           console.error(error)
           this.errorMsg = 'error.unknown'

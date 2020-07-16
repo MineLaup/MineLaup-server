@@ -43,7 +43,7 @@
           type="number"
           max="3"
           min="0"
-          :error="errors.email ? $t(errors.email) : ''"
+          :error="errors.role ? $t(errors.role) : ''"
         />
 
         <div class="text-center mt-4">
@@ -67,6 +67,7 @@ import TButton from '~/components/forms/TButton.vue'
 import TTextarea from '~/components/forms/TTextarea.vue'
 import TInput from '~/components/forms/TInput.vue'
 import TAlert from '~/components/bases/TAlert.vue'
+import { UserRole } from '~/types/UserRole'
 
 @Component({
   components: {
@@ -88,6 +89,7 @@ export default class AdminUserCreate extends Vue {
   errors: Partial<String> = {}
 
   mounted() {
+    // Submit the form when the user press CTRL+ENTER
     document.addEventListener('keypress', (event: KeyboardEvent) => {
       if (event.keyCode !== 10 || !event.ctrlKey) return
 
@@ -95,11 +97,12 @@ export default class AdminUserCreate extends Vue {
     })
   }
 
+  // Check if the form is valid
   get formValid() {
     return (
       this.form.username.length > 0 &&
       this.form.email.length > 0 &&
-      [0, 1, 2, 3].includes(parseInt(this.form.role))
+      Object.values(UserRole).includes(parseInt(this.form.role))
     )
   }
 
@@ -110,28 +113,32 @@ export default class AdminUserCreate extends Vue {
     this.$axios
       .post('/api/admin/user', this.form)
       .then(() => {
+        // If the request ran successfuly, redirect the user
         this.$router.push(`/admin/users`)
       })
       .catch((error) => {
+        // else, check the error type
         if (error.response?.status) {
           const parsedErrors: Partial<String> = {}
+          // Get the error status code
           switch (error.response.status) {
-            case 400:
-              this.errors = Object.assign({}, error.response.data.errors)
-              break
+            // 402: data validation error
             case 422:
               for (const e of error.response.data.errors) {
                 parsedErrors[e.field] = `error.form.${e.rule}`
               }
               this.errors = parsedErrors
               break
+            // 500: server error
             case 500:
               this.errorMsg = error.response.data.errors.message
               break
+            // unknown error
             default:
               this.errorMsg = 'error.unknown'
           }
         } else {
+          // the error is unknown
           // eslint-disable-next-line
           console.error(error)
           this.errorMsg = 'error.unknown'

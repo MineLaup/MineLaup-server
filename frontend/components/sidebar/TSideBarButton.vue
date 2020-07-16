@@ -39,6 +39,8 @@ export default class TSideBarButton extends Vue {
   exact!: boolean
 
   showTitle: boolean = false
+
+  // Getter used to obtain the current route
   get isCurrentRoute() {
     if (this.exact) {
       return this.$route.path === this.to

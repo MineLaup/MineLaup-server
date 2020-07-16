@@ -22,6 +22,7 @@
         class="appearance-none w-full bg-gray-300 dark:bg-gray-900 rounded-lg pl-10 py-2 px-4 placeholder-gray-700 dark-placeholder:text-gray-300 focus:outline-none text-black dark:text-white shadow focus:shadow-lg transition-shadow ease-out duration-700 min-h-1"
         :cols="cols"
         :rows="rows"
+        :disabled="disabled"
         @input="$emit('input', $event.target.value)"
       ></textarea>
     </div>
@@ -60,13 +61,23 @@ export default class TTextarea extends Vue {
   @Prop({ default: 'on' })
   autocomplete!: string
 
-  @Prop({ default: false, type: Boolean })
+  @Prop({ default: true, type: Boolean })
   autoResize!: boolean
 
+  @Prop({ type: Boolean })
+  disabled!: boolean
+
   mounted() {
+    // Activate the autoresize script if the props `autoResize` is enabled
     if (this.autoResize) {
       autosize(this.$el.querySelector('textarea') as Element)
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+textarea:disabled {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+</style>

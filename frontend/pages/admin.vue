@@ -10,6 +10,7 @@ import { Context } from '@nuxt/types'
 
 @Component
 export default class AdminView extends Vue {
+  // Update the side bar list
   asyncData({ store }: Context) {
     store.commit('menu/clear')
     store.commit('menu/setTitle', 'layout.side-menu.administration-title')

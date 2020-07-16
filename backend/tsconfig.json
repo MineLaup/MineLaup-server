@@ -11,6 +11,7 @@
     "outDir": "build",
     "rootDir": "./",
     "sourceMap": true,
+    "resolveJsonModule": true,
     "paths": {
       "App/*": [
         "./app/*"
@@ -24,7 +25,8 @@
       "@adonisjs/lucid",
       "@adonisjs/auth",
       "@adonisjs/session",
-      "@adonisjs/view"
+      "@adonisjs/view",
+      "@adonisjs/mail"
     ]
   }
 }

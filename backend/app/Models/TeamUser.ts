@@ -22,7 +22,7 @@ export default class TeamUser extends BaseModel {
   public team: BelongsTo<typeof Team>
 
   @column()
-  public teamRoleId: number
+  public teamRoleId: number | null
 
   @belongsTo(() => TeamRole)
   public teamRole: BelongsTo<typeof TeamRole>

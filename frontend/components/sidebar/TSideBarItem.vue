@@ -22,6 +22,7 @@ export default class TSideBarItem extends Vue {
   @Prop({ default: false, type: Boolean })
   exact!: boolean
 
+  // Getter used to obtain the current route
   get isCurrentRoute() {
     if (this.exact) {
       return this.$route.path === this.to

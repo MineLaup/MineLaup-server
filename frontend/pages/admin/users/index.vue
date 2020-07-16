@@ -157,19 +157,25 @@
           </table>
           <div
             v-if="pagination.last_page > 1"
-            class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between"
+            class="px-5 py-5 bg-white dark:bg-gray-800 flex flex-col xs:flex-row items-center xs:justify-between"
           >
-            <span class="text-xs xs:text-sm text-gray-900">
-              {{ `${pagination.current_page}/${pagination.last_page}` }}
+            <span
+              class="text-sm xs:text-sm text-gray-600 dark:text-gray-400 font-bold"
+            >
+              {{ `${pagination.current_page} / ${pagination.last_page}` }}
             </span>
             <div class="inline-flex mt-2 xs:mt-0">
               <button
                 class="px-4 py-2 border rounded-l-full border-r-0 focus:outline-none transition ease-out duration-300 border-green-400 hover:text-white hover:bg-green-400 w-32"
+                :disabled="pagination.current_page === pagination.first_page"
+                @click="previousPage"
               >
                 {{ $t('pages.teams.view.index.list.previous') }}
               </button>
               <button
                 class="px-4 py-2 border rounded-r-full border-l-0 focus:outline-none transition ease-out duration-300 border-green-400 hover:text-white hover:bg-green-400 w-32"
+                :disabled="pagination.current_page === pagination.last_page"
+                @click="nextPage"
               >
                 {{ $t('pages.teams.view.index.list.next') }}
               </button>
@@ -236,6 +242,7 @@ export default class AdminUsersView extends Vue {
   }
 
   async fetch() {
+    // Fetch the user list from the search informations
     const response = await this.$axios.$get('/api/admin/users', {
       params: this.search,
     })
@@ -246,8 +253,9 @@ export default class AdminUsersView extends Vue {
     this.pagination = meta
   }
 
-  editUser(_id) {}
+  editUser(_id: number) {}
 
+  // The delete user modal is opened when this function is called
   openDeleteModal(user: Partial<any>) {
     this.modal = {
       title: 'pages.admin.users.confirmDelete',
@@ -256,6 +264,7 @@ export default class AdminUsersView extends Vue {
     this.selected = user.id
   }
 
+  // Request the delete action of an user to the API
   deleteUser(id: number) {
     this.$axios
       .delete('/api/admin/user', {
@@ -264,25 +273,30 @@ export default class AdminUsersView extends Vue {
         },
       })
       .then(() => {
+        // On success, reload the user list and close the modal
         this.$fetch()
         this.modal = {}
       })
       .catch((error) => {
+        // if failed, log the error
+        // eslint-disable-next-line
         console.log(error)
       })
   }
 
+  // Close the delete modal when called
   closeDeleteModal() {
     this.selected = null
     this.modal = {}
   }
 
+  // Toggle the user state between `activated` and `disabled`
   toggleState(id: number, isDisabled: boolean) {
     this.$axios
       .post(
         '/api/admin/user/state',
         {
-          state: !isDisabled,
+          state: isDisabled,
         },
         {
           params: {
@@ -291,11 +305,32 @@ export default class AdminUsersView extends Vue {
         }
       )
       .then(() => {
+        // On sucess, update informations on screen to give a feedback to the user
         const index = this.users.findIndex((user) => user.id === id)
         this.users[index].disabled = !isDisabled
       })
   }
 
-  searchUsers = debounce(() => this.$fetch(), 250)
+  // Decounced function to search users
+  searchUsers = debounce(() => {
+    this.search.page = 1
+    this.$fetch()
+  }, 250)
+
+  // Next page function
+  nextPage() {
+    if (this.search.page < this.pagination.last_page) {
+      this.search.page++
+      this.$fetch()
+    }
+  }
+
+  // Previous page function
+  previousPage() {
+    if (this.search.page > 1) {
+      this.search.page--
+      this.$fetch()
+    }
+  }
 }
 </script>
