@@ -120,7 +120,10 @@
                     class="px-10 py-5 border-b border-gray-200 dark:border-gray-800 bg-white text-sm text-right dark:bg-gray-800"
                   >
                     <div
-                      v-if="team.userPerms.owner || team.userPerms.manage_users"
+                      v-if="
+                        team.owner_id !== user.user.id &&
+                        (team.userPerms.owner || team.userPerms.manage_users)
+                      "
                       class="flex flex-row justify-end"
                     >
                       <span
@@ -217,17 +220,54 @@
           dark-color="white"
           dark-bg-hover-color="white"
           dark-hover-color="gray-900"
-          @click="modal = {}"
+          @click="deleteModal = {}"
         >
           {{ $t('components.modal.no') }}
         </t-button>
+      </div>
+    </t-modal>
+
+    <t-modal
+      v-if="Object.keys(searchModal).length > 0"
+      @close-modal="searchModal = {}"
+    >
+      <h1 slot="title">{{ $t(searchModal.title) }}</h1>
+      <div slot="actions">
+        <div class="flex flex-col mb-4 text-left">
+          <p class="mb-6">
+            {{ $t('pages.team.view.index.add-user-info') }}
+          </p>
+          <t-input
+            id="user-invite"
+            v-model="usernameField"
+            :label="$t('pages.teams.view.index.username')"
+            icon="search"
+            :error="$t(usernameError)"
+            class="mb-2"
+          />
+        </div>
+        <div class="flex flex-col">
+          <t-button class="mb-2" @click="inviteUser">
+            {{ $t('pages.team.view.index.invite-user') }}
+          </t-button>
+          <t-button
+            class="mb-2"
+            bg-hover-color="gray-900"
+            dark-color="white"
+            dark-bg-hover-color="white"
+            dark-hover-color="gray-900"
+            @click="searchModal = {}"
+          >
+            {{ $t('components.modal.close') }}
+          </t-button>
+        </div>
       </div>
     </t-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'nuxt-property-decorator'
+import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import { Context } from '@nuxt/types'
 import TInput from '~/components/forms/TInput.vue'
 import TTextarea from '~/components/forms/TTextarea.vue'
@@ -248,6 +288,9 @@ export default class TeamViewIndex extends Vue {
     summary: '',
   }
 
+  usernameField: string = ''
+  usernameError: string = ''
+
   team: Partial<any> = {}
   errors: Partial<any> = {}
   errorMsg: string = ''
@@ -261,8 +304,11 @@ export default class TeamViewIndex extends Vue {
   pagination: Partial<any> = {}
 
   async asyncData({ params, redirect, $axios }: Context) {
+    // Prevent error by checking if the params ID is a number
     if (params?.id?.match(/^[0-9]+$/)) {
+      // Fetch the team information
       const team = await $axios.$get(`/api/teams/${params.id}`).catch(() => {
+        // If the team is not found, then redirect the user
         return redirect('/teams/create')
       })
 
@@ -272,6 +318,7 @@ export default class TeamViewIndex extends Vue {
     }
   }
 
+  // Fetch users and roles of the current team
   async fetch() {
     const { users, roles } = await this.$axios
       .$get(`/api/teams/${this.$route.params.id}/users`, {
@@ -289,15 +336,18 @@ export default class TeamViewIndex extends Vue {
   }
 
   mounted() {
+    // Fill the form with the team informations
     this.form = this.team
   }
 
+  // Check if the form is valid
   get formValid() {
     return this.form.name.length > 0 && this.form.summary.length > 0
   }
 
   editUser(_id: number) {}
 
+  // Request action to delete an user from the team to the API
   deleteUser(id: number) {
     this.$axios
       .$delete(`/api/teams/${this.$route.params.id}/user`, {
@@ -306,32 +356,68 @@ export default class TeamViewIndex extends Vue {
         },
       })
       .then(() => {
+        // On success, reload the user list
         this.$fetch()
       })
       .catch((error) => {
+        // If failed, log an error in the console
+        // eslint-disable-next-line
         console.error(error)
       })
   }
 
+  // Request action to search and invite an user in the team to the API
+  inviteUser() {
+    this.usernameError = ''
+    // Request with the username field value
+    this.$axios
+      .$post(`/api/teams/${this.$route.params.id}/user`, {
+        name: this.usernameField,
+      })
+      .then(() => {
+        // On success, reload the user list and close the modal
+        this.$fetch()
+        this.searchModal = {}
+      })
+      .catch((error) => {
+        // If failed check response status
+        switch (error.response?.status) {
+          // 409: conflict, the user already exist
+          case 409:
+            this.usernameError = 'error.form.unique'
+            break
+          // 422: data validation error
+          case 422:
+            this.usernameError = `error.form.${error.response.data.errors[0].rule}`
+            break
+        }
+      })
+  }
+
+  // open the delete team modal confirmation
   openDeleteTeamModal() {
     this.deleteModal = {
       title: 'pages.teams.view.index.confirmDelete',
     }
   }
 
+  // open the user invitation modal
   openSearchUserModal() {
     this.searchModal = {
-      title: '',
+      title: 'pages.teams.view.index.add-user-to-team',
     }
   }
 
+  // Function called when the form is submited
   updateTeam() {
     this.errors = {}
     this.errorMsg = ''
 
+    // Send a request to the API to update the team
     this.$axios
       .put('/api/teams', this.form)
       .then(async () => {
+        // On success, fetch teams list and update it in the side bar
         const teams = await this.$axios.$get('/api/teams')
         await this.$store.commit(
           'menu/setList',
@@ -344,25 +430,27 @@ export default class TeamViewIndex extends Vue {
         )
       })
       .catch((error) => {
+        // If failed, check the response status
         if (error.response?.status) {
           const parsedErrors: Partial<String> = {}
           switch (error.response.status) {
-            case 400:
-              this.errors = Object.assign({}, error.response.data.errors)
-              break
+            // 422: data validation error
             case 422:
               for (const e of error.response.data.errors) {
                 parsedErrors[e.field] = `error.form.${e.rule}`
               }
               this.errors = parsedErrors
               break
+            // 500: server error
             case 500:
               this.errorMsg = error.response.data.errors[0].message
               break
+            // unknown error
             default:
               this.errorMsg = 'error.unknown'
           }
         } else {
+          // unknown error
           // eslint-disable-next-line
           console.error(error)
           this.errorMsg = 'error.unknown'
@@ -370,10 +458,13 @@ export default class TeamViewIndex extends Vue {
       })
   }
 
+  // Delete team action
   deleteTeam() {
+    // Request the APi to delete the team
     this.$axios
       .delete(`/api/teams/${this.$route.params.id}`)
       .then(async () => {
+        // On success, fetch teams list and update it
         const teams = await this.$axios.$get('/api/teams')
         await this.$store.commit(
           'menu/setList',
@@ -384,13 +475,17 @@ export default class TeamViewIndex extends Vue {
             }
           })
         )
+        // Finally redirect the user to the main route
         this.$router.push('/teams')
       })
       .catch((error) => {
+        // If failed, log the error in the console
+        // eslint-disable-next-line
         console.error(error)
       })
   }
 
+  // Next page function
   nextPage() {
     if (this.page < this.pagination.last_page) {
       this.page++
@@ -398,9 +493,18 @@ export default class TeamViewIndex extends Vue {
     }
   }
 
+  // Previous page function
   previousPage() {
     if (this.page > 1) {
       this.page--
+      this.$fetch()
+    }
+  }
+
+  @Watch('$route')
+  onRouteChange(current: Partial<any>) {
+    // On route change, if the page name still the same, then refetch team informations
+    if (current.name === 'teams-id') {
       this.$fetch()
     }
   }

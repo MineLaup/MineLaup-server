@@ -44,6 +44,7 @@ export default class AdminSettings extends Vue {
   form = {}
 
   mounted() {
+    // Submit the form when the user press CTRL+ENTER
     document.addEventListener('keypress', (event: KeyboardEvent) => {
       if (event.keyCode !== 10 || !event.ctrlKey) return
 
@@ -51,6 +52,7 @@ export default class AdminSettings extends Vue {
     })
   }
 
+  // The form is always valid since there is no data to validate
   get formValid() {
     return true
   }

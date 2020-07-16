@@ -61,13 +61,14 @@ export default class TTextarea extends Vue {
   @Prop({ default: 'on' })
   autocomplete!: string
 
-  @Prop({ default: false, type: Boolean })
+  @Prop({ default: true, type: Boolean })
   autoResize!: boolean
 
   @Prop({ type: Boolean })
   disabled!: boolean
 
   mounted() {
+    // Activate the autoresize script if the props `autoResize` is enabled
     if (this.autoResize) {
       autosize(this.$el.querySelector('textarea') as Element)
     }

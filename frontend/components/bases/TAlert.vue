@@ -30,6 +30,7 @@ export default class TAlert extends Vue {
   @Prop()
   message!: string
 
+  // Type of the alert. It can be a `warn`, an `error` or a `success`
   @Prop({
     default: 'error',
     validator: (type) => ['warn', 'error', 'success'].includes(type),

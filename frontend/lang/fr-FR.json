@@ -3,13 +3,15 @@
   "components": {
     "modal": {
       "no": "Laisse tomber",
-      "yes": "Je suis sûr !"
+      "yes": "Je suis sûr !",
+      "close": "Fermer"
     }
   },
   "error": {
     "form": {
       "required": "Ce champ est requis",
-      "unique": "La valeur existe déjà"
+      "unique": "La valeur existe déjà",
+      "exists": "La valeur n'existe pas"
     },
     "login": {
       "wrong_ids": "Nom d'utilisateur ou mot de passe invalide"
@@ -113,7 +115,9 @@
           "users": "Utilisateurs",
           "roles": "Rôles",
           "owner": "Propriétaire",
-          "default_role": "Rôle par défaut"
+          "default_role": "Rôle par défaut",
+          "add-user-to-team": "Ajouter un utilisateur à l'équipe",
+          "username": "Nom d'utilisateur"
         },
         "roles": {
           "title": "Role de l'équipe \"{name}\"",
@@ -122,6 +126,14 @@
           "save": "Enregistrer",
           "reset": "Réinitialiser",
           "delete": "Supprimer"
+        }
+      }
+    },
+    "team": {
+      "view": {
+        "index": {
+          "add-user-info": "Entrez le nom d'utilisateur de la personne que vous voulez inviter dans l'équipe.",
+          "invite-user": "Inviter l'utilisateur"
         }
       }
     }

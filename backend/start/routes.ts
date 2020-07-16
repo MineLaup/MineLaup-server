@@ -20,18 +20,43 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 import hat from 'hat'
+import * as pkg from '../package.json'
 
-Route.get('/', async () => {
-  return { hello: 'world' }
+/**
+ * APP ROOT
+ */
+Route.get('/', async ({response}) => {
+  return response.json({
+    name: pkg.name,
+    version: pkg.version,
+    author: pkg.author,
+  })
 })
 
+/**
+ *  USER ROUTES
+ */
 Route.group(() => {
+  /**
+   * Auth management
+   */
+  // Login
   Route.post('/auth', 'AuthController.login')
+  // Get user
   Route.get('/auth', 'AuthController.user').middleware('auth')
+  // Logout
   Route.delete('/auth', 'AuthController.logout').middleware('auth')
+
+  /**
+   * User update
+   */
+  // Set color theme
   Route.post('/color-mode', 'AuthController.setColor').middleware('auth')
 }).prefix('/user')
 
+/**
+ * TEAMS ROUTES
+ */
 Route.group(() => {
   /**
    * Team management
@@ -50,6 +75,9 @@ Route.group(() => {
   /**
    * Users management
    */
+  // Invite a user to a team
+  Route.post('/:id/user', 'TeamsController.inviteUser').where('id', /^[0-9]+$/)
+  // Remove a user from a team
   Route.delete('/:id/user', 'TeamsController.deleteUser').where('id', /^[0-9]+$/)
 
   /**
@@ -65,15 +93,27 @@ Route.group(() => {
   Route.delete('/:id/roles', 'TeamsController.deleteRole').where('id', /^[0-9]+$/)
 }).prefix('/teams').middleware('auth')
 
+/**
+ * ADMIN ROUTES
+ */
 Route.group(() => {
+  // Get users list
   Route.get('/users', 'AdminController.fetchUsers')
+  // Get user information
   Route.get('/user', 'AdminController.getUser')
+  // Delete an user
   Route.delete('/user', 'AdminController.deleteUser')
+  // Create an user
   Route.post('/user', 'AdminController.createUser')
+  // Update an user state (activated/disabled)
   Route.post('/user/state', 'AdminController.updateState')
+  // Update an user
   Route.put('/user', 'AdminController.updateUser')
 }).prefix('/admin').middleware(['auth', 'admin'])
 
+/**
+ * EMAIL TESTING ROUTE
+ */
 Route.get('/email', async ({ view }) => {
   return view.render('mail/set_password', {
     username: 'test',

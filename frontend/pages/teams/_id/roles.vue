@@ -148,15 +148,19 @@ export default class TeamRole extends Vue {
   errorMsg: string = ''
 
   async asyncData({ redirect, $axios, route }: Context) {
+    // Fetch team information
     const team = await $axios
       .$get(`/api/teams/${route.params.id}`)
       .catch(() => {
+        // If the team doesn't exist, redirect the user
         return redirect('/teams/create')
       })
 
+    // Fetch the team roles
     const roles = await $axios
       .$get(`/api/teams/${route.params.id}/roles`)
       .catch(() => {
+        // If failed, redirect the user
         return redirect('/teams/create')
       })
 
@@ -167,7 +171,9 @@ export default class TeamRole extends Vue {
   }
 
   mounted() {
+    // Set the page name
     this.name = this.team.name
+    // Define a proper role list
     this.roles = [
       {
         name: 'default',
@@ -178,23 +184,23 @@ export default class TeamRole extends Vue {
       ...this.roles,
     ]
     this.selected = 0
+    // Fill the form informations form the role list
     this.form = cloneDeep(this.roles[this.selected])
   }
 
+  // Called to render a specific role in the form
   setRole(index: number) {
     this.selected = index
 
     this.form = cloneDeep(this.roles[this.selected])
   }
 
+  // When sumbmit, save the role informations
   saveRole() {
-    /* const index = this.team.roles.findIndex((role: Partial<any>) => {
-      return role.name === this.selected
-    }) */
-
     this.$axios
       .put(`/api/teams/${this.$route.params.id}/roles`, this.form)
       .then(async () => {
+        // On success, fetch role list and set the new role variable again
         this.roles = await this.$axios.$get(
           `/api/teams/${this.$route.params.id}/roles`
         )
@@ -209,25 +215,27 @@ export default class TeamRole extends Vue {
         ]
       })
       .catch((error) => {
+        // If failed, check the response status
         if (error.response?.status) {
           const parsedErrors: Partial<String> = {}
           switch (error.response.status) {
-            case 400:
-              this.errors = Object.assign({}, error.response.data.errors)
-              break
+            // 422: data valitation error
             case 422:
               for (const e of error.response.data.errors) {
                 parsedErrors[e.field] = `error.form.${e.rule}`
               }
               this.errors = parsedErrors
               break
+            // 500: server error
             case 500:
               this.errorMsg = error.response.data.errors[0].message
               break
+            // Unknow error
             default:
               this.errorMsg = 'error.unknown'
           }
         } else {
+          // Unknow error
           // eslint-disable-next-line
           console.error(error)
           this.errorMsg = 'error.unknown'
@@ -235,14 +243,17 @@ export default class TeamRole extends Vue {
       })
   }
 
+  // Reset the role value to his initial state
   resetRole() {
     this.form = cloneDeep(this.roles[this.selected])
   }
 
+  // Request the API to create a new role for the team
   addRole() {
     this.$axios
       .post(`/api/teams/${this.$route.params.id}/roles`)
       .then(async () => {
+        // On success, fetch role list and set the role variable again
         this.roles = await this.$axios.$get(
           `/api/teams/${this.$route.params.id}/roles`
         )
@@ -259,10 +270,13 @@ export default class TeamRole extends Vue {
         this.setRole(this.roles.length - 1)
       })
       .catch((error) => {
+        // On failed, log the error in the console
+        // eslint-disable-next-line
         console.log(error)
       })
   }
 
+  // Request the API to delete a role from the team
   deleteRole(index: number) {
     this.$axios
       .delete(`/api/teams/${this.$route.params.id}/roles`, {
@@ -271,6 +285,7 @@ export default class TeamRole extends Vue {
         },
       })
       .then(async () => {
+        // On success, fetch role list and set the role variable again
         this.roles = await this.$axios.$get(
           `/api/teams/${this.$route.params.id}/roles`
         )
@@ -287,6 +302,8 @@ export default class TeamRole extends Vue {
         this.setRole(index - 1)
       })
       .catch((error) => {
+        // On failed, log the error in the console
+        // eslint-disable-next-line
         console.log(error)
       })
   }

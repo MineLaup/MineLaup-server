@@ -79,27 +79,35 @@ export default class Login extends Vue {
 
   errors: Partial<String> = {}
 
+  // Called when the form is submitted
   login() {
     this.errorMsg = ''
     this.errors = {}
+
+    // Try to login the user
     this.$auth
       .login({ data: this.form })
       .then(() => {
+        // If success, set the app locale to the user preference
         this.$i18n.setLocale(this.$auth.user.language)
       })
       .catch((error: any) => {
+        // On failed, check the response status
         if (error.response?.status) {
           const parsedErrors: Partial<String> = {}
           switch (error.response.status) {
+            // 400: Bad request, the auth informations are wrongs
             case 400:
               this.errorMsg = 'error.login.wrong_ids'
               break
+            // 422: data validation error
             case 422:
               for (const e of error.response.data.errors) {
                 parsedErrors[e.field] = `error.form.${e.rule}`
               }
               this.errors = parsedErrors
               break
+            // unknonw error
             default:
               this.errorMsg = 'error.unknown'
           }

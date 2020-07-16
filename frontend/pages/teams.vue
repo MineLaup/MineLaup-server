@@ -10,7 +10,9 @@ import { Context } from '@nuxt/types'
 
 @Component
 export default class Teams extends Vue {
+  // Set the side bar list
   async asyncData({ $axios, store }: Context) {
+    // Fetch the user teams
     const teams = await $axios.$get('/api/teams')
 
     store.commit('menu/clear')
@@ -21,6 +23,7 @@ export default class Teams extends Vue {
       icon: 'plus',
     })
 
+    // If the user is in a team, show them
     if (teams) {
       store.commit(
         'menu/setList',

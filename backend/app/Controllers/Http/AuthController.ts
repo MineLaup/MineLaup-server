@@ -1,37 +1,47 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
-import User from 'App/Models/User'
 
 export default class AuthController {
+  /**
+   * Login function
+   */
   public async login ({ auth, request }: HttpContextContract) {
-    const userSchema = schema.create({
-      username: schema.string(),
-      password: schema.string(),
-    })
-
+    // Validate datas
     const data = await request.validate({
-      schema: userSchema,
+      schema: schema.create({
+        username: schema.string(),
+        password: schema.string(),
+      }),
       cacheKey: request.url(),
     })
 
     await auth.attempt(data.username, data.password)
   }
 
+  /**
+   * Get user function
+   */
   public async user ({ response, auth }: HttpContextContract) {
-    const user = auth.user
-
-    response.status(200).json(user)
+    return response.status(200).json(auth.user)
   }
 
-  public async logout ({ auth }: HttpContextContract) {
+  /**
+   * Log out function
+   */
+  public async logout ({ auth, response }: HttpContextContract) {
     await auth.logout()
 
-    return 200
+    return response.status(200)
   }
 
+  /**
+   * Update color theme function
+   */
   public async setColor ({ request, auth, response }: HttpContextContract) {
+    // Validate datas
     const data = await request.validate({
       schema: schema.create({
+        // The color has to be a string with `dark` or `light` a value
         color: schema.string({
           escape: true,
           trim: true,
@@ -43,14 +53,11 @@ export default class AuthController {
       }),
     })
 
-    const user = await User.find(auth.user!.id)
+    // Update the color theme
+    auth.user!.colorMode = data.color
+    auth.user!.save()
 
-    if (user) {
-      user.colorMode = data.color
-      user.save()
-      return response.status(200)
-    }
-
-    return response.status(401)
+    // Send a feedback
+    return response.status(200)
   }
 }

@@ -70,6 +70,7 @@ export default class TInput extends Vue {
   error!: string
 
   showPass: boolean = false
+
   @Prop({ default: 'on' })
   autocomplete!: string
 

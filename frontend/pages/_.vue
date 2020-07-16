@@ -4,6 +4,7 @@ import { Context } from '@nuxt/types'
 
 @Component
 export default class Redirect extends Vue {
+  // Redirect the user to the main route for every unknow routes
   asyncData({ redirect }: Context) {
     redirect('/')
   }

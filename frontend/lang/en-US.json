@@ -3,13 +3,15 @@
   "components": {
     "modal": {
       "no": "Forget it",
-      "yes": "I'm sure !"
+      "yes": "I'm sure !",
+      "close": "Close"
     }
   },
   "error": {
     "form": {
       "required": "This field is required",
-      "unique": "The value already exist"
+      "unique": "The value already exist",
+      "exists": "The value doesn't exist"
     },
     "login": {
       "wrong_ids": "Invalid username or password"
@@ -99,6 +101,7 @@
       "view": {
         "index": {
           "confirmDelete": "Are you sure that you want delete this team ?",
+          "add-user-to-team": "Add an user to the team",
           "delete": "Delete",
           "list": {
             "actions": "Actions",
@@ -113,7 +116,8 @@
           "users": "Users",
           "roles": "Roles",
           "owner": "Owner",
-          "default_role": "Default role"
+          "default_role": "Default role",
+          "username": "Username"
         },
         "roles": {
           "title": "\"{name}\" team's roles",
@@ -122,6 +126,14 @@
           "save": "Save",
           "reset": "Reset",
           "delete": "Delete"
+        }
+      }
+    },
+    "team": {
+      "view": {
+        "index": {
+          "add-user-info": "Enter the username of the person you want to invite to the team.",
+          "invite-user": "Invite user"
         }
       }
     }

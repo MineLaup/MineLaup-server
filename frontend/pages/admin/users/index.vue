@@ -242,6 +242,7 @@ export default class AdminUsersView extends Vue {
   }
 
   async fetch() {
+    // Fetch the user list from the search informations
     const response = await this.$axios.$get('/api/admin/users', {
       params: this.search,
     })
@@ -254,6 +255,7 @@ export default class AdminUsersView extends Vue {
 
   editUser(_id: number) {}
 
+  // The delete user modal is opened when this function is called
   openDeleteModal(user: Partial<any>) {
     this.modal = {
       title: 'pages.admin.users.confirmDelete',
@@ -262,6 +264,7 @@ export default class AdminUsersView extends Vue {
     this.selected = user.id
   }
 
+  // Request the delete action of an user to the API
   deleteUser(id: number) {
     this.$axios
       .delete('/api/admin/user', {
@@ -270,19 +273,24 @@ export default class AdminUsersView extends Vue {
         },
       })
       .then(() => {
+        // On success, reload the user list and close the modal
         this.$fetch()
         this.modal = {}
       })
       .catch((error) => {
+        // if failed, log the error
+        // eslint-disable-next-line
         console.log(error)
       })
   }
 
+  // Close the delete modal when called
   closeDeleteModal() {
     this.selected = null
     this.modal = {}
   }
 
+  // Toggle the user state between `activated` and `disabled`
   toggleState(id: number, isDisabled: boolean) {
     this.$axios
       .post(
@@ -297,16 +305,19 @@ export default class AdminUsersView extends Vue {
         }
       )
       .then(() => {
+        // On sucess, update informations on screen to give a feedback to the user
         const index = this.users.findIndex((user) => user.id === id)
         this.users[index].disabled = !isDisabled
       })
   }
 
+  // Decounced function to search users
   searchUsers = debounce(() => {
     this.search.page = 1
     this.$fetch()
   }, 250)
 
+  // Next page function
   nextPage() {
     if (this.search.page < this.pagination.last_page) {
       this.search.page++
@@ -314,6 +325,7 @@ export default class AdminUsersView extends Vue {
     }
   }
 
+  // Previous page function
   previousPage() {
     if (this.search.page > 1) {
       this.search.page--

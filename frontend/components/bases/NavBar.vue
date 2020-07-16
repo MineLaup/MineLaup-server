@@ -55,16 +55,20 @@ import sortBy from 'lodash/sortBy'
 @Component
 export default class NavBar extends Vue {
   showLanguageList: boolean = false
+
+  // Toggle language list rendering
   toggleList() {
     this.showLanguageList = !this.showLanguageList
   }
 
+  // Set the app language before closing the list
   changeLanguage(languageCode: string) {
     this.$i18n.setLocale(languageCode)
     this.showLanguageList = false
   }
 
   mounted() {
+    // When the component is mounted, if the user click outside the list, then this one is closed
     window.addEventListener('click', (event) => {
       event.stopPropagation()
       const el = this.$el.querySelector('.select-input')
@@ -74,6 +78,7 @@ export default class NavBar extends Vue {
     })
   }
 
+  // Get all availables locales
   get locales() {
     return sortBy(this.$i18n.locales, ['code'])
   }
