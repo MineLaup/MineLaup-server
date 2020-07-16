@@ -1,6 +1,6 @@
 {
   "name": "minelaup-server-backend",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "private": true,
   "description": "The server side of the project MineLaup.",
   "scripts": {
@@ -19,7 +19,7 @@
     "adonis-preset-ts": "^1.0.4",
     "eslint": "^7.4.0",
     "eslint-plugin-adonis": "^1.0.14",
-    "pino-pretty": "^4.0.0",
+    "pino-pretty": "^4.0.3",
     "sqlite3": "^5.0.0",
     "typescript": "^3.9.6",
     "youch": "^2.0.10",
@@ -38,6 +38,6 @@
     "proxy-addr": "^2.0.6",
     "reflect-metadata": "^0.1.13",
     "source-map-support": "^0.5.19",
-    "tailwindcss": "^1.4.6"
+    "tailwindcss": "^1.5.1"
   }
 }

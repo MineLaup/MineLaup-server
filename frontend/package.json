@@ -1,6 +1,6 @@
 {
   "name": "minelaup-server-frontend",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "The server side of the project MineLaup.",
   "author": "Bricklou",
   "license": "gplv3",
@@ -24,15 +24,15 @@
     }
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.13.1",
+    "@fortawesome/fontawesome-free": "^5.14.0",
     "@nuxtjs/auth": "^4.9.1",
-    "@nuxtjs/axios": "^5.11.0",
+    "@nuxtjs/axios": "^5.12.0",
     "@nuxtjs/color-mode": "^1.0.0",
     "@nuxtjs/dotenv": "^1.4.1",
-    "@nuxtjs/proxy": "^2.0.0",
+    "@nuxtjs/proxy": "^2.0.1",
     "@nuxtjs/pwa": "^3.0.0-beta.20",
     "autosize": "^4.0.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "nuxt": "^2.13.3",
     "nuxt-i18n": "^6.13.1",
     "nuxt-property-decorator": "^2.7.2",
@@ -64,7 +64,7 @@
     "prettier": "^2.0.5",
     "sass-loader": "^9.0.2",
     "stylelint": "^13.6.1",
-    "ts-jest": "^26.1.1",
+    "ts-jest": "^26.1.2",
     "vue-jest": "^4.0.0-0"
   }
 }
