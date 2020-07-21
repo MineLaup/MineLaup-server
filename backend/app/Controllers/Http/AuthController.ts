@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import User from 'App/Models/User'
 
 export default class AuthController {
   /**
@@ -58,6 +59,71 @@ export default class AuthController {
     auth.user!.save()
 
     // Send a feedback
+    return response.status(200)
+  }
+
+  /**
+   * Update user informations
+   */
+  public async updateUser ({ request, auth, response }: HttpContextContract) {
+    // Validate datas
+    const data = await request.validate({
+      schema: schema.create({
+        username: schema.string({
+          escape: true,
+          trim: true,
+        }, [
+          // The username has to be unique, with a max length of 45 characters and to be alphanumeric
+          rules.regex(/^[a-z0-9_-]+$/),
+          rules.maxLength(45),
+          rules.unique({
+            column: 'username',
+            table: 'users',
+            whereNot: {
+              id: auth.user!.id,
+            },
+          }),
+        ]),
+        email: schema.string({
+          escape: true,
+          trim: true,
+        }, [
+          // The email has to be unique
+          rules.email(),
+          rules.unique({
+            column: 'username',
+            table: 'users',
+            whereNot: {
+              id: auth.user!.id,
+            },
+          }),
+        ]),
+        first_name: schema.string.optional({
+          trim: true,
+          escape: true,
+        }),
+        last_name: schema.string.optional({
+          trim: true,
+          escape: true,
+        }),
+        language: schema.string.optional({
+          trim: true,
+          escape: true,
+        },
+        [
+          rules.maxLength(6),
+          rules.regex(/^(fr|en)$/),
+        ]),
+      }),
+    })
+
+    // Update user settings
+    await User
+      .query()
+      .where('id', auth.user!.id)
+      .update(data)
+
+    // Given feedback
     return response.status(200)
   }
 }

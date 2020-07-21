@@ -52,6 +52,8 @@ Route.group(() => {
    */
   // Set color theme
   Route.post('/color-mode', 'AuthController.setColor').middleware('auth')
+  // Update user informations
+  Route.put('/update', 'AuthController.updateUser').middleware('auth')
 }).prefix('/user')
 
 /**

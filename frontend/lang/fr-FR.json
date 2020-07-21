@@ -136,6 +136,15 @@
           "invite-user": "Inviter l'utilisateur"
         }
       }
+    },
+    "settings": {
+      "title": "Paramètres",
+      "submit": "Mettre à jour",
+      "username": "Nom d'utilisateur",
+      "email": "Email",
+      "first_name": "Prénom",
+      "last_name": "Nom",
+      "language": "Langue"
     }
   },
   "roles": {

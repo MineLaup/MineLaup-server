@@ -12,75 +12,12 @@
         {{ $t('app-name') }}
       </nuxt-link>
     </div>
-    <div class="flex-end">
-      <div class="w-12 text-right">
-        <div ref="languageList">
-          <a
-            class="border-b-2 border-transparent hover:border-white w-10 cursor-pointer py-1 select-none select-input transition ease-out duration-300"
-            :class="{ 'border-white': showLanguageList }"
-            @click="toggleList"
-          >
-            <span class="mr-2 uppercase">
-              {{ $i18n.locale }}
-            </span>
-            <i class="fas fa-caret-down"></i>
-          </a>
-
-          <ul
-            v-if="showLanguageList"
-            class="z-10 text-left bg-white dark:bg-gray-700 p-1 rounded-lg w-1/5 right-0 mr-2 mt-4 absolute shadow-lg overflow-x-auto"
-          >
-            <li
-              v-for="locale in locales"
-              :key="locale.iso"
-              class="text-black dark:text-white border-b last:border-transparent border-gray-400 px-4 py-2 hover:bg-gray-200 dark-hover:bg-gray-600 cursor-pointer"
-              :class="{
-                'text-green-600 dark:text-green-600':
-                  locale.code == $i18n.locale,
-              }"
-              @click="changeLanguage(locale.code)"
-            >
-              {{ locale.name }}
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
   </nav>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import sortBy from 'lodash/sortBy'
+
 @Component
-export default class NavBar extends Vue {
-  showLanguageList: boolean = false
-
-  // Toggle language list rendering
-  toggleList() {
-    this.showLanguageList = !this.showLanguageList
-  }
-
-  // Set the app language before closing the list
-  changeLanguage(languageCode: string) {
-    this.$i18n.setLocale(languageCode)
-    this.showLanguageList = false
-  }
-
-  mounted() {
-    // When the component is mounted, if the user click outside the list, then this one is closed
-    window.addEventListener('click', (event) => {
-      event.stopPropagation()
-      const el = this.$el.querySelector('.select-input')
-      if (el && !el.contains(event.target as Node)) {
-        this.showLanguageList = false
-      }
-    })
-  }
-
-  // Get all availables locales
-  get locales() {
-    return sortBy(this.$i18n.locales, ['code'])
-  }
-}
+export default class NavBar extends Vue {}
 </script>
