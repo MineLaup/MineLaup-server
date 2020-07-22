@@ -11,6 +11,7 @@ import {
 import User from './User'
 import TeamRole from './TeamRole'
 import Permission from './Permission'
+import Modpack from './Modpack'
 
 export default class Team extends BaseModel {
   @column({ isPrimary: true })
@@ -38,6 +39,9 @@ export default class Team extends BaseModel {
 
   @belongsTo(() => Permission)
   public defaultPermission: BelongsTo<typeof Permission>
+
+  @hasMany(() => Modpack)
+  public modpacks: HasMany<typeof Modpack>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

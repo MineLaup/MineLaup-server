@@ -37,7 +37,9 @@
       "settings": "Settings",
       "team-new": "New team",
       "team-title": "Teams",
-      "users": "Users"
+      "users": "Users",
+      "modpack-title": "Modpacks",
+      "modpack-new": "New modpack"
     }
   },
   "pages": {

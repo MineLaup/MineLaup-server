@@ -25,7 +25,7 @@
           <t-side-bar-button
             :name="$t('layout.side-bar.modpacks')"
             icon="box-open"
-            to="/modpack"
+            to="/modpacks"
           />
           <t-side-bar-button
             v-if="hasAdminPermission"
