@@ -147,6 +147,16 @@
       "first_name": "Prénom",
       "last_name": "Nom",
       "language": "Langue"
+    },
+    "modpacks": {
+      "create": {
+        "title": "Créer un nouveau modpack",
+        "name": "Nom",
+        "summary": "Description",
+        "submit": "Créer",
+        "team": "Équipe",
+        "select_team": "Veuillez sélectionner une équipe"
+      }
     }
   },
   "roles": {
