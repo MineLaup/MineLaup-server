@@ -174,6 +174,16 @@
         "search_modpack": "Search a modpack",
         "add_modpacks": "Add modpacks"
       }
+    },
+    "modpacks": {
+      "create": {
+        "title": "Create a new modpack",
+        "name": "Name",
+        "summary": "Summary",
+        "submit": "Create",
+        "team": "Team",
+        "select_team": "Please select a team "
+      }
     }
   },
   "roles": {

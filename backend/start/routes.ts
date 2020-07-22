@@ -99,7 +99,13 @@ Route.group(() => {
  * MODPACKS ROUTES
  */
 Route.group(() => {
+  /**
+   * Modpack management
+   */
+  // List modpacks
   Route.get('/', 'ModpacksController.getList')
+  // Create modpacks
+  Route.post('/', 'ModpacksController.create')
 }).prefix('/modpacks').middleware('auth')
 
 /**
