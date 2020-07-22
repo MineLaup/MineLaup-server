@@ -96,6 +96,13 @@ Route.group(() => {
 }).prefix('/teams').middleware('auth')
 
 /**
+ * MODPACKS ROUTES
+ */
+Route.group(() => {
+  Route.get('/', 'ModpacksController.getList')
+}).prefix('/modpacks').middleware('auth')
+
+/**
  * ADMIN ROUTES
  */
 Route.group(() => {

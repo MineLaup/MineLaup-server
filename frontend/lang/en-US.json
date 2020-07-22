@@ -39,7 +39,9 @@
       "team-title": "Teams",
       "users": "Users",
       "launcher-title": "Launchers",
-      "launcher-list": "Launchers list"
+      "launcher-list": "Launchers list",
+      "modpack-title": "Modpacks",
+      "modpack-new": "New modpack"
     }
   },
   "pages": {

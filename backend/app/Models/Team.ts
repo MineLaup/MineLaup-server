@@ -12,6 +12,7 @@ import User from './User'
 import TeamRole from './TeamRole'
 import Permission from './Permission'
 import Launcher from './Launcher'
+import Modpack from './Modpack'
 
 export default class Team extends BaseModel {
   @column({ isPrimary: true })
@@ -42,6 +43,9 @@ export default class Team extends BaseModel {
 
   @hasMany(() => Launcher)
   public launchers: HasMany<typeof Launcher>
+
+  @hasMany(() => Modpack)
+  public modpacks: HasMany<typeof Modpack>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
