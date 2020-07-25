@@ -41,7 +41,7 @@
       "launcher-title": "Launchers",
       "launcher-list": "Launchers list",
       "modpack-title": "Modpacks",
-      "modpack-new": "New modpack"
+      "modpack-list": "Modpacks List"
     }
   },
   "pages": {
@@ -183,6 +183,9 @@
         "submit": "Create",
         "team": "Team",
         "select_team": "Please select a team "
+      },
+      "list": {
+        "title": "Modpacks list"
       }
     }
   },

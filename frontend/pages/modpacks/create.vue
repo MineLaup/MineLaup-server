@@ -123,6 +123,7 @@ export default class ModpackCreate extends Vue {
     // Request the API to create a new modpack
     this.$axios
       .post('/api/modpacks', this.form)
+      // eslint-disable-next-line
       .then(async ({ data }) => {
         // On success, fetch teams list and update modpack list it in side bar
         let teams: Array<Partial<any>> = await this.$axios.$get('/api/modpacks')
@@ -131,16 +132,19 @@ export default class ModpackCreate extends Vue {
           return team.modpacks?.length
         })
 
-        if (teams) {
-          this.$store.commit(
-            'menu/setList',
-            teams.map((team: Partial<any>) => {
-              return team.modpacks.map((modpack: Partial<any>) => ({
-                name: modpack.name,
-                path: `/modpacks/${modpack.id}`,
-              }))
+        const modpacks: Array<Partial<any>> = []
+
+        teams.map((team: Partial<any>) => {
+          team.modpacks.map((modpack: Partial<any>) => {
+            modpacks.push({
+              name: modpack.name,
+              path: `/modpacks/${modpack.id}`,
             })
-          )
+          })
+        })
+
+        if (teams) {
+          this.$store.commit('menu/setList', modpacks)
         }
         // Redirect the user to the new modpack page
         this.$router.push(`/modpacks/${data.id}`)
