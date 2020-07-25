@@ -16,9 +16,9 @@ export default class Modpack extends Vue {
     store.commit('menu/clear')
     store.commit('menu/setTitle', 'layout.side-menu.modpack-title')
     store.commit('menu/setAdditional', {
-      name: 'layout.side-menu.modpack-new',
-      path: '/modpacks/create',
-      icon: 'plus',
+      name: 'layout.side-menu.modpack-list',
+      path: '/modpacks',
+      icon: 'list',
     })
 
     teams = teams.filter((team: Partial<any>) => {

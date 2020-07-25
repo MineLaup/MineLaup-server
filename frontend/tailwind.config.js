@@ -16,6 +16,15 @@ module.exports = {
       'hover',
       'last',
     ],
+    borderWidth: [
+      'dark',
+      'dark-hover',
+      'dark-focus',
+      'dark-focus-within',
+      'hover',
+      'last',
+      'responsive',
+    ],
     backgroundColor: [
       'dark',
       'dark-hover',

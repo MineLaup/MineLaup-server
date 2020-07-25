@@ -81,6 +81,7 @@
               <t-side-bar-item
                 v-if="$store.getters['menu/hasAdditional']"
                 :to="$store.getters['menu/getAdditional'].path"
+                exact
               >
                 <span class="w-14 h-14">
                   <i
