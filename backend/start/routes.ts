@@ -103,10 +103,12 @@ Route.group(() => {
    * Modpack management
    */
   // List modpacks
-  Route.get('/', 'ModpacksController.getList')
+  Route.get('/modpacks', 'ModpacksController.getList')
+  // Get a modpack
+  Route.get('/modpack', 'ModpacksController.get')
   // Create modpacks
-  Route.post('/', 'ModpacksController.create')
-}).prefix('/modpacks').middleware('auth')
+  Route.post('/modpacks', 'ModpacksController.create')
+}).middleware('auth')
 
 /**
  * ADMIN ROUTES
