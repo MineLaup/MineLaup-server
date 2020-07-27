@@ -235,7 +235,7 @@
       <div slot="actions">
         <div class="flex flex-col mb-4 text-left">
           <p class="mb-6">
-            {{ $t('pages.team.view.index.add-user-info') }}
+            {{ $t('pages.teams.view.index.add-user-info') }}
           </p>
           <t-input
             id="user-invite"
