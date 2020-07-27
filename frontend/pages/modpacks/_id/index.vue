@@ -1,9 +1,23 @@
 <template>
   <div v-if="modpack" class="flex flex-col">
     <div class="h-64 bg-gray-200 dark:bg-gray-600 p-10">
-      <h1 class="font-bold uppercase text-3xl text-gray-900 dark:text-white">
-        {{ modpack.name }}
-      </h1>
+      <div class="flex flex-row">
+        <h1
+          class="font-bold uppercase text-3xl text-gray-900 dark:text-white flex-1"
+        >
+          {{ modpack.name }}
+        </h1>
+        <div v-if="modpack.userPerms.owner || modpack.userPerms.manage_modpack">
+          <i
+            class="fa fa-user-tag text-gray-700 dark:text-white hover:text-gray-600 dark-hover:text-gray-400 cursor-pointer"
+            @click="$router.push('/modpacks/' + $route.params.id + '/roles')"
+          ></i>
+          <i
+            class="fa fa-trash text-red-500 hover:text-red-400 cursor-pointer"
+            @click="openDeleteTeamModal"
+          ></i>
+        </div>
+      </div>
       <div class="mx-8">
         <p class="text-gray-800">
           {{ modpack.team.name }}
@@ -13,34 +27,7 @@
         </p>
       </div>
     </div>
-    <div class="flex-1">
-      <div
-        v-if="modpack.userPerms.owner || modpack.userPerms.manage_modpack"
-        class="py-4 mt-10 text-center"
-      >
-        <t-button
-          class="w-1/2 mb-8"
-          icon="user-tag"
-          color="gray-900"
-          hover-color="white"
-          bg-hover-color="gray-900"
-          dark-bg-hover-color="white"
-          dark-hover-color="gray-800"
-          @click="$router.push('/modpacks/' + $route.params.id + '/roles')"
-        >
-          {{ $t('pages.teams.view.index.roles') }}
-        </t-button>
-        <t-button
-          class="w-1/2"
-          icon="trash"
-          bg-hover-color="red-500"
-          dark-bg-hover-color="red-500"
-          @click="openDeleteTeamModal"
-        >
-          {{ $t('pages.teams.view.index.delete') }}
-        </t-button>
-      </div>
-    </div>
+    <div class="flex-1"></div>
 
     <t-modal
       v-if="Object.keys(deleteModal).length > 0"

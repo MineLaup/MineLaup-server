@@ -40,6 +40,7 @@ module.exports = {
       'dark-placeholder',
       'hover',
     ],
+    position: ['responsive', 'hover', 'focus'],
   },
   plugins: [require('tailwindcss-dark-mode')()],
 }
