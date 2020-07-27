@@ -5,7 +5,11 @@
         {{ $t('pages.modpacks.list.title') }}
       </h1>
 
-      <div v-for="team in teams" :key="team.id" class="p-10 pb-0 last:pb-10">
+      <div
+        v-for="team in teams"
+        :key="team.id"
+        class="pt-5 md:p-10 pb-0 last:pb-10"
+      >
         <h2 class="font-bold text-xl text-gray-900 dark:text-white uppercase">
           {{ team.name }}
         </h2>

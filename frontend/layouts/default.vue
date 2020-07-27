@@ -10,7 +10,7 @@
         class="flex flex-1 flex-col md:flex-row dark:text-white dark:bg-gray-700"
       >
         <ul
-          class="flex flex-row md:flex-col items-center text-center bg-gray-900 text-gray-400 h-10 md:h-full md:w-12 overflow-x-auto md:overflow-visible"
+          class="flex flex-row md:flex-col items-center text-center bg-gray-900 text-gray-400 h-10 md:h-full md:w-12 md:overflow-visible"
         >
           <t-side-bar-button
             :name="$t('layout.side-bar.teams')"
