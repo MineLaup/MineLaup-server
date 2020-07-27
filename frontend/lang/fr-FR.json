@@ -121,7 +121,9 @@
           "owner": "Propriétaire",
           "default_role": "Rôle par défaut",
           "add-user-to-team": "Ajouter un utilisateur à l'équipe",
-          "username": "Nom d'utilisateur"
+          "username": "Nom d'utilisateur",
+          "add-user-info": "Entrez le nom d'utilisateur de la personne que vous voulez inviter dans l'équipe.",
+          "invite-user": "Inviter l'utilisateur"
         },
         "roles": {
           "title": "Role de l'équipe \"{name}\"",
@@ -130,14 +132,6 @@
           "save": "Enregistrer",
           "reset": "Réinitialiser",
           "delete": "Supprimer"
-        }
-      }
-    },
-    "team": {
-      "view": {
-        "index": {
-          "add-user-info": "Entrez le nom d'utilisateur de la personne que vous voulez inviter dans l'équipe.",
-          "invite-user": "Inviter l'utilisateur"
         }
       }
     },
@@ -186,6 +180,9 @@
       },
       "list": {
         "title": "Liste des modpacks"
+      },
+      "index": {
+        "confirmDelete": "Êtes vous sûr de vouloir supprimer ce modpack ?"
       }
     }
   },

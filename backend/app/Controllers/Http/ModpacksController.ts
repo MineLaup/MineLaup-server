@@ -27,21 +27,9 @@ export default class ModpacksController {
   /**
    * Get a modpack
    */
-  public async get ({ auth, response, request}: HttpContextContract) {
-    const data = await request.validate({
-      schema: schema.create({
-        id: schema.number([
-          rules.unsigned(),
-          rules.exists({
-            column: 'id',
-            table: 'modpacks',
-          }),
-        ]),
-      }),
-    })
-
+  public async get ({ auth, response, params }: HttpContextContract) {
     // Get the modpack
-    const modpack = await Modpack.findOrFail(data.id)
+    const modpack = await Modpack.findOrFail(params.id)
 
     // Check if the user has the right to get the modpack
     const teamUser = await TeamUser
@@ -116,5 +104,45 @@ export default class ModpacksController {
     })
     // Send back the modpack informations
     return response.send(modpack)
+  }
+
+  public async delete ({ params, auth, response }: HttpContextContract) {
+    // Get modpack instance from id
+    const modpack = await Modpack
+      .query()
+      .preload('team', (query) => {
+        query.preload('defaultPermission')
+      })
+      .where('id', params.id)
+      .firstOrFail()
+
+    // If the current user is the team owner
+    if (modpack.team.ownerId === auth.user!.id) {
+      await modpack.delete()
+
+      // Give feedback
+      return response.status(200)
+    } else {
+      // Get the current user permissions
+      const currentUser = await TeamUser
+        .query()
+        .preload('teamRole', (query) => {
+          query.preload('permission')
+        })
+        .where('teamId', modpack.teamId)
+        .andWhere('userId', auth.user!.id)
+        .firstOrFail()
+
+      // Check permissions
+      if (currentUser.teamRole.permission.manage_modpacks || modpack.team.defaultPermission.manage_modpacks) {
+        await modpack.delete()
+
+        // Give feedback
+        return response.status(200)
+      } else {
+        // Send access forbidden
+        return response.status(403)
+      }
+    }
   }
 }

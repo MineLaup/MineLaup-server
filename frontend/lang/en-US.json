@@ -121,7 +121,9 @@
           "roles": "Roles",
           "owner": "Owner",
           "default_role": "Default role",
-          "username": "Username"
+          "username": "Username",
+          "add-user-info": "Enter the username of the person you want to invite to the team.",
+          "invite-user": "Invite user"
         },
         "roles": {
           "title": "\"{name}\" team's roles",
@@ -130,14 +132,6 @@
           "save": "Save",
           "reset": "Reset",
           "delete": "Delete"
-        }
-      }
-    },
-    "team": {
-      "view": {
-        "index": {
-          "add-user-info": "Enter the username of the person you want to invite to the team.",
-          "invite-user": "Invite user"
         }
       }
     },
@@ -186,6 +180,9 @@
       },
       "list": {
         "title": "Modpacks list"
+      },
+      "index": {
+        "confirmDelete": "Are you sure that you want delete this modpack ?"
       }
     }
   },
