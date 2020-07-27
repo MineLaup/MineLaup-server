@@ -1,6 +1,6 @@
 {
   "name": "minelaup-server-frontend",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "The server side of the project MineLaup.",
   "author": "Bricklou",
   "license": "gplv3",
@@ -41,13 +41,13 @@
   },
   "devDependencies": {
     "@nuxt/types": "^2.13.3",
-    "@nuxt/typescript-build": "^2.0.0",
+    "@nuxt/typescript-build": "^2.0.2",
     "@nuxtjs/eslint-config-typescript": "^2.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/stylelint-module": "^4.0.0",
     "@nuxtjs/tailwindcss": "^2.1.0",
     "@types/autosize": "^3.0.7",
-    "@types/lodash": "^4.14.157",
+    "@types/lodash": "^4.14.158",
     "@types/nuxtjs__auth": "^4.8.4",
     "@vue/test-utils": "^1.0.3",
     "babel-eslint": "^10.1.0",

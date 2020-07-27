@@ -1,6 +1,6 @@
 {
   "name": "minelaup-server-backend",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "private": true,
   "description": "The server side of the project MineLaup.",
   "scripts": {
@@ -34,6 +34,7 @@
     "@adonisjs/mail": "^4.1.1",
     "@adonisjs/session": "^3.0.3",
     "@adonisjs/view": "^2.0.7",
+    "@poppinss/co-body": "git+https://github.com/thetutlage/co-body.git",
     "hat": "0.0.3",
     "proxy-addr": "^2.0.6",
     "reflect-metadata": "^0.1.13",
