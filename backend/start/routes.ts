@@ -123,6 +123,10 @@ Route.group(() => {
   Route.post('/launchers', 'LaunchersController.create')
   // Get launcher information
   Route.get('/launcher/:id', 'LaunchersController.get')
+  // Delete a launcher
+  Route.delete('/launcher/:id', 'LaunchersController.delete')
+  // Regenerate API key
+  Route.post('/launcher/:id/regenerate', 'LaunchersController.regenerate')
 }).middleware('auth')
 
 /**

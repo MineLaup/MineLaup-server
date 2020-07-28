@@ -10,7 +10,7 @@ export default class Launchers extends BaseSchema {
       table.string('name', 50).unique().notNullable()
       table.string('summary', 2000).nullable()
       table.boolean('disabled').defaultTo(false)
-      table.string('api_key').nullable()
+      table.string('api_key').nullable().unique()
     })
   }
 

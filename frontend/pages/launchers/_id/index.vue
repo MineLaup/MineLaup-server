@@ -31,7 +31,46 @@
         </p>
       </div>
     </div>
-    <div class="flex-1"></div>
+    <div class="flex-1">
+      <div class="p-10">
+        <t-input
+          id="api_key"
+          class="w-2/3 mb-4 select-text"
+          :label="$t('pages.launchers.view.api_key')"
+          type="password"
+          autocomplete="off"
+          :disabled="true"
+          :value="launcher.api_key"
+          icon="key"
+        />
+        <t-button @click="regenerateKey">
+          {{ $t('pages.launchers.view.regenerate_key') }}
+        </t-button>
+      </div>
+
+      <div class="p-10">
+        <div
+          class="flex flex-col border border-gray-800 shadow-lg rounded-md overflow-hidden"
+        >
+          <div class="flex flex-row justify-between bg-gray-800 text-white p-4">
+            <h1 class="uppercase font-bold">
+              {{ $t('pages.launchers.view.assigned_modpack') }}
+            </h1>
+            <div>
+              <i
+                class="fas fa-plus-circle hover:text-green-400 cursor-pointer"
+                @click="openSearchModpackModal"
+              ></i>
+            </div>
+          </div>
+          <div
+            class="border-b-gray-600 last:border-b-0 p-4 hover:bg-gray-100 dark:bg-gray-600 dark-hover:bg-gray-500 transition-colors duration-75"
+          >
+            hello
+          </div>
+        </div>
+      </div>
+    </div>
 
     <t-modal
       v-if="Object.keys(deleteModal).length > 0"
@@ -59,6 +98,35 @@
         </t-button>
       </div>
     </t-modal>
+
+    <t-modal
+      v-if="Object.keys(searchModal).length > 0"
+      @close-modal="searchModal = {}"
+    >
+      <h1 slot="title">{{ $t(searchModal.title) }}</h1>
+      <div slot="actions" class="flex flex-col">
+        <t-input
+          id="searchModpack"
+          v-model="searchField"
+          class="mb-4"
+          icon="search"
+          :label="$t('pages.launchers.view.search_modpack')"
+        />
+
+        <div class="border border-gray-400 m-5"></div>
+
+        <t-button
+          class="mb-2"
+          bg-hover-color="gray-900"
+          dark-color="white"
+          dark-bg-hover-color="white"
+          dark-hover-color="gray-900"
+          @click="searchModal = {}"
+        >
+          {{ $t('components.modal.close') }}
+        </t-button>
+      </div>
+    </t-modal>
   </div>
 </template>
 
@@ -66,31 +134,46 @@
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import TButton from '~/components/forms/TButton.vue'
 import TModal from '~/components/bases/TModal.vue'
+import TInput from '~/components/forms/TInput.vue'
 
 @Component({
   components: {
     TButton,
     TModal,
+    TInput,
   },
 })
 export default class LauncherViewIndex extends Vue {
   launcher: Partial<any> | null = null
+  modpacks: Array<Partial<any>> | null = null
 
   deleteModal: Partial<any> = {}
+  searchModal: Partial<any> = {}
+
+  searchField: string = ''
 
   async fetch() {
     // Fetch launcher informations
-    const launcher = await this.$axios.$get(
-      `/api/launcher/${this.$route.params.id}`
-    )
+    const launcher = await this.$axios
+      .$get(`/api/launcher/${this.$route.params.id}`)
+      .catch(() => {
+        this.$router.replace('/launchers')
+      })
 
     this.launcher = launcher
   }
 
-  // open the delete team modal confirmation
+  // open the delete launcher modal confirmation
   openDeleteLauncherModal() {
     this.deleteModal = {
-      title: 'pages.launchers.index.confirmDelete',
+      title: 'pages.launchers.index.confirm_delete',
+    }
+  }
+
+  // open the search modpack modal
+  openSearchModpackModal() {
+    this.searchModal = {
+      title: 'pages.launchers.view.add_modpacks',
     }
   }
 
@@ -101,7 +184,7 @@ export default class LauncherViewIndex extends Vue {
       .delete(`/api/launcher/${this.$route.params.id}`)
       .then(async () => {
         // On success, fetch teams list and update it
-        let teams = await this.$axios.$get('/api/launcher')
+        let teams = await this.$axios.$get('/api/launchers')
 
         teams = teams.filter((team: Partial<any>) => {
           return team.launcher?.length
@@ -111,7 +194,7 @@ export default class LauncherViewIndex extends Vue {
 
         teams.forEach((team: Partial<any>) => {
           launchers = launchers.concat(
-            team.modpacks.map((launcher: Partial<any>) => ({
+            team.launchers.map((launcher: Partial<any>) => ({
               name: launcher.name,
               path: `/launchers/${launcher.id}`,
             }))
@@ -124,6 +207,20 @@ export default class LauncherViewIndex extends Vue {
 
         // Finally redirect the user to the main route
         this.$router.push('/launchers')
+      })
+      .catch((error) => {
+        // If failed, log the error in the console
+        // eslint-disable-next-line
+        console.error(error)
+      })
+  }
+
+  regenerateKey() {
+    this.$axios
+      .$post(`/api/launcher/${this.$route.params.id}/regenerate`)
+      .then(() => {
+        // On success, refresh datas
+        this.$fetch()
       })
       .catch((error) => {
         // If failed, log the error in the console

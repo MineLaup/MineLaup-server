@@ -3,6 +3,7 @@ import User from 'App/Models/User'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Launcher from 'App/Models/Launcher'
 import TeamUser from 'App/Models/TeamUser'
+import hat from 'hat'
 
 export default class LaunchersController {
   /**
@@ -55,6 +56,7 @@ export default class LaunchersController {
       name: data.name,
       summary: data.summary,
       teamId: data.team_id,
+      apiKey: hat(),
     })
 
     return response.send(launcher)
@@ -102,5 +104,69 @@ export default class LaunchersController {
       team: teamUser.team.toJSON(),
       userPerms,
     })
+  }
+
+  /**
+   * Delete launcher function
+   */
+  public async delete ({ params, auth, response}: HttpContextContract) {
+    // Get launcher instance from id
+    const launcher = await Launcher
+      .query()
+      .preload('team', (query) => {
+        query.preload('defaultPermission')
+      })
+      .where('id', params.id)
+      .firstOrFail()
+
+    // If the current user is the owner or that the default permission allow to manage launchers
+    if (launcher.team.ownerId === auth.user!.id || launcher.team.defaultPermission.manage_launchers) {
+      await launcher.delete()
+
+      // Give a feedback
+      return response.status(200)
+    } else {
+      const currentUser = await TeamUser
+        .query()
+        .preload('teamRole', (query) => {
+          query.preload('permission')
+        })
+        .where('team_id', launcher.teamId)
+        .andWhere('user_id', auth.user!.id)
+        .firstOrFail()
+
+      if (currentUser.teamRole.permission.manage_launchers) {
+        await launcher.delete()
+
+        // Give a feedback
+        return response.status(200)
+      } else {
+        // Return forbidden access
+        return response.status(403)
+      }
+    }
+  }
+
+  /**
+   * Regenerate API key
+   */
+  public async regenerate ({ auth, response, params }: HttpContextContract) {
+    // Get launcher instance from id
+    const launcher = await Launcher
+      .query()
+      .preload('team', (query) => {
+        query.preload('defaultPermission')
+      })
+      .where('id', params.id)
+      .firstOrFail()
+
+    // If the current is the owner or that the default permission allow to manage launchers
+    if (launcher.team.ownerId === auth.user!.id || launcher.team.defaultPermission.manage_launchers) {
+      launcher.apiKey = hat()
+      await launcher.save()
+
+      // Give a feedback
+      return response.status(200)
+    }
   }
 }

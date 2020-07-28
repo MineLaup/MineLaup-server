@@ -163,7 +163,14 @@
       },
       "index": {
         "team_name": "Team: {0}",
-        "confirmDelete": "Are you sure that you want delete this launcher ?"
+        "confirm_delete": "Are you sure that you want delete this launcher ?"
+      },
+      "view": {
+        "api_key": "API Key",
+        "regenerate_key": "Regenerate",
+        "assigned_modpack": "Assigned modpacks",
+        "search_modpack": "Search a modpack",
+        "add_modpacks": "Add modpacks"
       }
     }
   },
