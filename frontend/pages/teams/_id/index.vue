@@ -248,7 +248,7 @@
         </div>
         <div class="flex flex-col">
           <t-button class="mb-2" @click="inviteUser">
-            {{ $t('pages.team.view.index.invite-user') }}
+            {{ $t('pages.teams.view.index.invite-user') }}
           </t-button>
           <t-button
             class="mb-2"

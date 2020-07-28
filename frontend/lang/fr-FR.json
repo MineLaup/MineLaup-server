@@ -179,10 +179,20 @@
         "select_team": "Veuillez sélectionner une équipe"
       },
       "list": {
-        "title": "Liste des modpacks"
+        "title": "Liste des modpacks",
+        "new": "Nouveau"
       },
       "index": {
         "confirmDelete": "Êtes vous sûr de vouloir supprimer ce modpack ?"
+      },
+      "permissions": {
+        "title": "Permissions",
+        "roles": "Rôles"
+      }
+    },
+    "modpack": {
+      "index": {
+        "team_name": "Équipe: {0}"
       }
     }
   },

@@ -95,26 +95,17 @@ export default class TeamCreate extends Vue {
       .post('/api/teams', this.form)
       .then(async ({ data }) => {
         // On success, fetch teams list and update it in side bar
-        let teams: Array<Partial<any>> = await this.$axios.$get('/api/modpacks')
+        const teams: Array<Partial<any>> = await this.$axios.$get(
+          '/api/modpacks'
+        )
 
-        teams = teams.filter((team: Partial<any>) => {
-          return team.modpacks?.length
-        })
-
-        let modpacks: Array<Partial<any>> = []
-
-        teams.forEach((team: Partial<any>) => {
-          modpacks = modpacks.concat(
-            team.modpacks.map((modpack: Partial<any>) => ({
-              name: modpack.name,
-              path: `/modpacks/${modpack.id}`,
-            }))
-          )
-        })
-
-        if (teams) {
-          this.$store.commit('menu/setList', modpacks)
-        }
+        this.$store.commit(
+          'menu/setList',
+          teams.map((team: Partial<any>) => ({
+            name: team.name,
+            path: `/teams/${team.id}`,
+          }))
+        )
 
         // Redirect the user to the new team page
         this.$router.push(`/teams/${data.id}`)

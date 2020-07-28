@@ -110,6 +110,12 @@ Route.group(() => {
   Route.post('/modpacks', 'ModpacksController.create')
   // Delete modpack
   Route.delete('/modpack/:id', 'ModpacksController.delete').where('id', /^[0-9]+$/)
+
+  /**
+   * Roles management
+   */
+  // Get modpack roles
+  Route.get('/modpack/:id/roles', 'ModpacksController.getRoles').where('id', /^[0-9]+$/)
 }).middleware('auth')
 
 /**

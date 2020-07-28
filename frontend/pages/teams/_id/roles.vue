@@ -147,21 +147,19 @@ export default class TeamRole extends Vue {
   errors: Partial<any> = {}
   errorMsg: string = ''
 
-  async asyncData({ redirect, $axios, route }: Context) {
+  async asyncData({ redirect, $axios, params }: Context) {
     // Fetch team information
-    const team = await $axios
-      .$get(`/api/teams/${route.params.id}`)
-      .catch(() => {
-        // If the team doesn't exist, redirect the user
-        return redirect('/teams/create')
-      })
+    const team = await $axios.$get(`/api/teams/${params.id}`).catch(() => {
+      // If the team doesn't exist, redirect the user
+      return redirect('/teams/create')
+    })
 
     // Fetch the team roles
     const roles = await $axios
-      .$get(`/api/teams/${route.params.id}/roles`)
+      .$get(`/api/teams/${params.id}/roles`)
       .catch(() => {
         // If failed, redirect the user
-        return redirect('/teams/create')
+        return redirect(`/teams/${params.id}`)
       })
 
     return {
