@@ -11,6 +11,7 @@ import {
 import User from './User'
 import TeamRole from './TeamRole'
 import Permission from './Permission'
+import Launcher from './Launcher'
 
 export default class Team extends BaseModel {
   @column({ isPrimary: true })
@@ -38,6 +39,9 @@ export default class Team extends BaseModel {
 
   @belongsTo(() => Permission)
   public defaultPermission: BelongsTo<typeof Permission>
+
+  @hasMany(() => Launcher)
+  public launchers: HasMany<typeof Launcher>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

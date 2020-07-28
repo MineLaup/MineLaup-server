@@ -37,7 +37,9 @@
       "settings": "Settings",
       "team-new": "New team",
       "team-title": "Teams",
-      "users": "Users"
+      "users": "Users",
+      "launcher-title": "Launchers",
+      "launcher-list": "Launchers list"
     }
   },
   "pages": {
@@ -145,6 +147,31 @@
       "first_name": "First name",
       "last_name": "Last name",
       "language": "Language"
+    },
+    "launchers": {
+      "list": {
+        "title": "Launchers",
+        "new": "New"
+      },
+      "create": {
+        "title": "Create a new launcher",
+        "name": "Name",
+        "summary": "Summary",
+        "select_team": "Please select a team",
+        "submit": "Create",
+        "team": "Team"
+      },
+      "index": {
+        "team_name": "Team: {0}",
+        "confirm_delete": "Are you sure that you want delete this launcher ?"
+      },
+      "view": {
+        "api_key": "API Key",
+        "regenerate_key": "Regenerate",
+        "assigned_modpack": "Assigned modpacks",
+        "search_modpack": "Search a modpack",
+        "add_modpacks": "Add modpacks"
+      }
     }
   },
   "roles": {

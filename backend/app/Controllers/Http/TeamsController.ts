@@ -426,7 +426,7 @@ export default class TeamsController {
     const userId = (await User.findByOrFail('username', data.name)).id
 
     // Is the current user is the owner
-    if(team.ownerId === auth.user!.id) {
+    if(team.ownerId === auth.user!.id || team.defaultPermission.manage_users) {
       // Is the user is already in the team
       const alreadyExist = await TeamUser
         .query()
@@ -460,7 +460,19 @@ export default class TeamsController {
         .firstOrFail()
 
       // Check permissions
-      if (currentUser.teamRole.permission.manage_users || team.defaultPermission.manage_users) {
+      if (currentUser.teamRole.permission.manage_users) {
+        // Is the user is already in the team
+        const alreadyExist = await TeamUser
+          .query()
+          .where('teamId', params.id)
+          .where('userId', userId)
+          .first()
+
+        if (alreadyExist) {
+        // If exist send back an error
+          return response.status(409).send('user already in the team')
+        }
+
         // Add the user to the team
         await TeamUser.create({
           teamId: params.id,

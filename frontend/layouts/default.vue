@@ -20,7 +20,7 @@
           <t-side-bar-button
             :name="$t('layout.side-bar.launcher')"
             icon="rocket"
-            to="/launcher"
+            to="/launchers"
           />
           <t-side-bar-button
             :name="$t('layout.side-bar.modpacks')"
@@ -81,6 +81,7 @@
               <t-side-bar-item
                 v-if="$store.getters['menu/hasAdditional']"
                 :to="$store.getters['menu/getAdditional'].path"
+                exact
               >
                 <span class="w-14 h-14">
                   <i
