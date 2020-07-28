@@ -106,6 +106,9 @@ export default class ModpacksController {
     return response.send(modpack)
   }
 
+  /**
+   * Delete modpack function
+   */
   public async delete ({ params, auth, response }: HttpContextContract) {
     // Get modpack instance from id
     const modpack = await Modpack
@@ -144,5 +147,27 @@ export default class ModpacksController {
         return response.status(403)
       }
     }
+  }
+
+  /**
+   * Get modpack roles function
+   */
+  public async getRoles ({ params, response }: HttpContextContract) {
+    // Get the current modpack
+    const modpack = await Modpack
+      .query()
+      .preload('modpackPermissions', (query) => {
+        query.preload('permission')
+        query.preload('role', (query) => {
+          query.preload('permission')
+        })
+      })
+      .preload('team')
+      .where('id', params.id)
+      .orderBy('name', 'asc')
+      .firstOrFail()
+
+    // Send back informations
+    response.json(modpack.modpackPermissions)
   }
 }

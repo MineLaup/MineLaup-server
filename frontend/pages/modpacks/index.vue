@@ -5,23 +5,29 @@
         {{ $t('pages.modpacks.list.title') }}
       </h1>
 
-      <div
-        v-for="team in teams"
-        :key="team.id"
-        class="pt-5 md:p-10 pb-0 last:pb-10"
-      >
-        <h2 class="font-bold text-xl text-gray-900 dark:text-white uppercase">
-          {{ team.name }}
-        </h2>
-        <div class="border dark:border-gray-800 flex flex-col m-5 mt-2">
-          <nuxt-link
-            v-for="modpack in team.modpacks"
-            :key="modpack.id"
-            class="border-b dark:border-gray-800 last:border-b-0 p-4 hover:bg-gray-200 dark-hover:bg-gray-600 dark:bg-gray-800 cursor-pointer"
-            :to="'/modpacks/' + modpack.id"
-          >
-            {{ modpack.name }}
-          </nuxt-link>
+      <div class="pt-5">
+        <t-button icon="plus" @click="$router.push('/modpacks/create')">
+          {{ $t('pages.modpacks.list.new') }}
+        </t-button>
+
+        <div
+          v-for="team in teams"
+          :key="team.id"
+          class="pt-5 md:pt-5 md:p-10 pb-0 last:pb-10"
+        >
+          <h2 class="font-bold text-xl text-gray-900 dark:text-white uppercase">
+            {{ team.name }}
+          </h2>
+          <div class="border dark:border-gray-800 flex flex-col m-5 mt-2">
+            <nuxt-link
+              v-for="modpack in team.modpacks"
+              :key="modpack.id"
+              class="border-b dark:border-gray-800 last:border-b-0 p-4 hover:bg-gray-200 dark-hover:bg-gray-600 dark:bg-gray-800 cursor-pointer"
+              :to="'/modpacks/' + modpack.id"
+            >
+              {{ modpack.name }}
+            </nuxt-link>
+          </div>
         </div>
       </div>
     </div>
@@ -31,8 +37,13 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import { Context } from '@nuxt/types'
+import TButton from '~/components/forms/TButton.vue'
 
-@Component
+@Component({
+  components: {
+    TButton,
+  },
+})
 export default class ModpackIndex extends Vue {
   // render modpack list
   async asyncData({ $axios }: Context) {

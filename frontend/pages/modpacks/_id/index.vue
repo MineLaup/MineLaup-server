@@ -9,18 +9,20 @@
         </h1>
         <div v-if="modpack.userPerms.owner || modpack.userPerms.manage_modpack">
           <i
-            class="fa fa-user-tag text-gray-700 dark:text-white hover:text-gray-600 dark-hover:text-gray-400 cursor-pointer"
-            @click="$router.push('/modpacks/' + $route.params.id + '/roles')"
+            class="fas fa-user-tag text-gray-700 dark:text-white hover:text-gray-600 dark-hover:text-gray-400 cursor-pointer"
+            @click="
+              $router.push('/modpacks/' + $route.params.id + '/permissions')
+            "
           ></i>
           <i
-            class="fa fa-trash text-red-500 hover:text-red-400 cursor-pointer"
+            class="fas fa-trash text-red-500 hover:text-red-400 cursor-pointer"
             @click="openDeleteTeamModal"
           ></i>
         </div>
       </div>
       <div class="mx-8">
         <p class="text-gray-800">
-          {{ modpack.team.name }}
+          {{ $t('pages.modpack.index.team_name', [modpack.team.name]) }}
         </p>
         <p class="text-gray-800 italic">
           {{ modpack.summary }}

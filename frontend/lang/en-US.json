@@ -152,10 +152,20 @@
         "select_team": "Please select a team "
       },
       "list": {
-        "title": "Modpacks list"
+        "title": "Modpacks list",
+        "new": "New"
       },
       "index": {
         "confirmDelete": "Are you sure that you want delete this modpack ?"
+      },
+      "permissions": {
+        "title": "Permissions",
+        "roles": "Roles"
+      }
+    },
+    "modpack": {
+      "index": {
+        "team_name": "Team: {0}"
       }
     }
   },
