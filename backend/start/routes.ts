@@ -114,6 +114,18 @@ Route.group(() => {
 }).prefix('/admin').middleware(['auth', 'admin'])
 
 /**
+ * LAUNCHER ROUTES
+ */
+Route.group(() => {
+  // Get launcher list
+  Route.get('/launchers', 'LaunchersController.list')
+  // Create a launcher
+  Route.post('/launchers', 'LaunchersController.create')
+  // Get launcher information
+  Route.get('/launcher/:id', 'LaunchersController.get')
+}).middleware('auth')
+
+/**
  * EMAIL TESTING ROUTE
  */
 Route.get('/email', async ({ view }) => {

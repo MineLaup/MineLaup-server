@@ -16,6 +16,15 @@ module.exports = {
       'hover',
       'last',
     ],
+    borderWidth: [
+      'dark',
+      'dark-hover',
+      'dark-focus',
+      'dark-focus-within',
+      'hover',
+      'last',
+      'responsive',
+    ],
     backgroundColor: [
       'dark',
       'dark-hover',
@@ -31,6 +40,7 @@ module.exports = {
       'dark-placeholder',
       'hover',
     ],
+    position: ['responsive', 'hover', 'focus'],
   },
   plugins: [require('tailwindcss-dark-mode')()],
 }

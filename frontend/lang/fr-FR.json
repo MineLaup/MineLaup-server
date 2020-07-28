@@ -37,7 +37,9 @@
       "settings": "Paramètres",
       "team-new": "Nouvelle équipe",
       "team-title": "Équipes",
-      "users": "Utilisateurs"
+      "users": "Utilisateurs",
+      "launcher-title": "Launchers",
+      "launcher-list": "Liste des launchers"
     }
   },
   "pages": {
@@ -145,6 +147,24 @@
       "first_name": "Prénom",
       "last_name": "Nom",
       "language": "Langue"
+    },
+    "launchers": {
+      "list": {
+        "title": "Launchers",
+        "new": "Nouveau"
+      },
+      "create": {
+        "title": "Créer un nouveau launcher",
+        "name": "Nom",
+        "summary": "Description",
+        "select_team": "Veuillez sélectionner une équipe",
+        "submit": "Créer",
+        "team": "Équipe"
+      },
+      "index": {
+        "team_name": "Équipe: {0}",
+        "confirmDelete": "Êtes vous sûr de vouloir supprimer ce launcher ?"
+      }
     }
   },
   "roles": {
