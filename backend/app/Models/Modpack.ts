@@ -1,5 +1,4 @@
-import { BaseModel, column, belongsTo, BelongsTo, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
-import ModpackPermission from './ModpackPermission'
+import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
 import Team from './Team'
 export default class Modpack extends BaseModel {
   @column({ isPrimary: true })
@@ -9,7 +8,7 @@ export default class Modpack extends BaseModel {
   public teamId: number
 
   @column()
-  public launcherId: number
+  public launcherId: number | null
 
   @column()
   public name: string
@@ -22,7 +21,4 @@ export default class Modpack extends BaseModel {
 
   @belongsTo(() => Team)
   public team: BelongsTo<typeof Team>
-
-  @hasMany(() => ModpackPermission)
-  public modpackPermissions: HasMany<typeof ModpackPermission>
 }

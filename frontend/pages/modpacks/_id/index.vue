@@ -9,12 +9,6 @@
         </h1>
         <div v-if="modpack.userPerms.owner || modpack.userPerms.manage_modpack">
           <i
-            class="fas fa-user-tag text-gray-700 dark:text-white hover:text-gray-600 dark-hover:text-gray-400 cursor-pointer"
-            @click="
-              $router.push('/modpacks/' + $route.params.id + '/permissions')
-            "
-          ></i>
-          <i
             class="fas fa-trash text-red-500 hover:text-red-400 cursor-pointer"
             @click="openDeleteTeamModal"
           ></i>
