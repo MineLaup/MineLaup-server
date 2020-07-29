@@ -12,10 +12,13 @@
         :id="id"
         :checked="value"
         type="checkbox"
-        class="inline-block w-6 h-6 mr-2 rounded-full border-2 appearance-none cursor-pointer outline-none text-green-400 transition duration-200 ease-in shadow"
+        class="block w-6 h-6 mr-2 rounded-full border-2 appearance-none cursor-pointer outline-none text-green-400 transition duration-200 ease-in shadow"
         @input="$emit('input', $event.target.checked)"
       />
-      <label :for="id" class="toggle-label inline rounded-full cursor-pointer">
+      <label
+        :for="id"
+        class="toggle-label inline rounded-full cursor-pointer ml-8"
+      >
         {{ `${value ? onText : offText}` }}
       </label>
     </div>
@@ -59,13 +62,19 @@ input[type='checkbox'] {
   @extend %fa-icon;
   @extend .fas;
 
+  position: absolute;
+  width: 24px;
+  height: 24px;
+
   &::before {
     content: '';
     position: absolute;
     display: block;
-    top: 6px;
-    left: 6px;
+    top: 4px;
+    left: 4px;
     font-size: 12px;
+    width: 24px;
+    height: 24px;
     transition-duration: 300ms !important;
     transition-timing-function: ease-in !important;
     transition-property: all !important;
@@ -76,11 +85,11 @@ input[type='checkbox'] {
     position: absolute;
     border: #68d391 solid 0;
     content: '';
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 24px;
+    height: 24px;
     border-radius: 9999px;
-    top: 0;
-    left: 0;
+    top: -2px;
+    left: -2px;
   }
 
   &:checked {

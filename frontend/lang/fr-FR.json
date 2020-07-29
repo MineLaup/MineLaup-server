@@ -166,7 +166,17 @@
         "regenerate_key": "Régénérer",
         "assigned_modpack": "Modpacks assignés",
         "search_modpack": "Chercher un modpack",
-        "add_modpacks": "Ajouter des modpacks"
+        "add_modpacks": "Ajouter des modpacks",
+        "no_modpacks": "Il n'y a aucun modpack acutellement",
+        "no_modpack_found": "Aucun modpack trouvé !"
+      },
+      "edit": {
+        "title": "Modifier le launcher",
+        "name": "Nom",
+        "summary": "Description",
+        "team": "Équipe",
+        "select_team": "Veuillez sélectionner une équipe",
+        "submit": "Mettre à jour"
       }
     },
     "modpacks": {
@@ -183,15 +193,7 @@
         "new": "Nouveau"
       },
       "index": {
-        "confirmDelete": "Êtes vous sûr de vouloir supprimer ce modpack ?"
-      },
-      "permissions": {
-        "title": "Permissions",
-        "roles": "Rôles"
-      }
-    },
-    "modpack": {
-      "index": {
+        "confirmDelete": "Êtes vous sûr de vouloir supprimer ce modpack ?",
         "team_name": "Équipe: {0}"
       }
     }

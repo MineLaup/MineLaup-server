@@ -13,6 +13,7 @@ import TeamRole from './TeamRole'
 import Permission from './Permission'
 import Launcher from './Launcher'
 import Modpack from './Modpack'
+import TeamUser from './TeamUser'
 
 export default class Team extends BaseModel {
   @column({ isPrimary: true })
@@ -54,7 +55,7 @@ export default class Team extends BaseModel {
   public updatedAt: DateTime
 
   @beforeDelete()
-  public static async deletePermission (team: Team) {
+  public static async deleteRelations (team: Team) {
     const perm = await Permission.find(team.permissionId)
 
     if (perm) {
@@ -70,5 +71,20 @@ export default class Team extends BaseModel {
       await role.permission.delete()
       await role.delete()
     })
+
+    await TeamUser
+      .query()
+      .where('team_id', team.id)
+      .delete()
+
+    await Modpack
+      .query()
+      .where('team_id', team.id)
+      .delete()
+
+    await Launcher
+      .query()
+      .where('team_id', team.id)
+      .delete()
   }
 }

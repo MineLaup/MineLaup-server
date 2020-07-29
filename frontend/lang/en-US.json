@@ -166,7 +166,17 @@
         "regenerate_key": "Regenerate",
         "assigned_modpack": "Assigned modpacks",
         "search_modpack": "Search a modpack",
-        "add_modpacks": "Add modpacks"
+        "add_modpacks": "Add modpacks",
+        "no_modpacks": "There is not modpacks for now",
+        "no_modpack_found": "No modpack found !"
+      },
+      "edit": {
+        "title": "Edit the launcher",
+        "name": "Name",
+        "summary": "Summary",
+        "team": "Team",
+        "select_team": "Please select a team",
+        "submit": "Update"
       }
     },
     "modpacks": {
@@ -183,15 +193,7 @@
         "new": "New"
       },
       "index": {
-        "confirmDelete": "Are you sure that you want delete this modpack ?"
-      },
-      "permissions": {
-        "title": "Permissions",
-        "roles": "Roles"
-      }
-    },
-    "modpack": {
-      "index": {
+        "confirmDelete": "Are you sure that you want delete this modpack ?",
         "team_name": "Team: {0}"
       }
     }

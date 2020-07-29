@@ -10,14 +10,11 @@
         <div
           v-if="launcher.userPerms.owner || launcher.userPerms.manage_modpack"
         >
+          <nuxt-link :to="'/launchers/' + $route.params.id + '/edit'">
+            <i class="fas fa-pen hover:text-green-400"></i>
+          </nuxt-link>
           <i
-            class="fas fa-user-tag text-gray-700 dark:text-white hover:text-gray-600 dark-hover:text-gray-400 cursor-pointer"
-            @click="
-              $router.push('/launchers/' + $route.params.id + '/permissions')
-            "
-          ></i>
-          <i
-            class="fas fa-trash text-red-500 hover:text-red-400 cursor-pointer"
+            class="fas fa-trash text-red-500 hover:text-red-400 cursor-pointer ml-1"
             @click="openDeleteLauncherModal"
           ></i>
         </div>
@@ -64,9 +61,25 @@
             </div>
           </div>
           <div
-            class="border-b-gray-600 last:border-b-0 p-4 hover:bg-gray-100 dark:bg-gray-600 dark-hover:bg-gray-500 transition-colors duration-75"
+            v-for="modpack in launcher.modpacks"
+            :key="modpack.id"
+            class="border-b-gray-600 last:border-b-0 p-4 hover:bg-gray-100 dark:bg-gray-600 dark-hover:bg-gray-500 transition-colors duration-75 flex flex-row justify-between"
           >
-            hello
+            <span>
+              {{ modpack.name }}
+            </span>
+            <span>
+              <i
+                class="fas fa-trash hover:text-red-600 dark-hover:text-red-500 cursor-pointer"
+                @click="deleteModpack(modpack.id)"
+              ></i>
+            </span>
+          </div>
+          <div
+            v-if="Object.keys(launcher.modpacks).length === 0"
+            class="p-4 hover:bg-gray-100 dark:bg-gray-600 dark-hover:bg-gray-500 transition-colors duration-75"
+          >
+            {{ $t('pages.launchers.view.no_modpacks') }}
           </div>
         </div>
       </div>
@@ -111,9 +124,29 @@
           class="mb-4"
           icon="search"
           :label="$t('pages.launchers.view.search_modpack')"
+          @input="searchField"
         />
 
-        <div class="border border-gray-400 m-5"></div>
+        <div class="border border-gray-400 m-5">
+          <div
+            v-for="modpack in modpacks"
+            :key="modpack.id"
+            class="p-4 flex flex-row justify-between hover:bg-gray-200 dark-hover:bg-gray-700 border-b border-gray-300 last:border-b-0"
+          >
+            <span>
+              {{ modpack.name }}
+            </span>
+            <span>
+              <i
+                class="fas fa-plus hover:text-green-400 transition-colors duration-75 cursor-pointer"
+                @click="addModpack(modpack.id)"
+              ></i>
+            </span>
+          </div>
+          <div v-if="modpacks.length === 0" class="p-4">
+            {{ $t('pages.launchers.view.no_modpack_found') }}
+          </div>
+        </div>
 
         <t-button
           class="mb-2"
@@ -132,6 +165,7 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
+import debounce from 'lodash/debounce'
 import TButton from '~/components/forms/TButton.vue'
 import TModal from '~/components/bases/TModal.vue'
 import TInput from '~/components/forms/TInput.vue'
@@ -145,7 +179,7 @@ import TInput from '~/components/forms/TInput.vue'
 })
 export default class LauncherViewIndex extends Vue {
   launcher: Partial<any> | null = null
-  modpacks: Array<Partial<any>> | null = null
+  modpacks: Array<Partial<any>> = []
 
   deleteModal: Partial<any> = {}
   searchModal: Partial<any> = {}
@@ -171,10 +205,59 @@ export default class LauncherViewIndex extends Vue {
   }
 
   // open the search modpack modal
-  openSearchModpackModal() {
+  async openSearchModpackModal() {
     this.searchModal = {
       title: 'pages.launchers.view.add_modpacks',
     }
+
+    const modpacks = await this.$axios.$get('/api/launchers/list-modpacks', {
+      params: {
+        // eslint-disable-next-line camelcase
+        teamId: this.launcher?.team_id,
+      },
+    })
+
+    this.modpacks = modpacks
+  }
+
+  searchModpacks = debounce(async () => {
+    this.modpacks = await this.$axios
+      .$get('/api/launchers/list-modpacks', {
+        params: {
+          // eslint-disable-next-line camelcase
+          teamId: this.launcher?.team_id,
+          search: this.searchField,
+        },
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.error(error)
+      })
+  }, 250)
+
+  // Add modpack to the launcher list
+  addModpack(id: number) {
+    this.$axios
+      .$post(`/api/launcher/${this.$route.params.id}/modpacks`, {
+        id,
+      })
+      .then(async () => {
+        await this.$fetch()
+        this.searchModal = {}
+      })
+  }
+
+  // Add modpack to the launcher list
+  deleteModpack(id: number) {
+    this.$axios
+      .$delete(`/api/launcher/${this.$route.params.id}/modpacks`, {
+        params: {
+          id,
+        },
+      })
+      .then(async () => {
+        await this.$fetch()
+      })
   }
 
   // Delete launcher action

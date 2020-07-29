@@ -16,7 +16,7 @@
       </div>
       <div class="mx-8">
         <p class="text-gray-800">
-          {{ $t('pages.modpack.index.team_name', [modpack.team.name]) }}
+          {{ $t('pages.modpacks.index.team_name', [modpack.team.name]) }}
         </p>
         <p class="text-gray-800 italic">
           {{ modpack.summary }}
