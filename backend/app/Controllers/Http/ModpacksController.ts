@@ -5,6 +5,7 @@ import Modpack from 'App/Models/Modpack'
 import Team from 'App/Models/Team'
 import TeamUser from 'App/Models/TeamUser'
 import TeamRole from 'App/Models/TeamRole'
+import ModpackVersion from 'App/Models/ModpackVersion'
 
 export default class ModpacksController {
   /**
@@ -142,6 +143,122 @@ export default class ModpacksController {
 
         // Give feedback
         return response.status(200)
+      } else {
+        // Send access forbidden
+        return response.status(403)
+      }
+    }
+  }
+
+  /**
+   * Add version to modpack function
+   */
+  public async addVersion ({ request, auth, response, params }: HttpContextContract) {
+    // Validate datas
+    const data = await request.validate({
+      schema: schema.create({
+        version: schema.string({
+          trim: true,
+          escape: true,
+        }, [
+          rules.maxLength(20),
+          rules.unique({
+            column: 'version',
+            table: 'modpack_versions',
+            where: {
+              modpack_id: params.id,
+            },
+          }),
+        ]),
+        summary: schema.string.optional({
+          trim: true,
+          escape: true,
+        }, [
+          rules.maxLength(200),
+        ]),
+      }),
+    })
+
+    // Get modpack instance from id
+    const modpack = await Modpack
+      .query()
+      .preload('team', (query) => {
+        query.preload('defaultPermission')
+      })
+      .where('id', params.id)
+      .firstOrFail()
+
+    // If the current user is the team owner
+    if (modpack.team.ownerId === auth.user!.id) {
+      const version = await ModpackVersion.create({
+        version: data.version,
+        summary: data.summary,
+        modpackId: modpack.id,
+      })
+      // Give feedback
+      return response.json(version)
+    } else {
+      // Get the current user permissions
+      const currentUser = await TeamUser
+        .query()
+        .preload('teamRole', (query) => {
+          query.preload('permission')
+        })
+        .where('teamId', modpack.teamId)
+        .where('userId', auth.user!.id)
+        .firstOrFail()
+
+      // Check permissions
+      if (currentUser.teamRole.permission.manage_modpacks || modpack.team.defaultPermission.manage_modpacks) {
+        const version = await ModpackVersion.create({
+          version: data.version,
+          summary: data.summary,
+          modpackId: modpack.id,
+        })
+        // Give feedback
+        return response.json(version)
+      } else {
+        // Send access forbidden
+        return response.status(403)
+      }
+    }
+  }
+
+  /**
+   * List modpack version function
+   */
+  public async listVersions ({ auth, response, params }: HttpContextContract) {
+    // Get modpack instance from id
+    const modpack = await Modpack
+      .query()
+      .preload('team', (query) => {
+        query.preload('defaultPermission')
+      })
+      .where('id', params.id)
+      .firstOrFail()
+
+    const versions = await ModpackVersion
+      .query()
+      .where('modpackId', modpack.id)
+      .orderBy('createdAt', 'desc')
+
+    // If the current user is the team owner
+    if (modpack.team.ownerId === auth.user!.id) {
+      return response.json(versions)
+    } else {
+      // Get the current user permissions
+      const currentUser = await TeamUser
+        .query()
+        .preload('teamRole', (query) => {
+          query.preload('permission')
+        })
+        .where('teamId', modpack.teamId)
+        .where('userId', auth.user!.id)
+        .firstOrFail()
+
+      // Check permissions
+      if (currentUser) {
+        return response.json(versions)
       } else {
         // Send access forbidden
         return response.status(403)

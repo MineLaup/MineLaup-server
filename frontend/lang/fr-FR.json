@@ -200,12 +200,15 @@
           "version": "Versions",
           "mods": "Mods",
           "minecraft": "Minecraft",
-          "settings": "Paramètres"
+          "settings": "Paramètres",
+          "files": "Fichiers"
         }
       },
       "index": {
         "versions": "Versions",
-        "no_version": "Il n'y aucune version pour l'instant"
+        "no_version": "Il n'y aucune version pour l'instant",
+        "published": "Publiée",
+        "not_published": "Non publiée"
       },
       "new-version": {
         "title": "Créer une nouvelle version de modpack",
