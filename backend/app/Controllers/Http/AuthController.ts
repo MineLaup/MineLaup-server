@@ -6,7 +6,7 @@ export default class AuthController {
   /**
    * Login function
    */
-  public async login ({ auth, request }: HttpContextContract) {
+  public async login ({ auth, request, response }: HttpContextContract) {
     // Validate datas
     const data = await request.validate({
       schema: schema.create({
@@ -22,6 +22,11 @@ export default class AuthController {
     })
 
     await auth.attempt(data.username, data.password)
+
+    if (auth.user!.disabled) {
+      await auth.logout()
+      return response.status(403)
+    }
   }
 
   /**

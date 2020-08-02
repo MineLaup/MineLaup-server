@@ -14,7 +14,8 @@
       "exists": "The value doesn't exist"
     },
     "login": {
-      "wrong_ids": "Invalid username or password"
+      "wrong_ids": "Invalid username or password",
+      "account_disabled": "You can't be logged in because your account is currently disabled."
     },
     "unknown": "An unexpected error happened"
   },
@@ -192,9 +193,26 @@
         "title": "Modpacks list",
         "new": "New"
       },
-      "index": {
+      "view": {
         "confirmDelete": "Are you sure that you want delete this modpack ?",
-        "team_name": "Team: {0}"
+        "team_name": "Team: {0}",
+        "menu": {
+          "version": "Versions",
+          "mods": "Mods",
+          "minecraft": "Minecraft",
+          "settings": "Settings"
+        }
+      },
+      "index": {
+        "versions": "Versions",
+        "no_version": "There is no versions for now"
+      },
+      "new-version": {
+        "title": "Created a new modpack version ",
+        "summary": "Summary",
+        "version": "Version",
+        "submit": "Create",
+        "information": "A new version will be created for the modpack but will not be directly published. To publish a version, you will habe to do it manually on the interface."
       }
     }
   },

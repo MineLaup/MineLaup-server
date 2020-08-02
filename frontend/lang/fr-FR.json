@@ -14,7 +14,8 @@
       "exists": "La valeur n'existe pas"
     },
     "login": {
-      "wrong_ids": "Nom d'utilisateur ou mot de passe invalide"
+      "wrong_ids": "Nom d'utilisateur ou mot de passe invalide",
+      "account_disabled": "Vous ne pouvez pas être connecté parce que votre compte est actuellement désactivé."
     },
     "unknown": "Une erreur inattendu est survenue."
   },
@@ -192,9 +193,26 @@
         "title": "Liste des modpacks",
         "new": "Nouveau"
       },
-      "index": {
+      "view": {
         "confirmDelete": "Êtes vous sûr de vouloir supprimer ce modpack ?",
-        "team_name": "Équipe: {0}"
+        "team_name": "Équipe: {0}",
+        "menu": {
+          "version": "Versions",
+          "mods": "Mods",
+          "minecraft": "Minecraft",
+          "settings": "Paramètres"
+        }
+      },
+      "index": {
+        "versions": "Versions",
+        "no_version": "Il n'y aucune version pour l'instant"
+      },
+      "new-version": {
+        "title": "Créer une nouvelle version de modpack",
+        "summary": "Description",
+        "version": "Version",
+        "submit": "Créer",
+        "information": "Une nouvelle version va être créée pour le modpack mais elle ne sera pas directement publiée. Pour publier une version, vous devrez le faire manuellement sur l'interface."
       }
     }
   },
