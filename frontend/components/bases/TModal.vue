@@ -26,11 +26,18 @@ export default class TModal extends Vue {
   mounted() {
     // When the component is mounted, if the user click outside the modal then a `close-modal` event is emitted
     const el: Element = document.querySelector('.bg-opacity-75') as Element
-    el.addEventListener('click', (event: any) => {
-      if (event?.target.classList.contains('bg-opacity-75')) {
-        this.$emit('close-modal')
-      }
-    })
+    el.addEventListener('click', this.onBackgroundClicked)
+  }
+
+  destroyed() {
+    const el: Element = document.querySelector('.bg-opacity-75') as Element
+    el.removeEventListener('click', this.onBackgroundClicked)
+  }
+
+  onBackgroundClicked(event: any) {
+    if (event?.target.classList.contains('bg-opacity-75')) {
+      this.$emit('close-modal')
+    }
   }
 }
 </script>

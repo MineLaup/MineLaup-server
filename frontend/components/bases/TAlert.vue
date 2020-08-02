@@ -6,6 +6,7 @@
         'bg-red-500': type === 'error',
         'bg-yellow-600': type === 'warn',
         'bg-green-500': type === 'success',
+        'bg-blue-500': type === 'info',
       }"
       role="alert"
     >
@@ -15,6 +16,7 @@
           'fa-exclamation-circle': type === 'error',
           'fa-exclamation-triangle': type === 'warn',
           'fa-check-circle': type === 'success',
+          'fa-info-circle': type === 'info',
         }"
       ></i>
       <p>{{ message }}</p>
@@ -33,7 +35,7 @@ export default class TAlert extends Vue {
   // Type of the alert. It can be a `warn`, an `error` or a `success`
   @Prop({
     default: 'error',
-    validator: (type) => ['warn', 'error', 'success'].includes(type),
+    validator: (type) => ['warn', 'error', 'success', 'info'].includes(type),
   })
   type!: string
 }

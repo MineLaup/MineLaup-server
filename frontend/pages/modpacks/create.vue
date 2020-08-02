@@ -5,11 +5,7 @@
         {{ $t('pages.modpacks.create.title') }}
       </h1>
 
-      <form
-        ref="create_team_form"
-        class="p-10 items-center"
-        @submit.prevent="createModpack"
-      >
+      <form class="p-10 items-center" @submit.prevent="createModpack">
         <t-alert v-if="errorMsg" :message="$t(errorMsg)" />
 
         <t-input
@@ -103,11 +99,17 @@ export default class ModpackCreate extends Vue {
 
   mounted() {
     // Submit the form when the user press CTRL+ENTER
-    document.addEventListener('keypress', (event: KeyboardEvent) => {
-      if (event.keyCode !== 10 || !event.ctrlKey) return
+    document.addEventListener('keypress', this.onKeypressed)
+  }
 
-      this.createModpack()
-    })
+  destroyed() {
+    document.removeEventListener('keypress', this.onKeypressed)
+  }
+
+  onKeypressed(event: KeyboardEvent) {
+    if (event.keyCode !== 10 || !event.ctrlKey) return
+
+    this.createModpack()
   }
 
   // Check if the form is valid

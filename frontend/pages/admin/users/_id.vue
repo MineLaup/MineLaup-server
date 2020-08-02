@@ -135,11 +135,17 @@ export default class AdminUserUpdate extends Vue {
     }
 
     // Submit the form if the user press CTRL+ENTER
-    document.addEventListener('keypress', (event: KeyboardEvent) => {
-      if (event.keyCode !== 10 || !event.ctrlKey) return
+    document.addEventListener('keypress', this.onKeypressed)
+  }
 
-      this.updateUser()
-    })
+  destroyed() {
+    document.removeEventListener('keypress', this.onKeypressed)
+  }
+
+  onKeypressed(event: KeyboardEvent) {
+    if (event.keyCode !== 10 || !event.ctrlKey) return
+
+    this.updateUser()
   }
 
   // Getter to check if the form is valid

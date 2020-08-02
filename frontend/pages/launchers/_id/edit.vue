@@ -108,14 +108,20 @@ export default class ModpackEdit extends Vue {
 
   mounted() {
     // Submit the form when the user press CTRL+ENTER
-    document.addEventListener('keypress', (event: KeyboardEvent) => {
-      if (event.keyCode !== 10 || !event.ctrlKey) return
-
-      this.updateLauncher()
-    })
+    document.addEventListener('keypress', this.onKeypressed)
 
     this.form = this.launcher
     this.form.team_id = this.form.team_id.toString()
+  }
+
+  destroyed() {
+    document.removeEventListener('keypress', this.onKeypressed)
+  }
+
+  onKeypressed(event: KeyboardEvent) {
+    if (event.keyCode !== 10 || !event.ctrlKey) return
+
+    this.updateLauncher()
   }
 
   // Check if the form is valid
