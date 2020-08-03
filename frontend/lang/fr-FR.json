@@ -11,7 +11,8 @@
     "form": {
       "required": "Ce champ est requis",
       "unique": "La valeur existe déjà",
-      "exists": "La valeur n'existe pas"
+      "exists": "La valeur n'existe pas",
+      "regex": "La valeur dois être sous ce format: \"{regex}\""
     },
     "login": {
       "wrong_ids": "Nom d'utilisateur ou mot de passe invalide",
@@ -201,14 +202,16 @@
           "mods": "Mods",
           "minecraft": "Minecraft",
           "settings": "Paramètres",
-          "files": "Fichiers"
+          "files": "Fichiers",
+          "infos": "Informations"
         }
       },
       "index": {
         "versions": "Versions",
         "no_version": "Il n'y aucune version pour l'instant",
         "published": "Publiée",
-        "not_published": "Non publiée"
+        "not_published": "Non publiée",
+        "no_summary": "Pas de description"
       },
       "new-version": {
         "title": "Créer une nouvelle version de modpack",
@@ -216,6 +219,10 @@
         "version": "Version",
         "submit": "Créer",
         "information": "Une nouvelle version va être créée pour le modpack mais elle ne sera pas directement publiée. Pour publier une version, vous devrez le faire manuellement sur l'interface."
+      },
+      "version": {
+        "name": "Nom",
+        "summary": "Description"
       }
     }
   },

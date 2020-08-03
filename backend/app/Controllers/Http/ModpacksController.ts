@@ -169,6 +169,7 @@ export default class ModpacksController {
               modpack_id: params.id,
             },
           }),
+          rules.regex(/^\d\.\d\.\d(-[a-z]+)?$/),
         ]),
         summary: schema.string.optional({
           trim: true,
@@ -264,5 +265,144 @@ export default class ModpacksController {
         return response.status(403)
       }
     }
+  }
+
+  public async deleteVersion ({ auth, params, request, response }: HttpContextContract) {
+    // Validate datas
+    const data = await request.validate({
+      schema: schema.create({
+        id: schema.number([
+          rules.exists({
+            column: 'id',
+            table: 'modpack_versions',
+          }),
+        ]),
+      }),
+    })
+
+    // Get modpack instance from id
+    const modpack = await Modpack
+      .query()
+      .preload('team', (query) => {
+        query.preload('defaultPermission')
+      })
+      .where('id', params.id)
+      .firstOrFail()
+
+    // If the current user is the team owner
+    if (modpack.team.ownerId === auth.user!.id) {
+      const version = await ModpackVersion
+        .query()
+        .where('modpackId', modpack.id)
+        .orderBy('createdAt', 'desc')
+        .firstOrFail()
+
+      // If the latest version ID is the same than the given ID
+      if (version.id === data.id) {
+        // Delete the version
+        await version.delete()
+
+        // Give feedback
+        return response.status(200)
+      }
+
+      return response.status(403)
+    } else {
+      // Get the current user permissions
+      const currentUser = await TeamUser
+        .query()
+        .preload('teamRole', (query) => {
+          query.preload('permission')
+        })
+        .where('teamId', modpack.teamId)
+        .where('userId', auth.user!.id)
+        .firstOrFail()
+
+      // Check permissions
+      if (currentUser.teamRole.permission.manage_modpacks || modpack.team.defaultPermission.manage_modpacks) {
+        const version = await ModpackVersion
+          .query()
+          .where('modpackId', modpack.id)
+          .orderBy('createdAt', 'desc')
+          .firstOrFail()
+
+        // If the latest version ID is the same than the given ID
+        if (version.id === data.id) {
+          // Delete the version
+          await version.delete()
+
+          // Give feedback
+          return response.status(200)
+        }
+
+        return response.status(403)
+      } else {
+        // Send access forbidden
+        return response.status(403)
+      }
+    }
+  }
+
+  /**
+   * Get modpack version
+   */
+  public async getVersion ({ request, params, auth, response }: HttpContextContract) {
+    // Validate datas
+    const data = await request.validate({
+      schema: schema.create({
+        id: schema.number([
+          rules.unsigned(),
+          rules.exists({
+            column: 'id',
+            table: 'modpack_versions',
+          }),
+        ]),
+      }),
+    })
+
+    // Get the modpack instance
+    const modpack = await Modpack.findOrFail(params.id)
+
+    // Check if the user has the right to get the modpack
+    const teamUser = await TeamUser
+      .query()
+      .preload('teamRole', (query) => {
+        query.preload('permission')
+      })
+      .preload('team', (query => {
+        query.preload('defaultPermission')
+      }))
+      .where('user_id', auth.user!.id)
+      .andWhere('team_id', modpack.teamId)
+      .firstOrFail()
+
+    let userPerms: any = null
+
+    // Is the user is the owner
+    if (teamUser.team.ownerId === auth.user!.id) {
+      // Set the permissions
+      userPerms = {
+        owner: true,
+      }
+      // Is the user have a role
+    } else if (teamUser.teamRoleId) {
+      // Set the permission
+      userPerms = teamUser.teamRole.permission
+    } else {
+      userPerms = teamUser.team.defaultPermission
+    }
+
+    const modpackVersion = await ModpackVersion
+      .query()
+      .preload('modpack')
+      .where('id', data.id)
+      .firstOrFail()
+
+    // Send the modpack version information and permissions
+    response.json({
+      ...modpackVersion.toJSON(),
+      team: teamUser.team.toJSON(),
+      userPerms,
+    })
   }
 }

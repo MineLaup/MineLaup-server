@@ -28,45 +28,6 @@
           </p>
         </div>
       </div>
-      <div
-        class="flex flex-row justify-center bottom-0 h-12 align-middle w-full"
-      >
-        <nuxt-link
-          :to="'/modpacks/' + $route.params.id + '/'"
-          class="p-3 border-b-4 border-transparent"
-          exact-active-class="border-green-400 text-green-400"
-        >
-          {{ $t('pages.modpacks.view.menu.version') }}
-        </nuxt-link>
-        <nuxt-link
-          :to="'/modpacks/' + $route.params.id + '/minecraft'"
-          class="p-3 border-b-4 border-transparent"
-          exact-active-class="border-green-400 text-green-400"
-        >
-          {{ $t('pages.modpacks.view.menu.minecraft') }}
-        </nuxt-link>
-        <nuxt-link
-          :to="'/modpacks/' + $route.params.id + '/mods'"
-          class="p-3 border-b-4 border-transparent"
-          exact-active-class="border-green-400 text-green-400"
-        >
-          {{ $t('pages.modpacks.view.menu.mods') }}
-        </nuxt-link>
-        <nuxt-link
-          :to="'/modpacks/' + $route.params.id + '/files/'"
-          class="p-3 border-b-4 border-transparent"
-          exact-active-class="border-green-400 text-green-400"
-        >
-          {{ $t('pages.modpacks.view.menu.files') }}
-        </nuxt-link>
-        <nuxt-link
-          :to="'/modpacks/' + $route.params.id + '/settings'"
-          class="p-3 border-b-4 border-transparent"
-          exact-active-class="border-green-400 text-green-400"
-        >
-          {{ $t('pages.modpacks.view.menu.settings') }}
-        </nuxt-link>
-      </div>
     </div>
     <div class="flex-1">
       <nuxt-child></nuxt-child>
