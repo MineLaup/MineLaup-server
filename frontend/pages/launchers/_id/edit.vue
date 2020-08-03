@@ -114,7 +114,7 @@ export default class ModpackEdit extends Vue {
     this.form.team_id = this.form.team_id.toString()
   }
 
-  destroyed() {
+  unmounted() {
     document.removeEventListener('keypress', this.onKeypressed)
   }
 

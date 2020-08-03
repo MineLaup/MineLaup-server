@@ -20,7 +20,13 @@
           icon="code-branch"
           class="w-2/3 mb-4"
           autocomplete="off"
-          :error="errors.version ? $t(errors.version) : ''"
+          :error="
+            errors.version
+              ? $t(errors.version, {
+                  regex: 'x.y.z',
+                })
+              : ''
+          "
         />
 
         <t-textarea
@@ -70,6 +76,21 @@ export default class ModpackViewNewVersion extends Vue {
 
   errorMsg: string = ''
   errors: Partial<any> = {}
+
+  mounted() {
+    // Submit the form when the user press CTRL+ENTER
+    document.addEventListener('keypress', this.onKeypressed)
+  }
+
+  unmounted() {
+    document.removeEventListener('keypress', this.onKeypressed)
+  }
+
+  onKeypressed(event: KeyboardEvent) {
+    if (event.keyCode !== 10 || !event.ctrlKey) return
+
+    this.createModpackVersion()
+  }
 
   get formValid() {
     return true

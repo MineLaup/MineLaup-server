@@ -102,7 +102,7 @@ export default class ModpackCreate extends Vue {
     document.addEventListener('keypress', this.onKeypressed)
   }
 
-  destroyed() {
+  unmounted() {
     document.removeEventListener('keypress', this.onKeypressed)
   }
 

@@ -133,7 +133,7 @@ export default class Settings extends Vue {
     this.form = cloneDeep(this.user)
   }
 
-  destroyed() {
+  unmounted() {
     document.removeEventListener('keypress', this.onKeypressed)
   }
 

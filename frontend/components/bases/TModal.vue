@@ -29,7 +29,7 @@ export default class TModal extends Vue {
     el.addEventListener('click', this.onBackgroundClicked)
   }
 
-  destroyed() {
+  unmounted() {
     const el: Element = document.querySelector('.bg-opacity-75') as Element
     el.removeEventListener('click', this.onBackgroundClicked)
   }

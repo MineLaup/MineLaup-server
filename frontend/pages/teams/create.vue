@@ -76,7 +76,7 @@ export default class TeamCreate extends Vue {
     document.addEventListener('keypress', this.onKeypressed)
   }
 
-  destroyed() {
+  unmounted() {
     document.removeEventListener('keypress', this.onKeypressed)
   }
 

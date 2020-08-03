@@ -56,28 +56,28 @@
           <t-side-bar-action
             :name="$t('layout.side-bar.menu')"
             icon="bars"
-            class="ml-auto mr-4 sm:hidden"
+            class="ml-auto mr-4 md:hidden"
             @click="menuOpen = true"
           />
         </ul>
 
         <div class="flex-1 flex flex-row">
           <div
-            class="sm:w-64 bg-gray-900 absolute sm:relative z-50 sm:z-0 w-screen h-screen md:h-auto text-white top-0 sm:block"
+            class="md:w-64 bg-gray-900 absolute md:relative z-50 md:z-0 w-screen h-screen md:h-auto text-white top-0 md:block"
             :class="{ hidden: !menuOpen }"
           >
             <span
-              class="absolute top-0 right-0 mt-6 mr-6 cursor-pointer sm:hidden"
+              class="absolute top-0 right-0 mt-6 mr-6 cursor-pointer md:hidden"
               @click="menuOpen = false"
             >
               <i class="fas fa-times fa-lg"></i>
             </span>
             <h1
-              class="text-2xl uppercase font-bold mt-4 ml-10 sm:text-xl sm:ml-4"
+              class="text-2xl uppercase font-bold mt-4 ml-10 md:text-xl md:ml-4"
             >
               {{ $t($store.getters['menu/getTitle']) }}
             </h1>
-            <ul class="mt-8 sm:mt-4">
+            <ul class="mt-8 md:mt-4">
               <t-side-bar-item
                 v-if="$store.getters['menu/hasAdditional']"
                 :to="$store.getters['menu/getAdditional'].path"
