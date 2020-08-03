@@ -9,7 +9,7 @@
           v-model="form.version"
           :label="$t('pages.modpacks.version.name')"
           icon="code-branch"
-          class="w-2/3 mb-4"
+          class="mb-4"
           autocomplete="off"
           :error="errors.version ? $t(errors.version) : ''"
           :disabled="

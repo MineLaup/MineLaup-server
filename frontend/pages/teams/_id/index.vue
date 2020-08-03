@@ -13,7 +13,7 @@
           v-model="form.name"
           :label="$t('pages.teams.view.index.name')"
           icon="user-friends"
-          class="w-2/3 mb-4"
+          class="mb-4"
           autocomplete="off"
           :error="errors.name ? $t(errors.name) : ''"
           :disabled="!(team.userPerms.owner || team.userPerms.manage_team)"

@@ -13,7 +13,7 @@
           v-model="form.name"
           :label="$t('pages.modpacks.create.name')"
           icon="user-friends"
-          class="w-2/3 mb-4"
+          class="mb-4"
           autocomplete="off"
           :error="errors.name ? $t(errors.name) : ''"
         />

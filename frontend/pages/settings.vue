@@ -17,7 +17,7 @@
           v-model="form.username"
           :label="$t('pages.settings.username')"
           icon="user"
-          class="w-2/3 mb-4"
+          class="mb-4"
           autocomplete="off"
           :error="errors.username ? $t(errors.username) : ''"
         />
@@ -27,7 +27,7 @@
           v-model="form.email"
           :label="$t('pages.settings.email')"
           icon="user"
-          class="w-2/3 mb-4"
+          class="mb-4"
           autocomplete="off"
           type="email"
           :error="errors.email ? $t(errors.email) : ''"
@@ -38,7 +38,7 @@
           v-model="form.first_name"
           :label="$t('pages.settings.first_name')"
           icon="user"
-          class="w-2/3 mb-4"
+          class="mb-4"
           autocomplete="off"
           :error="errors.first_name ? $t(errors.first_name) : ''"
         />
@@ -48,7 +48,7 @@
           v-model="form.last_name"
           :label="$t('pages.settings.last_name')"
           icon="user"
-          class="w-2/3 mb-4"
+          class="mb-4"
           autocomplete="off"
           :error="errors.last_name ? $t(errors.last_name) : ''"
         />
@@ -58,7 +58,7 @@
           v-model="form.language"
           :label="$t('pages.settings.language')"
           icon="globe"
-          class="w-2/3 mb-4"
+          class="mb-4"
           :error="errors.language ? $t(errors.language) : ''"
         >
           <option
