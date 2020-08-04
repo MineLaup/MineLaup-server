@@ -66,6 +66,10 @@ input[type='checkbox'] {
   width: 24px;
   height: 24px;
 
+  transition-duration: 300ms !important;
+  transition-timing-function: ease-in !important;
+  transition-property: all !important;
+
   &::before {
     content: '';
     position: absolute;
@@ -81,29 +85,13 @@ input[type='checkbox'] {
     transform: rotate(100deg) scale(0);
   }
 
-  &::after {
-    position: absolute;
-    border: #68d391 solid 0;
-    content: '';
-    width: 24px;
-    height: 24px;
-    border-radius: 9999px;
-    top: -2px;
-    left: -2px;
-  }
-
   &:checked {
     &::before {
       content: fa-content($fa-var-check);
       transform: rotate(0deg) scale(1);
     }
 
-    &::after {
-      border: #68d391 solid 2px;
-      transition-duration: 300ms !important;
-      transition-timing-function: ease-in !important;
-      transition-property: all !important;
-    }
+    @apply border-green-400;
   }
 }
 </style>
