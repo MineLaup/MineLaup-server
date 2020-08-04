@@ -100,6 +100,10 @@ export default class Login extends Vue {
             case 400:
               this.errorMsg = 'error.login.wrong_ids'
               break
+            // 403: account disabled
+            case 403:
+              this.errorMsg = 'error.login.account_disabled'
+              break
             // 422: data validation error
             case 422:
               for (const e of error.response.data.errors) {

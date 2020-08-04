@@ -17,7 +17,7 @@
           v-model="form.username"
           :label="$t('pages.admin.users.update.username')"
           icon="user"
-          class="w-2/3 mb-4"
+          class="mb-4"
           autocomplete="off"
           :error="errors.username ? $t(errors.username) : ''"
         />
@@ -27,7 +27,7 @@
           v-model="form.first_name"
           :label="$t('pages.admin.users.update.first_name')"
           icon="user"
-          class="w-2/3 mb-4"
+          class="mb-4"
           autocomplete="off"
           :error="errors.first_name ? $t(errors.first_name) : ''"
         />
@@ -37,7 +37,7 @@
           v-model="form.last_name"
           :label="$t('pages.admin.users.update.last_name')"
           icon="user"
-          class="w-2/3 mb-4"
+          class="mb-4"
           autocomplete="off"
           :error="errors.last_name ? $t(errors.last_name) : ''"
         />
@@ -47,7 +47,7 @@
           v-model="form.email"
           :label="$t('pages.admin.users.update.email')"
           icon="envelope"
-          class="w-2/3 mb-4"
+          class="mb-4"
           autocomplete="off"
           type="email"
           :error="errors.email ? $t(errors.email) : ''"
@@ -58,7 +58,7 @@
           v-model="form.role"
           :label="$t('pages.admin.users.update.role')"
           icon="user-tag"
-          class="w-2/3 mb-4"
+          class="mb-4"
           autocomplete="off"
           type="number"
           max="3"
@@ -135,11 +135,17 @@ export default class AdminUserUpdate extends Vue {
     }
 
     // Submit the form if the user press CTRL+ENTER
-    document.addEventListener('keypress', (event: KeyboardEvent) => {
-      if (event.keyCode !== 10 || !event.ctrlKey) return
+    document.addEventListener('keypress', this.onKeypressed)
+  }
 
-      this.updateUser()
-    })
+  unmounted() {
+    document.removeEventListener('keypress', this.onKeypressed)
+  }
+
+  onKeypressed(event: KeyboardEvent) {
+    if (event.keyCode !== 10 || !event.ctrlKey || !this.formValid) return
+
+    this.updateUser()
   }
 
   // Getter to check if the form is valid

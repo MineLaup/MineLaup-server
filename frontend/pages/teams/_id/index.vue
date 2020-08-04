@@ -13,7 +13,7 @@
           v-model="form.name"
           :label="$t('pages.teams.view.index.name')"
           icon="user-friends"
-          class="w-2/3 mb-4"
+          class="mb-4"
           autocomplete="off"
           :error="errors.name ? $t(errors.name) : ''"
           :disabled="!(team.userPerms.owner || team.userPerms.manage_team)"
@@ -235,7 +235,7 @@
       <div slot="actions">
         <div class="flex flex-col mb-4 text-left">
           <p class="mb-6">
-            {{ $t('pages.team.view.index.add-user-info') }}
+            {{ $t('pages.teams.view.index.add-user-info') }}
           </p>
           <t-input
             id="user-invite"
@@ -248,7 +248,7 @@
         </div>
         <div class="flex flex-col">
           <t-button class="mb-2" @click="inviteUser">
-            {{ $t('pages.team.view.index.invite-user') }}
+            {{ $t('pages.teams.view.index.invite-user') }}
           </t-button>
           <t-button
             class="mb-2"
@@ -338,11 +338,24 @@ export default class TeamViewIndex extends Vue {
   mounted() {
     // Fill the form with the team informations
     this.form = this.team
+
+    // Submit the form when the user press CTRL+ENTER
+    document.addEventListener('keypress', this.onKeypressed)
+  }
+
+  unmounted() {
+    document.removeEventListener('keypress', this.onKeypressed)
+  }
+
+  onKeypressed(event: KeyboardEvent) {
+    if (event.keyCode !== 10 || !event.ctrlKey || !this.formValid) return
+
+    this.updateTeam()
   }
 
   // Check if the form is valid
   get formValid() {
-    return this.form.name.length > 0 && this.form.summary.length > 0
+    return this.form.name.length > 0
   }
 
   editUser(_id: number) {}

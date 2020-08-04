@@ -44,12 +44,12 @@ export default class CookieScheme {
     }
 
     // Try to fetch user and then set
-    // @ts-ignore
-    const user = await this.$auth.requestWith(
-      this.name,
-      endpoint,
-      this.options.endpoints.user
-    )
+    const user = await this.$auth
+      // @ts-ignore
+      .requestWith(this.name, endpoint, this.options.endpoints.user)
+      .catch(() => {
+        this.$auth.logout()
+      })
     this.$auth.setUser(user)
   }
 

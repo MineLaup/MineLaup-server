@@ -45,11 +45,17 @@ export default class AdminSettings extends Vue {
 
   mounted() {
     // Submit the form when the user press CTRL+ENTER
-    document.addEventListener('keypress', (event: KeyboardEvent) => {
-      if (event.keyCode !== 10 || !event.ctrlKey) return
+    document.addEventListener('keypress', this.onKeypressed)
+  }
 
-      this.updateSettings()
-    })
+  unmounted() {
+    document.removeEventListener('keypress', this.onKeypressed)
+  }
+
+  onKeypressed(event: KeyboardEvent) {
+    if (event.keyCode !== 10 || !event.ctrlKey || !this.formValid) return
+
+    this.updateSettings()
   }
 
   // The form is always valid since there is no data to validate

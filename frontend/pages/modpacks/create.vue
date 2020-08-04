@@ -2,20 +2,16 @@
   <div class="flex flex-row justify-center">
     <div class="flex-1 p-4 max-w-4xl">
       <h1 class="font-bold text-3xl text-gray-900 dark:text-white uppercase">
-        {{ $t('pages.teams.create.title') }}
+        {{ $t('pages.modpacks.create.title') }}
       </h1>
 
-      <form
-        ref="create_team_form"
-        class="p-10 items-center"
-        @submit.prevent="createTeam"
-      >
+      <form class="p-10 items-center" @submit.prevent="createModpack">
         <t-alert v-if="errorMsg" :message="$t(errorMsg)" />
 
         <t-input
           id="name"
           v-model="form.name"
-          :label="$t('pages.teams.create.name')"
+          :label="$t('pages.modpacks.create.name')"
           icon="user-friends"
           class="mb-4"
           autocomplete="off"
@@ -26,10 +22,25 @@
           id="summary"
           v-model="form.summary"
           icon="info-circle"
-          :label="$t('pages.teams.create.summary')"
+          :label="$t('pages.modpacks.create.summary')"
           :error="errors.summary ? $t(errors.summary) : ''"
         >
         </t-textarea>
+
+        <t-select
+          id="team"
+          v-model="form.team_id"
+          :label="$t('pages.modpacks.create.team')"
+          icon="users"
+          :error="errors.team_id ? $t(errors.team_id) : ''"
+        >
+          <option value="default" disabled>
+            {{ $t('pages.modpacks.create.select_team') }}
+          </option>
+          <option v-for="team in teams" :key="team.id" :value="team.id">
+            {{ team.name }}
+          </option>
+        </t-select>
 
         <div class="text-center mt-4">
           <t-button
@@ -38,7 +49,7 @@
             type="submit"
             :disabled="!formValid"
           >
-            {{ $t('pages.teams.create.submit') }}
+            {{ $t('pages.modpacks.create.submit') }}
           </t-button>
         </div>
       </form>
@@ -48,10 +59,12 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
+import { Context } from '@nuxt/types'
 import TButton from '~/components/forms/TButton.vue'
 import TTextarea from '~/components/forms/TTextarea.vue'
 import TInput from '~/components/forms/TInput.vue'
 import TAlert from '~/components/bases/TAlert.vue'
+import TSelect from '~/components/forms/TSelect.vue'
 
 @Component({
   components: {
@@ -59,17 +72,30 @@ import TAlert from '~/components/bases/TAlert.vue'
     TTextarea,
     TInput,
     TAlert,
+    TSelect,
   },
 })
-export default class TeamCreate extends Vue {
+export default class ModpackCreate extends Vue {
   errorMsg: string = ''
 
   form = {
     name: '',
     summary: '',
+    team_id: 'default',
   }
 
+  teams: Array<Partial<any>> = []
+
   errors: Partial<String> = {}
+
+  async asyncData({ $axios }: Context) {
+    // Fetch teams from the API
+    const teams = await $axios.$get('/api/teams')
+
+    return {
+      teams,
+    }
+  }
 
   mounted() {
     // Submit the form when the user press CTRL+ENTER
@@ -83,38 +109,47 @@ export default class TeamCreate extends Vue {
   onKeypressed(event: KeyboardEvent) {
     if (event.keyCode !== 10 || !event.ctrlKey || !this.formValid) return
 
-    this.createTeam()
+    this.createModpack()
   }
 
   // Check if the form is valid
   get formValid() {
-    return this.form.name.length > 0
+    return this.form.name.length > 0 && /^[0-9]+$/.test(this.form.team_id)
   }
 
   // Called when the form is submited
-  createTeam() {
+  createModpack() {
     this.errors = {}
     this.errorMsg = ''
 
-    // Request the API to create a new team
+    // Request the API to create a new modpack
     this.$axios
-      .post('/api/teams', this.form)
+      .post('/api/modpacks', this.form)
+      // eslint-disable-next-line
       .then(async ({ data }) => {
-        // On success, fetch teams list and update it in side bar
-        const teams: Array<Partial<any>> = await this.$axios.$get(
-          '/api/modpacks'
-        )
+        // On success, fetch teams list and update modpack list it in side bar
+        let teams: Array<Partial<any>> = await this.$axios.$get('/api/modpacks')
 
-        this.$store.commit(
-          'menu/setList',
-          teams.map((team: Partial<any>) => ({
-            name: team.name,
-            path: `/teams/${team.id}`,
-          }))
-        )
+        teams = teams.filter((team: Partial<any>) => {
+          return team.modpacks?.length
+        })
 
-        // Redirect the user to the new team page
-        this.$router.push(`/teams/${data.id}`)
+        const modpacks: Array<Partial<any>> = []
+
+        teams.map((team: Partial<any>) => {
+          team.modpacks.map((modpack: Partial<any>) => {
+            modpacks.push({
+              name: modpack.name,
+              path: `/modpacks/${modpack.id}`,
+            })
+          })
+        })
+
+        if (teams) {
+          this.$store.commit('menu/setList', modpacks)
+        }
+        // Redirect the user to the new modpack page
+        this.$router.push(`/modpacks/${data.id}`)
       })
       .catch((error) => {
         // On failed, check the response state

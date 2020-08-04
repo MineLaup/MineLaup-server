@@ -26,7 +26,7 @@ $ node ace generate:key
 $ mkdir tmp/
 
 # migrate the database
-$ node ace migrate:run
+$ node ace migration:run
 
 # install the admin user
 $ node ace install
@@ -43,6 +43,9 @@ $ cd frontend/
 
 # install dependencies
 $ npm install
+
+# copy (and edit) the env file
+$ cp .env.example .env
 
 # build from sources
 $ npm run build

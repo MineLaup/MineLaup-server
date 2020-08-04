@@ -1,5 +1,16 @@
 export default {
   mode: 'universal',
+  /**
+   * Cache for webpack config
+   * See at https://nuxtjs.org/api/configuration-build/#cache
+   */
+  cache: true,
+  /**
+   * Enable parallel build for webpack
+   * See at https://nuxtjs.org/api/configuration-build/#parallel
+   */
+  parallel: true,
+
   /*
    ** Headers of the page
    */
@@ -68,6 +79,12 @@ export default {
       target: process.env.BACKEND_URL,
       pathRewrite: {
         '^/api': '/',
+      },
+    },
+    '/curse': {
+      target: 'https://addons-ecs.forgesvc.net/api/v2/',
+      pathRewrite: {
+        '^/curse': '/',
       },
     },
   },

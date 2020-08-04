@@ -96,6 +96,37 @@ Route.group(() => {
 }).prefix('/teams').middleware('auth')
 
 /**
+ * MODPACKS ROUTES
+ */
+Route.group(() => {
+  /**
+   * Modpack management
+   */
+  // List modpacks
+  Route.get('/modpacks', 'ModpacksController.getList')
+  // Get a modpack
+  Route.get('/modpack/:id', 'ModpacksController.get').where('id', /^[0-9]+$/)
+  // Create modpacks
+  Route.post('/modpacks', 'ModpacksController.create')
+  // Delete modpack
+  Route.delete('/modpack/:id', 'ModpacksController.delete').where('id', /^[0-9]+$/)
+  // Create modpack version
+  Route.post('/modpack/:id/versions', 'ModpacksController.addVersion').where('id', /^[0-9]+$/)
+  // List modpack versions
+  Route.get('/modpack/:id/versions', 'ModpacksController.listVersions').where('id', /^[0-9]+$/)
+  // delete a version
+  Route.delete('/modpack/:id/version', 'ModpacksController.deleteVersion').where('id', /^[0-9]+$/)
+  // get a version
+  Route.get('/modpack/:id/version', 'ModpacksController.getVersion').where('id', /^[0-9]+$/)
+
+  /**
+   * Modpack Minecraft informations
+   */
+  // Get modpack Minecraft informations
+  Route.post('/modpack/:id/minecraft', 'ModpacksController.updateMinecraft').where('id', /^[0-9]+$/)
+}).middleware('auth')
+
+/**
  * ADMIN ROUTES
  */
 Route.group(() => {
@@ -122,11 +153,19 @@ Route.group(() => {
   // Create a launcher
   Route.post('/launchers', 'LaunchersController.create')
   // Get launcher information
-  Route.get('/launcher/:id', 'LaunchersController.get')
+  Route.get('/launcher/:id', 'LaunchersController.get').where('id', /^[0-9]+$/)
+  // Update a launcher
+  Route.put('/launcher/:id', 'LaunchersController.update').where('id', /^[0-9]+$/)
   // Delete a launcher
-  Route.delete('/launcher/:id', 'LaunchersController.delete')
+  Route.delete('/launcher/:id', 'LaunchersController.delete').where('id', /^[0-9]+$/)
   // Regenerate API key
-  Route.post('/launcher/:id/regenerate', 'LaunchersController.regenerate')
+  Route.post('/launcher/:id/regenerate', 'LaunchersController.regenerate').where('id', /^[0-9]+$/)
+  // List modpacks for launchers
+  Route.get('/launchers/list-modpacks', 'LaunchersController.listModpacks')
+  // Add modpack to the launcher's modpack list
+  Route.post('/launcher/:id/modpacks', 'LaunchersController.addModpack').where('id', /^[0-9]+$/)
+  // Remove modpack from a launcher
+  Route.delete('/launcher/:id/modpacks', 'LaunchersController.removeModpack').where('id', /^[0-9]+$/)
 }).middleware('auth')
 
 /**

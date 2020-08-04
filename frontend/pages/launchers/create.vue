@@ -17,7 +17,7 @@
           v-model="form.name"
           :label="$t('pages.launchers.create.name')"
           icon="user-friends"
-          class="w-2/3 mb-4"
+          class="mb-4"
           autocomplete="off"
           :error="errors.name ? $t(errors.name) : ''"
         />
@@ -103,16 +103,22 @@ export default class ModpackCreate extends Vue {
 
   mounted() {
     // Submit the form when the user press CTRL+ENTER
-    document.addEventListener('keypress', (event: KeyboardEvent) => {
-      if (event.keyCode !== 10 || !event.ctrlKey) return
+    document.addEventListener('keypress', this.onKeypressed)
+  }
 
-      this.createLauncher()
-    })
+  unmounted() {
+    document.removeEventListener('keypress', this.onKeypressed)
+  }
+
+  onKeypressed(event: KeyboardEvent) {
+    if (event.keyCode !== 10 || !event.ctrlKey || !this.formValid) return
+
+    this.createLauncher()
   }
 
   // Check if the form is valid
   get formValid() {
-    return this.form.name.length > 0 && this.form.team_id.match(/^[0-9]+$/)
+    return this.form.name.length > 0 && /^[0-9]+$/.test(this.form.team_id)
   }
 
   // Called when the form is submited

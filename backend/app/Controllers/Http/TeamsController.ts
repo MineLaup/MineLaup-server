@@ -39,7 +39,7 @@ export default class TeamsController {
           }),
           rules.maxLength(50),
         ]),
-        summary: schema.string({}, [
+        summary: schema.string.optional({}, [
           rules.maxLength(200),
         ]),
       }),

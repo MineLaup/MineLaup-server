@@ -2,31 +2,38 @@
   <div class="flex flex-row justify-center">
     <div class="flex-1 p-4 max-w-4xl">
       <h1 class="font-bold text-3xl text-gray-900 dark:text-white uppercase">
-        {{ $t('pages.teams.create.title') }}
+        {{ $t('pages.modpacks.new-version.title') }}
       </h1>
 
-      <form
-        ref="create_team_form"
-        class="p-10 items-center"
-        @submit.prevent="createTeam"
-      >
+      <form class="p-10 items-center" @submit.prevent="createModpackVersion">
+        <t-alert
+          type="info"
+          :message="$t('pages.modpacks.new-version.information')"
+        />
+
         <t-alert v-if="errorMsg" :message="$t(errorMsg)" />
 
         <t-input
-          id="name"
-          v-model="form.name"
-          :label="$t('pages.teams.create.name')"
-          icon="user-friends"
-          class="mb-4"
+          id="version"
+          v-model="form.version"
+          :label="$t('pages.modpacks.new-version.version')"
+          icon="code-branch"
+          class="w-2/3 mb-4"
           autocomplete="off"
-          :error="errors.name ? $t(errors.name) : ''"
+          :error="
+            errors.version
+              ? $t(errors.version, {
+                  regex: 'x.y.z',
+                })
+              : ''
+          "
         />
 
         <t-textarea
           id="summary"
           v-model="form.summary"
           icon="info-circle"
-          :label="$t('pages.teams.create.summary')"
+          :label="$t('pages.modpacks.new-version.summary')"
           :error="errors.summary ? $t(errors.summary) : ''"
         >
         </t-textarea>
@@ -38,7 +45,7 @@
             type="submit"
             :disabled="!formValid"
           >
-            {{ $t('pages.teams.create.submit') }}
+            {{ $t('pages.modpacks.new-version.submit') }}
           </t-button>
         </div>
       </form>
@@ -48,28 +55,27 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
+import TAlert from '~/components/bases/TAlert.vue'
+import TInput from '~/components/forms/TInput.vue'
 import TButton from '~/components/forms/TButton.vue'
 import TTextarea from '~/components/forms/TTextarea.vue'
-import TInput from '~/components/forms/TInput.vue'
-import TAlert from '~/components/bases/TAlert.vue'
 
 @Component({
   components: {
+    TAlert,
+    TInput,
     TButton,
     TTextarea,
-    TInput,
-    TAlert,
   },
 })
-export default class TeamCreate extends Vue {
-  errorMsg: string = ''
-
-  form = {
-    name: '',
+export default class ModpackViewNewVersion extends Vue {
+  form: Partial<any> = {
+    version: '',
     summary: '',
   }
 
-  errors: Partial<String> = {}
+  errorMsg: string = ''
+  errors: Partial<any> = {}
 
   mounted() {
     // Submit the form when the user press CTRL+ENTER
@@ -83,38 +89,18 @@ export default class TeamCreate extends Vue {
   onKeypressed(event: KeyboardEvent) {
     if (event.keyCode !== 10 || !event.ctrlKey || !this.formValid) return
 
-    this.createTeam()
+    this.createModpackVersion()
   }
 
-  // Check if the form is valid
   get formValid() {
-    return this.form.name.length > 0
+    return this.form.version.length > 0
   }
 
-  // Called when the form is submited
-  createTeam() {
-    this.errors = {}
-    this.errorMsg = ''
-
-    // Request the API to create a new team
+  createModpackVersion() {
     this.$axios
-      .post('/api/teams', this.form)
-      .then(async ({ data }) => {
-        // On success, fetch teams list and update it in side bar
-        const teams: Array<Partial<any>> = await this.$axios.$get(
-          '/api/modpacks'
-        )
-
-        this.$store.commit(
-          'menu/setList',
-          teams.map((team: Partial<any>) => ({
-            name: team.name,
-            path: `/teams/${team.id}`,
-          }))
-        )
-
-        // Redirect the user to the new team page
-        this.$router.push(`/teams/${data.id}`)
+      .$post(`/api/modpack/${this.$route.params.id}/versions`, this.form)
+      .then(() => {
+        this.$router.push(`/modpacks/${this.$route.params.id}/`)
       })
       .catch((error) => {
         // On failed, check the response state

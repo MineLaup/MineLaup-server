@@ -10,7 +10,7 @@
         class="flex flex-1 flex-col md:flex-row dark:text-white dark:bg-gray-700"
       >
         <ul
-          class="flex flex-row md:flex-col items-center text-center bg-gray-900 text-gray-400 h-10 md:h-full md:w-12 overflow-x-auto md:overflow-visible"
+          class="flex flex-row md:flex-col items-center text-center bg-gray-900 text-gray-400 h-10 md:h-full md:w-12 md:overflow-visible"
         >
           <t-side-bar-button
             :name="$t('layout.side-bar.teams')"
@@ -25,7 +25,7 @@
           <t-side-bar-button
             :name="$t('layout.side-bar.modpacks')"
             icon="box-open"
-            to="/modpack"
+            to="/modpacks"
           />
           <t-side-bar-button
             v-if="hasAdminPermission"
@@ -56,28 +56,28 @@
           <t-side-bar-action
             :name="$t('layout.side-bar.menu')"
             icon="bars"
-            class="ml-auto mr-4 sm:hidden"
+            class="ml-auto mr-4 md:hidden"
             @click="menuOpen = true"
           />
         </ul>
 
         <div class="flex-1 flex flex-row">
           <div
-            class="sm:w-64 bg-gray-900 absolute sm:relative z-50 sm:z-0 w-screen h-screen md:h-auto text-white top-0 sm:block"
+            class="md:w-64 bg-gray-900 absolute md:relative z-50 md:z-0 w-screen h-screen md:h-auto text-white top-0 md:block"
             :class="{ hidden: !menuOpen }"
           >
             <span
-              class="absolute top-0 right-0 mt-6 mr-6 cursor-pointer sm:hidden"
+              class="absolute top-0 right-0 mt-6 mr-6 cursor-pointer md:hidden"
               @click="menuOpen = false"
             >
               <i class="fas fa-times fa-lg"></i>
             </span>
             <h1
-              class="text-2xl uppercase font-bold mt-4 ml-10 sm:text-xl sm:ml-4"
+              class="text-2xl uppercase font-bold mt-4 ml-10 md:text-xl md:ml-4"
             >
               {{ $t($store.getters['menu/getTitle']) }}
             </h1>
-            <ul class="mt-8 sm:mt-4">
+            <ul class="mt-8 md:mt-4">
               <t-side-bar-item
                 v-if="$store.getters['menu/hasAdditional']"
                 :to="$store.getters['menu/getAdditional'].path"
@@ -113,6 +113,7 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import debounce from 'lodash/debounce'
+import { Context } from '@nuxt/types'
 import NavBar from '~/components/bases/NavBar.vue'
 import TSideBarButton from '~/components/sidebar/TSideBarButton.vue'
 import TSideBarAction from '~/components/sidebar/TSideBarAction.vue'
@@ -133,6 +134,14 @@ export default class Default extends Vue {
   // Getter used to know if the user have permissions
   get hasAdminPermission() {
     return this.$auth.user?.role >= UserRole.admin
+  }
+
+  async asyncData({ $auth }: Context) {
+    await $auth.fetchUser().catch((error) => {
+      if (error.response.status === 401) {
+        $auth.logout()
+      }
+    })
   }
 
   mounted() {

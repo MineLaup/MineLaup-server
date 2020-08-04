@@ -11,10 +11,12 @@
     "form": {
       "required": "This field is required",
       "unique": "The value already exist",
-      "exists": "The value doesn't exist"
+      "exists": "The value doesn't exist",
+      "regex": "The value must be in this format: \"{regex}\""
     },
     "login": {
-      "wrong_ids": "Invalid username or password"
+      "wrong_ids": "Invalid username or password",
+      "account_disabled": "You can't be logged in because your account is currently disabled."
     },
     "unknown": "An unexpected error happened"
   },
@@ -39,7 +41,9 @@
       "team-title": "Teams",
       "users": "Users",
       "launcher-title": "Launchers",
-      "launcher-list": "Launchers list"
+      "launcher-list": "Launchers list",
+      "modpack-title": "Modpacks",
+      "modpack-list": "Modpacks List"
     }
   },
   "pages": {
@@ -119,7 +123,9 @@
           "roles": "Roles",
           "owner": "Owner",
           "default_role": "Default role",
-          "username": "Username"
+          "username": "Username",
+          "add-user-info": "Enter the username of the person you want to invite to the team.",
+          "invite-user": "Invite user"
         },
         "roles": {
           "title": "\"{name}\" team's roles",
@@ -128,14 +134,6 @@
           "save": "Save",
           "reset": "Reset",
           "delete": "Delete"
-        }
-      }
-    },
-    "team": {
-      "view": {
-        "index": {
-          "add-user-info": "Enter the username of the person you want to invite to the team.",
-          "invite-user": "Invite user"
         }
       }
     },
@@ -170,7 +168,68 @@
         "regenerate_key": "Regenerate",
         "assigned_modpack": "Assigned modpacks",
         "search_modpack": "Search a modpack",
-        "add_modpacks": "Add modpacks"
+        "add_modpacks": "Add modpacks",
+        "no_modpacks": "There is not modpacks for now",
+        "no_modpack_found": "No modpack found !"
+      },
+      "edit": {
+        "title": "Edit the launcher",
+        "name": "Name",
+        "summary": "Summary",
+        "team": "Team",
+        "select_team": "Please select a team",
+        "submit": "Update"
+      }
+    },
+    "modpacks": {
+      "create": {
+        "title": "Create a new modpack",
+        "name": "Name",
+        "summary": "Summary",
+        "submit": "Create",
+        "team": "Team",
+        "select_team": "Please select a team "
+      },
+      "list": {
+        "title": "Modpacks list",
+        "new": "New"
+      },
+      "view": {
+        "confirmDelete": "Are you sure that you want delete this modpack ?",
+        "team_name": "Team: {0}",
+        "menu": {
+          "version": "Versions",
+          "mods": "Mods",
+          "minecraft": "Minecraft",
+          "settings": "Settings",
+          "files": "Files",
+          "infos": "Informations"
+        }
+      },
+      "index": {
+        "versions": "Versions",
+        "no_version": "There is no versions for now",
+        "published": "Published",
+        "not_published": "Not published",
+        "no_summary": "No summary"
+      },
+      "new-version": {
+        "title": "Created a new modpack version ",
+        "summary": "Summary",
+        "version": "Version",
+        "submit": "Create",
+        "information": "A new version will be created for the modpack but will not be directly published. To publish a version, you will habe to do it manually on the interface."
+      },
+      "version": {
+        "name": "Name",
+        "summary": "Summary"
+      },
+      "minecraft": {
+        "mc_version": "Minecraft Version",
+        "enable_forge": "Enable Forge",
+        "forge_enabled": "Forge is enabled",
+        "forge_disabled": "Forge is disabled",
+        "forge_version": "Forge Version"
       }
     }
   },
