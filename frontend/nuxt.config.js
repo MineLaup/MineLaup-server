@@ -81,6 +81,12 @@ export default {
         '^/api': '/',
       },
     },
+    '/curse': {
+      target: 'https://addons-ecs.forgesvc.net/api/v2/',
+      pathRewrite: {
+        '^/curse': '/',
+      },
+    },
   },
   /*
    ** Build configuration

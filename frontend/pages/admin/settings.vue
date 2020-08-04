@@ -53,7 +53,7 @@ export default class AdminSettings extends Vue {
   }
 
   onKeypressed(event: KeyboardEvent) {
-    if (event.keyCode !== 10 || !event.ctrlKey) return
+    if (event.keyCode !== 10 || !event.ctrlKey || !this.formValid) return
 
     this.updateSettings()
   }

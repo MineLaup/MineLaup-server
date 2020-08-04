@@ -23,6 +23,12 @@ export default class ModpackVersion extends BaseModel {
   @column()
   public published: boolean
 
+  @column()
+  public mcVersion: string | null
+
+  @column()
+  public forgeVersion: string | null
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

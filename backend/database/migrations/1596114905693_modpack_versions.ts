@@ -10,6 +10,8 @@ export default class ModpackVersions extends BaseSchema {
       table.string('summary', 200)
       table.integer('modpack_id').notNullable().references('modpacks.id')
       table.boolean('published').defaultTo(false).notNullable()
+      table.string('mc_version', 10).nullable()
+      table.string('forge_version', 20).nullable()
       table.timestamps(true)
     })
   }

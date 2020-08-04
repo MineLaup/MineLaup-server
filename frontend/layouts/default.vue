@@ -113,6 +113,7 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import debounce from 'lodash/debounce'
+import { Context } from '@nuxt/types'
 import NavBar from '~/components/bases/NavBar.vue'
 import TSideBarButton from '~/components/sidebar/TSideBarButton.vue'
 import TSideBarAction from '~/components/sidebar/TSideBarAction.vue'
@@ -133,6 +134,14 @@ export default class Default extends Vue {
   // Getter used to know if the user have permissions
   get hasAdminPermission() {
     return this.$auth.user?.role >= UserRole.admin
+  }
+
+  async asyncData({ $auth }: Context) {
+    await $auth.fetchUser().catch((error) => {
+      if (error.response.status === 401) {
+        $auth.logout()
+      }
+    })
   }
 
   mounted() {

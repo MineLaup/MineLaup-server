@@ -405,4 +405,88 @@ export default class ModpacksController {
       userPerms,
     })
   }
+
+  /**
+   * Update minecraft data for modpack version
+   */
+  public async updateMinecraft ({ request, auth, response, params }: HttpContextContract) {
+    // Validate datas
+    const data = await request.validate({
+      schema: schema.create({
+        id: schema.number([
+          rules.unsigned(),
+          rules.exists({
+            column: 'id',
+            table: 'modpack_versions',
+          }),
+        ]),
+        mcVersion: schema.string({
+          trim: true,
+          escape: true,
+        }),
+        enableForge: schema.boolean(),
+        forgeVersion: schema.string({
+          trim: true,
+          escape: true,
+        }, [
+          rules.requiredWhen('enableForge', '=', true),
+        ]),
+      }),
+    })
+
+    // Get the modpack instance
+    const modpack = await Modpack.findOrFail(params.id)
+
+    // Check if the user has the right to get the modpack
+    const team = await TeamUser
+      .query()
+      .preload('teamRole', (query) => {
+        query.preload('permission')
+      })
+      .preload('team', (query => {
+        query.preload('defaultPermission')
+      }))
+      .where('user_id', auth.user!.id)
+      .andWhere('team_id', modpack.teamId)
+      .firstOrFail()
+
+    const modpackVersion = await ModpackVersion
+      .query()
+      .where('id', data.id)
+      .andWhere('modpack_id', params.id)
+      .firstOrFail()
+
+    // If the current user is the team owner
+    if (team.team.ownerId === auth.user!.id) {
+      modpackVersion.mcVersion = data.mcVersion
+      modpackVersion.forgeVersion = data.enableForge ? data.forgeVersion : null
+      await modpackVersion.save()
+
+      // Give feedback
+      return response.status(200)
+    } else {
+      // Get the current user permissions
+      const currentUser = await TeamUser
+        .query()
+        .preload('teamRole', (query) => {
+          query.preload('permission')
+        })
+        .where('teamId', modpack.teamId)
+        .where('userId', auth.user!.id)
+        .firstOrFail()
+
+      // Check permissions
+      if (currentUser.teamRole.permission.manage_modpacks || modpack.team.defaultPermission.manage_modpacks) {
+        modpackVersion.mcVersion = data.mcVersion
+        modpackVersion.forgeVersion = data.enableForge ? data.forgeVersion : null
+        await modpackVersion.save()
+
+        // Give feedback
+        return response.status(200)
+      } else {
+        // Send access forbidden
+        return response.status(403)
+      }
+    }
+  }
 }

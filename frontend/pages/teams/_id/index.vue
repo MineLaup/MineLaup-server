@@ -338,11 +338,24 @@ export default class TeamViewIndex extends Vue {
   mounted() {
     // Fill the form with the team informations
     this.form = this.team
+
+    // Submit the form when the user press CTRL+ENTER
+    document.addEventListener('keypress', this.onKeypressed)
+  }
+
+  unmounted() {
+    document.removeEventListener('keypress', this.onKeypressed)
+  }
+
+  onKeypressed(event: KeyboardEvent) {
+    if (event.keyCode !== 10 || !event.ctrlKey || !this.formValid) return
+
+    this.updateTeam()
   }
 
   // Check if the form is valid
   get formValid() {
-    return this.form.name.length > 0 && this.form.summary.length > 0
+    return this.form.name.length > 0
   }
 
   editUser(_id: number) {}

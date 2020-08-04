@@ -81,14 +81,14 @@ export default class TeamCreate extends Vue {
   }
 
   onKeypressed(event: KeyboardEvent) {
-    if (event.keyCode !== 10 || !event.ctrlKey) return
+    if (event.keyCode !== 10 || !event.ctrlKey || !this.formValid) return
 
     this.createTeam()
   }
 
   // Check if the form is valid
   get formValid() {
-    return this.form.name.length > 0 && this.form.summary.length > 0
+    return this.form.name.length > 0
   }
 
   // Called when the form is submited

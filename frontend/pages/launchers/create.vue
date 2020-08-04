@@ -111,14 +111,14 @@ export default class ModpackCreate extends Vue {
   }
 
   onKeypressed(event: KeyboardEvent) {
-    if (event.keyCode !== 10 || !event.ctrlKey) return
+    if (event.keyCode !== 10 || !event.ctrlKey || !this.formValid) return
 
     this.createLauncher()
   }
 
   // Check if the form is valid
   get formValid() {
-    return this.form.name.length > 0 && this.form.team_id.match(/^[0-9]+$/)
+    return this.form.name.length > 0 && /^[0-9]+$/.test(this.form.team_id)
   }
 
   // Called when the form is submited

@@ -118,6 +118,12 @@ Route.group(() => {
   Route.delete('/modpack/:id/version', 'ModpacksController.deleteVersion').where('id', /^[0-9]+$/)
   // get a version
   Route.get('/modpack/:id/version', 'ModpacksController.getVersion').where('id', /^[0-9]+$/)
+
+  /**
+   * Modpack Minecraft informations
+   */
+  // Get modpack Minecraft informations
+  Route.post('/modpack/:id/minecraft', 'ModpacksController.updateMinecraft').where('id', /^[0-9]+$/)
 }).middleware('auth')
 
 /**

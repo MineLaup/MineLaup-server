@@ -223,6 +223,13 @@
       "version": {
         "name": "Name",
         "summary": "Summary"
+      },
+      "minecraft": {
+        "mc_version": "Minecraft Version",
+        "enable_forge": "Enable Forge",
+        "forge_enabled": "Forge is enabled",
+        "forge_disabled": "Forge is disabled",
+        "forge_version": "Forge Version"
       }
     }
   },

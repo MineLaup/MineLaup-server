@@ -23,7 +23,7 @@ export default class Team extends BaseModel {
   public name: string
 
   @column()
-  public summary: string
+  public summary: string | null
 
   @belongsTo(() => User, {
     foreignKey: 'ownerId',

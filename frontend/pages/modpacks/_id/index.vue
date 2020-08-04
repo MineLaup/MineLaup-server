@@ -36,21 +36,25 @@
                 : $t('pages.modpacks.index.not_published')
             }}
           </span>
+        </router-link>
+        <div
+          class="py-2 px-8 dark:text-gray-200 text-gray-700 flex justify-between"
+        >
+          <span>
+            {{
+              version.summary
+                ? version.summary
+                : $t('pages.modpacks.index.no_summary')
+            }}
+          </span>
           <span class="flex-1 text-right">
             <span v-if="index === 0">
               <i
                 class="fas fa-trash text-red-500 hover:text-red-400 cursor-pointer"
-                @click="openDeleteVersionModal(version.id)"
+                @click.stop="openDeleteVersionModal(version.id)"
               />
             </span>
           </span>
-        </router-link>
-        <div class="py-2 px-8 dark:text-gray-200 text-gray-700">
-          {{
-            version.summary
-              ? version.summary
-              : $t('pages.modpacks.index.no_summary')
-          }}
         </div>
       </div>
       <div v-if="versions.length == 0" class="p-4">

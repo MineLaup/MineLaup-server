@@ -87,13 +87,13 @@ export default class ModpackViewNewVersion extends Vue {
   }
 
   onKeypressed(event: KeyboardEvent) {
-    if (event.keyCode !== 10 || !event.ctrlKey) return
+    if (event.keyCode !== 10 || !event.ctrlKey || !this.formValid) return
 
     this.createModpackVersion()
   }
 
   get formValid() {
-    return true
+    return this.form.version.length > 0
   }
 
   createModpackVersion() {
