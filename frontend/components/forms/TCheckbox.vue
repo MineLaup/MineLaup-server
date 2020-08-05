@@ -12,6 +12,7 @@
         :id="id"
         :checked="value"
         type="checkbox"
+        :disabled="disabled"
         class="block w-6 h-6 mr-2 rounded-full border-2 appearance-none cursor-pointer outline-none text-green-400 transition duration-200 ease-in shadow"
         @input="$emit('input', $event.target.checked)"
       />
@@ -50,6 +51,9 @@ export default class TCheckbox extends Vue {
 
   @Prop()
   offText!: string
+
+  @Prop({ type: Boolean })
+  disabled!: boolean
 }
 </script>
 
@@ -57,6 +61,11 @@ export default class TCheckbox extends Vue {
 $fa-font-path: '~@fortawesome/fontawesome-free/webfonts' !default;
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
 @import '~@fortawesome/fontawesome-free/scss/solid';
+
+input:disabled {
+  border-color: rgba(0, 0, 0, 0.4) !important;
+  color: rgba(0, 0, 0, 0.4) !important;
+}
 
 input[type='checkbox'] {
   @extend %fa-icon;

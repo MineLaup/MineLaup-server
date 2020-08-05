@@ -270,7 +270,7 @@ export default class LauncherViewIndex extends Vue {
         let teams = await this.$axios.$get('/api/launchers')
 
         teams = teams.filter((team: Partial<any>) => {
-          return team.launcher?.length
+          return team.launchers?.length
         })
 
         let launchers: Array<Partial<any>> = []
@@ -315,7 +315,7 @@ export default class LauncherViewIndex extends Vue {
   @Watch('$route')
   onRouteChange(current: Partial<any>) {
     // On route change, if the page name still the same, then refetch team informations
-    if (current.name === 'modpacks-id') {
+    if (current.name === 'launchers-id') {
       this.$fetch()
     }
   }
