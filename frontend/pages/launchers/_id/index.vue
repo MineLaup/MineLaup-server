@@ -10,6 +10,14 @@
         <div
           v-if="launcher.userPerms.owner || launcher.userPerms.manage_modpack"
         >
+          <i
+            class="fas text-gray-700 dark:text-white hover:text-green-400 cursor-pointer mr-2 text-xl"
+            :class="{
+              'fa-toggle-on': !launcher.disabled,
+              'fa-toggle-off': launcher.disabled,
+            }"
+            @click="updateLauncherState(launcher.id, launcher.disabled)"
+          />
           <nuxt-link :to="'/launchers/' + $route.params.id + '/edit'">
             <i class="fas fa-pen hover:text-green-400"></i>
           </nuxt-link>
@@ -69,6 +77,14 @@
               {{ modpack.name }}
             </span>
             <span>
+              <i
+                class="fas text-gray-700 dark:text-white hover:text-green-400 cursor-pointer mr-2 text-xl"
+                :class="{
+                  'fa-toggle-on': !modpack.disabled,
+                  'fa-toggle-off': modpack.disabled,
+                }"
+                @click="updateModpackState(modpack.id, modpack.disabled)"
+              ></i>
               <i
                 class="fas fa-trash hover:text-red-600 dark-hover:text-red-500 cursor-pointer"
                 @click="deleteModpack(modpack.id)"
@@ -139,7 +155,7 @@
             <span>
               <i
                 class="fas fa-plus hover:text-green-400 transition-colors duration-75 cursor-pointer"
-                @click="addModpack(modpack.id)"
+                @click="addModpack(modpack.id, modpack.disabled)"
               ></i>
             </span>
           </div>
@@ -254,6 +270,28 @@ export default class LauncherViewIndex extends Vue {
         params: {
           id,
         },
+      })
+      .then(async () => {
+        await this.$fetch()
+      })
+  }
+
+  // Update modpack state (disabled/enabled)
+  updateModpackState(id: number, state: boolean) {
+    this.$axios
+      .$put(`/api/modpack/${id}/state`, {
+        state,
+      })
+      .then(async () => {
+        await this.$fetch()
+      })
+  }
+
+  // Update launcher state (disabled/enabled)
+  updateLauncherState(id: number, state: boolean) {
+    this.$axios
+      .$put(`/api/launcher/${id}/state`, {
+        state,
       })
       .then(async () => {
         await this.$fetch()

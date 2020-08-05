@@ -359,4 +359,56 @@ export default class LaunchersController {
 
     return response.status(403)
   }
+
+  /**
+   * Change launcher state function
+   */
+  public async updateState ({ params, request, response, auth }: HttpContextContract) {
+    // Validate datas
+    const data = await request.validate({
+      schema: schema.create({
+        state: schema.boolean(),
+      }),
+    })
+
+    // Get launcher instance from id
+    const launcher = await Launcher
+      .query()
+      .preload('team', (query) => {
+        query.preload('defaultPermission')
+      })
+      .where('id', params.id)
+      .firstOrFail()
+
+    // If the current user is the team owner
+    if (launcher.team.ownerId === auth.user!.id) {
+      launcher.disabled = !data.state
+      await launcher.save()
+
+      // Give feedback
+      return response.json(launcher)
+    } else {
+      // Get the current user permissions
+      const currentUser = await TeamUser
+        .query()
+        .preload('teamRole', (query) => {
+          query.preload('permission')
+        })
+        .where('teamId', launcher.teamId)
+        .andWhere('userId', auth.user!.id)
+        .firstOrFail()
+
+      // Check permissions
+      if (currentUser.teamRole.permission.manage_modpacks || launcher.team.defaultPermission.manage_modpacks) {
+        launcher.disabled = !data.state
+        await launcher.save()
+
+        // Give feedback
+        return response.json(launcher)
+      } else {
+        // Send access forbidden
+        return response.status(403)
+      }
+    }
+  }
 }

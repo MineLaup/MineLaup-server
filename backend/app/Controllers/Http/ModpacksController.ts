@@ -53,7 +53,7 @@ export default class ModpacksController {
       userPerms = {
         owner: true,
       }
-    // Is the user have a role
+      // Is the user have a role
     } else if (teamUser.teamRoleId) {
       // Set the permissions
       userPerms = teamUser.teamRole.permission
@@ -594,6 +594,58 @@ export default class ModpacksController {
 
         // Give feedback
         return response.status(200)
+      } else {
+        // Send access forbidden
+        return response.status(403)
+      }
+    }
+  }
+
+  /**
+   * Change modpack state function
+   */
+  public async updateState ({ params, request, response, auth }: HttpContextContract) {
+    // Validate datas
+    const data = await request.validate({
+      schema: schema.create({
+        state: schema.boolean(),
+      }),
+    })
+
+    // Get modpack instance from id
+    const modpack = await Modpack
+      .query()
+      .preload('team', (query) => {
+        query.preload('defaultPermission')
+      })
+      .where('id', params.id)
+      .firstOrFail()
+
+    // If the current user is the team owner
+    if (modpack.team.ownerId === auth.user!.id) {
+      modpack.disabled = !data.state
+      await modpack.save()
+
+      // Give feedback
+      return response.json(modpack)
+    } else {
+      // Get the current user permissions
+      const currentUser = await TeamUser
+        .query()
+        .preload('teamRole', (query) => {
+          query.preload('permission')
+        })
+        .where('teamId', modpack.teamId)
+        .andWhere('userId', auth.user!.id)
+        .firstOrFail()
+
+      // Check permissions
+      if (currentUser.teamRole.permission.manage_modpacks || modpack.team.defaultPermission.manage_modpacks) {
+        modpack.disabled = !data.state
+        await modpack.save()
+
+        // Give feedback
+        return response.json(modpack)
       } else {
         // Send access forbidden
         return response.status(403)

@@ -22,4 +22,6 @@ Route.group(() => {
   Route.post('/launcher/:id/modpacks', 'LaunchersController.addModpack').where('id', /^[0-9]+$/)
   // Remove modpack from a launcher
   Route.delete('/launcher/:id/modpacks', 'LaunchersController.removeModpack').where('id', /^[0-9]+$/)
+  // Change launcher state
+  Route.put('/launcher/:id/state', 'LaunchersController.updateState').where('id', /^[0-9]+$/)
 }).middleware('auth')

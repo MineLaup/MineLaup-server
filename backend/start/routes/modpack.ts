@@ -31,4 +31,6 @@ Route.group(() => {
    */
   // Get modpack Minecraft informations
   Route.post('/modpack/:id/minecraft', 'ModpacksController.updateMinecraft').where('id', /^[0-9]+$/)
+  // Change modpack state
+  Route.put('/modpack/:id/state', 'ModpacksController.updateState').where('id', /^[0-9]+$/)
 }).middleware('auth')
