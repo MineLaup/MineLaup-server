@@ -37,6 +37,7 @@
     "side-menu": {
       "administration-title": "Administration",
       "settings": "Paramètres",
+      "about": "À propos",
       "team-new": "Nouvelle équipe",
       "team-title": "Équipes",
       "users": "Utilisateurs",
@@ -82,6 +83,11 @@
           "title": "Mise à jours du compte",
           "username": "Nom d'utilisateur"
         }
+      },
+      "about": {
+        "title": "À propos",
+        "version": "Nom",
+        "author": "Auteur"
       }
     },
     "login": {
@@ -222,7 +228,10 @@
       },
       "version": {
         "name": "Nom",
-        "summary": "Description"
+        "summary": "Description",
+        "published": "Publier",
+        "is-published": "La version est publié",
+        "not-published": "La version n'est pas publié"
       },
       "minecraft": {
         "mc_version": "Minecraft Version",
@@ -256,5 +265,10 @@
         "disabled": "L'utilisateur ne peut pas gérer les utilisateurs"
       }
     }
+  },
+  "social": {
+    "discord": "Discord",
+    "github": "Github",
+    "title": "Nos réseaux"
   }
 }

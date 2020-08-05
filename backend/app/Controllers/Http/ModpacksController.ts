@@ -394,16 +394,127 @@ export default class ModpacksController {
 
     const modpackVersion = await ModpackVersion
       .query()
-      .preload('modpack')
       .where('id', data.id)
+      .firstOrFail()
+
+    const latestVersion = await ModpackVersion
+      .query()
+      .where('modpackId', modpack.id)
+      .orderBy('created_at', 'desc')
       .firstOrFail()
 
     // Send the modpack version information and permissions
     response.json({
       ...modpackVersion.toJSON(),
+      canEdit: latestVersion.id === modpackVersion.id,
       team: teamUser.team.toJSON(),
       userPerms,
     })
+  }
+
+  /**
+   * Update modpack version
+   */
+  public async updateVersion ({ request, auth, response, params }: HttpContextContract) {
+    // Validate datas
+    const data = await request.validate({
+      schema: schema.create({
+        id: schema.number([
+          rules.exists({
+            column: 'id',
+            table: 'modpack_versions',
+          }),
+        ]),
+        version: schema.string({
+          trim: true,
+          escape: true,
+        }, [
+          rules.maxLength(20),
+          rules.unique({
+            column: 'version',
+            table: 'modpack_versions',
+            where: {
+              modpack_id: params.id,
+            },
+            whereNot: {
+              id: request.get().id,
+            },
+          }),
+          rules.regex(/^\d\.\d\.\d(-[a-z]+)?$/),
+        ]),
+        summary: schema.string.optional({
+          trim: true,
+          escape: true,
+        }, [
+          rules.maxLength(200),
+        ]),
+        published: schema.boolean(),
+      }),
+    })
+
+    // Get modpack instance from id
+    const modpack = await Modpack
+      .query()
+      .preload('team', (query) => {
+        query.preload('defaultPermission')
+      })
+      .where('id', params.id)
+      .firstOrFail()
+
+    const version = await ModpackVersion
+      .query()
+      .where('modpackId', modpack.id)
+      .andWhere('id', data.id)
+      .firstOrFail()
+
+    const latestVersion = await ModpackVersion
+      .query()
+      .where('modpackId', modpack.id)
+      .orderBy('created_at', 'desc')
+      .firstOrFail()
+
+    if (version.id !== latestVersion.id) {
+      return response.status(403)
+    }
+
+    if (version.mcVersion !== null) {
+
+    }
+
+    // If the current user is the team owner
+    if (modpack.team.ownerId === auth.user!.id) {
+      version.version = data.version
+      version.summary = data.summary ? data.summary : null
+      version.published = version.mcVersion !== null ? data.published : false
+      await version.save()
+
+      // Give feedback
+      return response.json(version)
+    } else {
+      // Get the current user permissions
+      const currentUser = await TeamUser
+        .query()
+        .preload('teamRole', (query) => {
+          query.preload('permission')
+        })
+        .where('teamId', modpack.teamId)
+        .where('userId', auth.user!.id)
+        .firstOrFail()
+
+      // Check permissions
+      if (currentUser.teamRole.permission.manage_modpacks || modpack.team.defaultPermission.manage_modpacks) {
+        version.version = data.version
+        version.summary = data.summary ? data.summary : null
+        version.published = version.mcVersion !== null ? data.published : false
+        await version.save()
+
+        // Give feedback
+        return response.json(version)
+      } else {
+        // Send access forbidden
+        return response.status(403)
+      }
+    }
   }
 
   /**
@@ -425,7 +536,7 @@ export default class ModpacksController {
           escape: true,
         }),
         enableForge: schema.boolean(),
-        forgeVersion: schema.string({
+        forgeVersion: schema.string.optional({
           trim: true,
           escape: true,
         }, [
@@ -459,7 +570,7 @@ export default class ModpacksController {
     // If the current user is the team owner
     if (team.team.ownerId === auth.user!.id) {
       modpackVersion.mcVersion = data.mcVersion
-      modpackVersion.forgeVersion = data.enableForge ? data.forgeVersion : null
+      modpackVersion.forgeVersion = data.enableForge ? data.forgeVersion as string : null
       await modpackVersion.save()
 
       // Give feedback
@@ -478,7 +589,7 @@ export default class ModpacksController {
       // Check permissions
       if (currentUser.teamRole.permission.manage_modpacks || modpack.team.defaultPermission.manage_modpacks) {
         modpackVersion.mcVersion = data.mcVersion
-        modpackVersion.forgeVersion = data.enableForge ? data.forgeVersion : null
+        modpackVersion.forgeVersion = data.enableForge ? data.forgeVersion as string : null
         await modpackVersion.save()
 
         // Give feedback

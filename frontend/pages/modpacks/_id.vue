@@ -98,7 +98,7 @@ export default class ModpackView extends Vue {
   // open the delete team modal confirmation
   openDeleteTeamModal() {
     this.deleteModal = {
-      title: 'pages.modpacks.index.confirmDelete',
+      title: 'pages.modpacks.view.confirmDelete',
     }
   }
 

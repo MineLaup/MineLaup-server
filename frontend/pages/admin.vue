@@ -23,6 +23,10 @@ export default class AdminView extends Vue {
         nameI18n: 'layout.side-menu.settings',
         path: '/admin/settings',
       },
+      {
+        nameI18n: 'layout.side-menu.about',
+        path: '/admin/about',
+      },
     ])
   }
 }

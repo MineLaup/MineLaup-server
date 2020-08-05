@@ -43,4 +43,5 @@ Server.middleware.register([
 Server.middleware.registerNamed({
   auth: 'App/Middleware/Auth',
   admin: 'App/Middleware/Admin',
+  api: 'App/Middleware/Api',
 })
