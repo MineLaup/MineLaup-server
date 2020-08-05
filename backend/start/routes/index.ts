@@ -23,6 +23,7 @@ import hat from 'hat'
 import * as pkg from '../../package.json'
 
 import './admin'
+import './api'
 import './launcher'
 import './modpack'
 import './team'
