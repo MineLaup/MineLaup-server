@@ -41,6 +41,7 @@ export default class ApisController {
       .query()
       .preload('version', (query) => {
         query.where('published', true)
+        query.whereNot('disabled', true)
         query.select('id', 'version', 'summary', 'created_at')
       })
       .select('id', 'name', 'summary')
@@ -49,6 +50,10 @@ export default class ApisController {
 
     if (!modpack) {
       return response.status(404)
+    }
+
+    if (modpack.disabled) {
+      return response.forbidden('Modpack disabled')
     }
 
     return response.json(modpack)
