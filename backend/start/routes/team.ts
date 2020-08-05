@@ -11,6 +11,8 @@ Route.group(() => {
   Route.get('/', 'TeamsController.list')
   // Create team
   Route.post('/', 'TeamsController.create')
+  // Update team
+  Route.put('/:id', 'TeamsController.updateTeam').where('id', /^[0-9]+$/)
   // Get team info
   Route.get('/:id', 'TeamsController.get').where('id', /^[0-9]+$/)
   // Get team users

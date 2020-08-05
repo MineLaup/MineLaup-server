@@ -19,6 +19,6 @@ export default class Api {
       return await response.status(404)
     }
 
-    return response.status(403)
+    return response.unauthorized('')
   }
 }

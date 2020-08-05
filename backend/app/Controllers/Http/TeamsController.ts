@@ -109,6 +109,72 @@ export default class TeamsController {
   }
 
   /**
+   * Update team function
+   */
+  public async updateTeam ({ request, params, response, auth}: HttpContextContract) {
+    // Validate datas
+    const data = await request.validate({
+      schema: schema.create({
+        // The name has to be an unique string of maximum 50 characters
+        name: schema.string({}, [
+          rules.unique({
+            column: 'name',
+            table: 'teams',
+            whereNot: {
+              id: params.id,
+            },
+          }),
+          rules.maxLength(50),
+        ]),
+        summary: schema.string.optional({}, [
+          rules.maxLength(200),
+        ]),
+      }),
+      cacheKey: request.url(),
+    })
+
+    // Get team instance from ID
+    const team = await Team
+      .query()
+      .preload('defaultPermission')
+      .where('id', params.id)
+      .firstOrFail()
+
+    // If the current user is the team owner
+    if (team.ownerId === auth.user!.id) {
+      team.name = data.name
+      team.summary = data.summary ? data.summary : null
+      await team.save()
+
+      // Give feedback
+      return response.json(team)
+    } else {
+      // Get the current user permissions
+      const currentUser = await TeamUser
+        .query()
+        .preload('teamRole', (query) => {
+          query.preload('permission')
+        })
+        .where('teamId', team.id)
+        .where('userId', auth.user!.id)
+        .firstOrFail()
+
+      // Check permissions
+      if (currentUser.teamRole.permission.manage_modpacks || team.defaultPermission.manage_modpacks) {
+        team.name = data.name
+        team.summary = data.summary ? data.summary : null
+        await team.save()
+
+        // Give feedback
+        return response.json(team)
+      } else {
+        // Send access forbidden
+        return response.status(403)
+      }
+    }
+  }
+
+  /**
    * Get team users list
    */
   public async fetchUsers ({ request, params, response, auth }: HttpContextContract) {

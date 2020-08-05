@@ -273,6 +273,7 @@ import TInput from '~/components/forms/TInput.vue'
 import TTextarea from '~/components/forms/TTextarea.vue'
 import TButton from '~/components/forms/TButton.vue'
 import TModal from '~/components/bases/TModal.vue'
+import TAlert from '~/components/bases/TAlert.vue'
 
 @Component({
   components: {
@@ -280,6 +281,7 @@ import TModal from '~/components/bases/TModal.vue'
     TTextarea,
     TButton,
     TModal,
+    TAlert,
   },
 })
 export default class TeamViewIndex extends Vue {
@@ -428,7 +430,7 @@ export default class TeamViewIndex extends Vue {
 
     // Send a request to the API to update the team
     this.$axios
-      .put('/api/teams', this.form)
+      .put(`/api/teams/${this.$route.params.id}`, this.form)
       .then(async () => {
         // On success, fetch teams list and update it in the side bar
         const teams = await this.$axios.$get('/api/teams')
