@@ -42,7 +42,7 @@
           {{ $t('social.title') }}
         </h1>
         <a
-          class="px-4 py-2 border rounded-full focus:outline-none transition ease-out duration-300 text-gray-900 dark:text-white mb-2 bg-discord"
+          class="px-4 py-2 border rounded-full focus:outline-none transition ease-out duration-300 text-gray-900 hover:text-white dark:text-white mb-2 bg-discord"
           href="https://discord.gg/dS2Wxyr"
           target="_blank"
         >
@@ -50,7 +50,7 @@
           {{ $t('social.discord') }}
         </a>
         <a
-          class="px-4 py-2 border rounded-full focus:outline-none transition ease-out duration-300 border-black text-gray-900 dark:text-white hover:bg-black"
+          class="px-4 py-2 border rounded-full focus:outline-none transition ease-out duration-300 border-black hover:text-white text-gray-900 dark:text-white hover:bg-black"
           href="https://github.com/MineLaup"
           target="_blank"
         >

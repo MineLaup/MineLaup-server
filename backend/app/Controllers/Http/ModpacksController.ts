@@ -191,11 +191,30 @@ export default class ModpacksController {
 
     // If the current user is the team owner
     if (modpack.team.ownerId === auth.user!.id) {
-      const version = await ModpackVersion.create({
-        version: data.version,
-        summary: data.summary,
-        modpackId: modpack.id,
-      })
+      const latestVersion = await ModpackVersion
+        .query()
+        .where('modpackId', modpack.id)
+        .orderBy('created_at', 'desc')
+        .first()
+
+      let version: ModpackVersion | null = null
+
+      if (latestVersion) {
+        version = await ModpackVersion.create({
+          version: data.version,
+          summary: data.summary,
+          modpackId: modpack.id,
+          mcVersion: latestVersion.mcVersion,
+          forgeVersion: latestVersion.forgeVersion,
+        })
+      } else {
+        version = await ModpackVersion.create({
+          version: data.version,
+          summary: data.summary,
+          modpackId: modpack.id,
+        })
+      }
+
       // Give feedback
       return response.json(version)
     } else {
@@ -211,11 +230,29 @@ export default class ModpacksController {
 
       // Check permissions
       if (currentUser.teamRole.permission.manage_modpacks || modpack.team.defaultPermission.manage_modpacks) {
-        const version = await ModpackVersion.create({
-          version: data.version,
-          summary: data.summary,
-          modpackId: modpack.id,
-        })
+        const latestVersion = await ModpackVersion
+          .query()
+          .where('modpackId', modpack.id)
+          .orderBy('created_at', 'desc')
+          .first()
+
+        let version: ModpackVersion | null = null
+
+        if (latestVersion) {
+          version = await ModpackVersion.create({
+            version: data.version,
+            summary: data.summary,
+            modpackId: modpack.id,
+            mcVersion: latestVersion.mcVersion,
+            forgeVersion: latestVersion.forgeVersion,
+          })
+        } else {
+          version = await ModpackVersion.create({
+            version: data.version,
+            summary: data.summary,
+            modpackId: modpack.id,
+          })
+        }
         // Give feedback
         return response.json(version)
       } else {
