@@ -239,6 +239,9 @@
         "forge_enabled": "Forge is enabled",
         "forge_disabled": "Forge is disabled",
         "forge_version": "Forge Version"
+      },
+      "mods": {
+        "search": "Search"
       }
     }
   },

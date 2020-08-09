@@ -239,6 +239,9 @@
         "forge_enabled": "Forge est activé",
         "forge_disabled": "Forge est désactivé",
         "forge_version": "Version de Forge"
+      },
+      "mods": {
+        "search": "Chercher"
       }
     }
   },

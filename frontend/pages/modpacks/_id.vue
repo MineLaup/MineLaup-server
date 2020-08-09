@@ -1,5 +1,5 @@
 <template>
-  <div v-if="modpack" class="flex flex-col">
+  <div v-if="modpack" class="flex flex-col full-height">
     <div
       class="h-64 bg-gray-200 dark:bg-gray-600 p-10 pb-0 relative flex flex-col"
     >
@@ -29,8 +29,8 @@
         </div>
       </div>
     </div>
-    <div class="flex-1">
-      <nuxt-child></nuxt-child>
+    <div class="flex-1 flex flex-row">
+      <nuxt-child class="flex-1"></nuxt-child>
     </div>
 
     <t-modal
