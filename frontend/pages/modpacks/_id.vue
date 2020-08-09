@@ -1,7 +1,7 @@
 <template>
   <div v-if="modpack" class="flex flex-col full-height">
     <div
-      class="h-64 bg-gray-200 dark:bg-gray-600 p-10 pb-0 relative flex flex-col"
+      class="h-32 bg-gray-200 dark:bg-gray-600 py-5 px-10 pb-0 relative flex flex-col"
     >
       <div class="flex-1">
         <div class="flex flex-row">
@@ -14,13 +14,13 @@
             v-if="modpack.userPerms.owner || modpack.userPerms.manage_modpack"
           >
             <i
-              class="fas fa-trash text-red-500 hover:text-red-400 cursor-pointer"
+              class="fas fa-trash text-gray-900 dark:text-white hover:text-red-500 cursor-pointer"
               @click="openDeleteTeamModal"
             ></i>
           </div>
         </div>
         <div class="mx-8">
-          <p class="text-gray-800">
+          <p class="text-gray-800 dark:text-gray-200">
             {{ $t('pages.modpacks.view.team_name', [modpack.team.name]) }}
           </p>
           <p class="text-gray-800 italic">

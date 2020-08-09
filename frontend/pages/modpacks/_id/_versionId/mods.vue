@@ -12,6 +12,6 @@ export default class ModpackViewMods extends Vue {}
 
 <style lang="scss" scoped>
 .mods-height {
-  height: calc(100vh - 5rem - 3rem - 16rem);
+  height: calc(100vh - 5rem - 3rem - 8rem);
 }
 </style>
