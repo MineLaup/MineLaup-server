@@ -1,27 +1,32 @@
 <template>
   <div class="flex flex-row p-4 pl-0">
     <div class="border-r-2 overflow-y-auto w-mods-list">
-      <t-input
-        id="search-mod"
-        v-model="searchField"
-        class="p-2"
-        icon="search"
-        :label="$t('pages.modpacks.mods.search')"
-        autocomplete="off"
-      />
+      <div class="sticky top-0 bg-white dark:bg-gray-700 border-b">
+        <nuxt-link
+          class="flex flex-row px-4 py-3 hover:text-green-400"
+          :to="`/modpacks/${$route.params.id}/${$route.params.versionId}/mods`"
+        >
+          <span class="w-4 h-4 mr-2">
+            <i class="fas fa-arrow-left"></i>
+          </span>
+          <span class="flex-1">
+            {{ $t('pages.modpacks.mods.back') }}
+          </span>
+        </nuxt-link>
+        <t-input
+          id="search-mod"
+          v-model="searchField"
+          class="p-2"
+          icon="search"
+          :label="$t('pages.modpacks.mods.search')"
+          autocomplete="off"
+          @input="search"
+        />
+      </div>
 
       <div class="pt-2">
-        <nuxt-link
-          :to="`/modpacks/${$route.params.id}/${$route.params.versionId}/mods/search`"
-          class="hover:text-green-400 flex flex-row px-4 py-3"
-        >
-          <span class="mr-2">
-            <i class="fas fa-plus"></i>
-          </span>
-          {{ $t('pages.modpacks.mods.add-mods') }}
-        </nuxt-link>
         <a
-          v-for="mod in list"
+          v-for="mod in modsList"
           :key="mod.id"
           class="flex flex-row items-center"
           href="#"
@@ -58,6 +63,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
+import debounce from 'lodash/debounce'
+import { Context } from '@nuxt/types'
 import TInput from '~/components/forms/TInput.vue'
 
 @Component({
@@ -65,43 +72,49 @@ import TInput from '~/components/forms/TInput.vue'
     TInput,
   },
 })
-export default class ModpackViewInstalledMods extends Vue {
+export default class ModpackViewSearchMods extends Vue {
   searchField: string = ''
   modsList: Array<Partial<any>> = []
 
   selected: number = 0
 
   currentView: Partial<any> = {}
+  version: Partial<any> = {}
 
-  async fetch() {
-    let mods = await this.$axios.$get(
-      `/api/modpack/${this.$route.params.id}/mods`,
-      {
-        params: {
-          v: this.$route.params.versionId,
-          search: this.searchField || undefined,
-        },
-      }
-    )
-
-    mods = mods.mods.map((mod: Partial<any>) => {
-      return mod.mod_id
+  async asyncData({ $axios, params }: Context) {
+    const version = await $axios.$get(`/api/modpack/${params.id}/version`, {
+      params: {
+        id: params.versionId,
+      },
     })
 
-    mods = await this.$axios.$post('/curse/addon', mods)
-
-    this.modsList = mods
-    this.selected = mods[0]?.id
-
-    this.selectMod(this.modsList[0])
+    return { version }
   }
 
-  get list() {
-    const l = this.modsList.filter((mod: Partial<any>) => {
-      return mod.name.includes(this.searchField)
+  search = debounce(this.searchMods, 250)
+
+  async searchMods() {
+    const mods = await this.$axios.$get(`/curse/addon/search`, {
+      params: {
+        // game 432: Minecraft
+        gameId: 432,
+        // game version
+        gameVersion: this.version.mc_version,
+        index: 0,
+        pageSize: 100,
+        searchFilter: this.searchField,
+        sectionId: 6,
+        sort: 0,
+      },
     })
 
-    return l
+    this.modsList = mods
+
+    this.selected = mods[0]?.id
+
+    if (this.modsList && this.selected) {
+      this.selectMod(this.modsList[0])
+    }
   }
 
   async selectMod(mod: Partial<any>) {
@@ -185,42 +198,3 @@ export default class ModpackViewInstalledMods extends Vue {
   }
 }
 </script>
-
-<style lang="scss">
-.w-mods-list {
-  width: 20rem !important;
-}
-
-.mod-content {
-  a {
-    @apply text-green-500;
-
-    &:hover {
-      @apply text-green-400;
-    }
-  }
-
-  h4 {
-    @apply text-3xl;
-  }
-
-  img {
-    @apply inline;
-  }
-
-  p {
-    @apply mb-3;
-  }
-}
-.dark-mode {
-  .mod-content {
-    a {
-      @apply text-green-400;
-
-      &:hover {
-        @apply text-green-300;
-      }
-    }
-  }
-}
-</style>

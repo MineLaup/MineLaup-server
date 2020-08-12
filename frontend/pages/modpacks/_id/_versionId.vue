@@ -18,7 +18,7 @@
       <nuxt-link
         :to="`/modpacks/${$route.params.id}/${$route.params.versionId}/mods`"
         class="p-3 border-b-4 border-transparent"
-        exact-active-class="border-green-400 text-green-400"
+        active-class="border-green-400 text-green-400"
       >
         {{ $t('pages.modpacks.view.menu.mods') }}
       </nuxt-link>

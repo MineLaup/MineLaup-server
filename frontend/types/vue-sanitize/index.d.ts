@@ -1,22 +1,21 @@
+/// <reference types="sanitize-html" />
+
+import sanitize from 'sanitize-html'
+
 declare module 'vue/types/vue' {
   interface Vue {
-    $sanitize(html: string): string
+    $sanitize(dirty: string, options?: sanitize.IOptions): string
   }
 }
 
 declare module '@nuxt/vue-app' {
   interface Context {
-    $sanitize(html: string): string
+    $sanitize(dirty: string, options?: sanitize.IOptions): string
   }
 }
 
 declare module '@nuxt/types' {
   interface Context {
-    $sanitize(html: string): string
+    $sanitize(dirty: string, options?: sanitize.IOptions): string
   }
-}
-
-declare module 'vue-sanitize' {
-  const VueSanitize: any
-  export default VueSanitize
 }

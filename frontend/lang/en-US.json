@@ -241,7 +241,9 @@
         "forge_version": "Forge Version"
       },
       "mods": {
-        "search": "Search"
+        "search": "Search",
+        "add-mods": "Add mods",
+        "back": "Back"
       }
     }
   },
