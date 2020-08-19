@@ -41,15 +41,25 @@
       </div>
     </div>
     <div class="flex-1 p-4 overflow-auto max-h-full">
-      <h1 class="text-2xl font-semibold pb-1 border-b mb-4">
+      <div class="pb-1 border-b mb-4 flex flex-row justify-between">
+        <h1 class="text-2xl font-semibold">
+          <a
+            :href="currentView.websiteUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ currentView.name }}
+          </a>
+        </h1>
         <a
-          :href="currentView.websiteUrl"
-          target="_blank"
-          rel="noopener noreferrer"
+          v-if="currentView.name"
+          href="#"
+          class="hover:text-red-500 mr-4 text-lg"
+          @click="deleteMod"
         >
-          {{ currentView.name }}
+          <i class="fas fa-trash"></i>
         </a>
-      </h1>
+      </div>
       {{ /* eslint-disable-next-line */ }}
       <div v-html="currentView.content" class="mod-content"></div>
     </div>
@@ -182,6 +192,23 @@ export default class ModpackViewInstalledMods extends Vue {
       }),
       websiteUrl: mod.websiteUrl,
     }
+  }
+
+  async deleteMod() {
+    await this.$axios
+      .$delete(`/api/modpack/${this.$route.params.id}/mods`, {
+        params: {
+          id: this.selected,
+          v: this.$route.params.versionId,
+        },
+      })
+      .then(() => {
+        this.$fetch()
+      })
+      .catch((error) => {
+        // eslint-disable-next-line
+        console.error(error)
+      })
   }
 }
 </script>

@@ -21,6 +21,7 @@
 import Route from '@ioc:Adonis/Core/Route'
 import hat from 'hat'
 import * as pkg from '../../package.json'
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 import './admin'
 import './api'
@@ -52,3 +53,6 @@ Route.get('/email', async ({ view }) => {
   })
 })
 
+Route.get('*', async ({ response }: HttpContextContract) => {
+  return response.status(404)
+})

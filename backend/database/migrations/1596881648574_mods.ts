@@ -9,7 +9,7 @@ export default class Mods extends BaseSchema {
       table.integer('modpack_version_id').notNullable().references('modpack_versions_id')
       table.integer('mod_id').notNullable()
       table.integer('file_id').notNullable()
-      table.string('hash').notNullable()
+      table.string('hash').nullable()
       table.string('optional').notNullable().defaultTo(false)
     })
   }

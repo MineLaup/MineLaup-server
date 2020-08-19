@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row p-4 pl-0">
+  <div class="flex flex-row flex-1 p-4 pl-0">
     <div class="border-r-2 overflow-y-auto w-mods-list">
       <div class="sticky top-0 bg-white dark:bg-gray-700 border-b">
         <nuxt-link
@@ -20,7 +20,7 @@
           icon="search"
           :label="$t('pages.modpacks.mods.search')"
           autocomplete="off"
-          @input="search"
+          @input="debounceMe(search)"
         />
       </div>
 
@@ -37,7 +37,10 @@
           @click="selectMod(mod)"
         >
           <span class="px-4 py-2">
-            <img :src="mod.attachments[0].url" class="h-12 w-12 rounded" />
+            <img
+              :src="mod.attachments[0] ? mod.attachments[0].url : ''"
+              class="h-12 w-12 rounded"
+            />
           </span>
           <span class="text-lg">
             {{ mod.name }}
@@ -46,40 +49,90 @@
       </div>
     </div>
     <div class="flex-1 p-4 overflow-auto max-h-full">
-      <h1 class="text-2xl font-semibold pb-1 border-b mb-4">
+      <div class="pb-1 border-b mb-4 flex flex-row justify-between">
+        <h1 class="text-2xl font-semibold">
+          <a
+            :href="currentView.websiteUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ currentView.name }}
+          </a>
+        </h1>
         <a
-          :href="currentView.websiteUrl"
-          target="_blank"
-          rel="noopener noreferrer"
+          v-if="currentView.name && !versionMods.includes(selected)"
+          href="#"
+          class="hover:text-green-400 mr-4 text-lg"
+          @click="openInstallModal"
         >
-          {{ currentView.name }}
+          <i class="fas fa-plus"></i>
         </a>
-      </h1>
+      </div>
       {{ /* eslint-disable-next-line */ }}
       <div v-html="currentView.content" class="mod-content"></div>
     </div>
+
+    <t-modal
+      v-if="Object.keys(modToInstall).length"
+      @close-modal="modToInstall = {}"
+    >
+      <div slot="title">{{ modToInstall.name }}</div>
+      <div slot="description">
+        <div class="rounded border overflow-y-auto h-64">
+          <div
+            v-for="v in modToInstall.versions"
+            :key="v.file_id"
+            class="p-4 hover:bg-gray-400 dark-hover:bg-gray-700 cursor-pointer"
+            @click="installVersion(selected, v)"
+          >
+            {{ v.fileName }}
+          </div>
+        </div>
+      </div>
+      <div slot="actions">
+        <t-button
+          bg-hover-color="white"
+          dark-bg-hover-color="white"
+          hover-color="gray-900"
+          dark-hover-color="gray-900"
+          @click="modToInstall = {}"
+        >
+          {{ $t('components.modal.close') }}
+        </t-button>
+      </div>
+    </t-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'nuxt-property-decorator'
+import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import debounce from 'lodash/debounce'
+import orderBy from 'lodash/orderBy'
 import { Context } from '@nuxt/types'
 import TInput from '~/components/forms/TInput.vue'
+import TModal from '~/components/bases/TModal.vue'
+import TButton from '~/components/forms/TButton.vue'
 
 @Component({
   components: {
     TInput,
+    TModal,
+    TButton,
   },
 })
 export default class ModpackViewSearchMods extends Vue {
   searchField: string = ''
   modsList: Array<Partial<any>> = []
+  versionMods: Array<Partial<any>> = []
+
+  modToInstall: Partial<any> = {}
 
   selected: number = 0
 
   currentView: Partial<any> = {}
   version: Partial<any> = {}
+
+  debounceMe = debounce((fnc: Function) => fnc(), 250)
 
   async asyncData({ $axios, params }: Context) {
     const version = await $axios.$get(`/api/modpack/${params.id}/version`, {
@@ -88,10 +141,30 @@ export default class ModpackViewSearchMods extends Vue {
       },
     })
 
-    return { version }
+    const { mods } = await $axios.$get(`/api/modpack/${params.id}/mods`, {
+      params: {
+        v: params.versionId,
+      },
+    })
+
+    const versionMods = mods.map((mod: Partial<any>) => mod.mod_id)
+
+    return { version, versionMods }
   }
 
-  search = debounce(this.searchMods, 250)
+  mounted() {
+    this.searchField = this.$route.query.search as string
+    this.searchMods()
+  }
+
+  search() {
+    this.$router.push({
+      path: this.$route.fullPath,
+      query: {
+        search: this.searchField,
+      },
+    })
+  }
 
   async searchMods() {
     const mods = await this.$axios.$get(`/curse/addon/search`, {
@@ -195,6 +268,65 @@ export default class ModpackViewSearchMods extends Vue {
       }),
       websiteUrl: mod.websiteUrl,
     }
+  }
+
+  async openInstallModal(event: Event) {
+    event.preventDefault()
+
+    const versions = await this.$axios.$get(
+      `/curse/addon/${this.selected}/files`
+    )
+
+    this.modToInstall = {
+      id: this.selected,
+      name: this.currentView.name,
+      versions: orderBy(
+        versions.filter((v: Partial<any>) =>
+          v.gameVersion.includes(this.version.mc_version)
+        ),
+        'gameVersionDateReleased',
+        'desc'
+      ),
+    }
+  }
+
+  async installVersion(modId: number, file: Partial<any>) {
+    await this.$axios
+      .$post(
+        `/api/modpack/${this.$route.params.id}/mods`,
+        {
+          modId,
+          fileId: file.id,
+        },
+        {
+          params: {
+            v: this.$route.params.versionId,
+          },
+        }
+      )
+      .then(() => {
+        this.modToInstall = {}
+      })
+      .catch(() => {
+        this.modToInstall = {}
+      })
+
+    const { mods } = await this.$axios.$get(
+      `/api/modpack/${this.$route.params.id}/mods`,
+      {
+        params: {
+          v: this.$route.params.versionId,
+        },
+      }
+    )
+
+    this.versionMods = mods.map((mod: Partial<any>) => mod.mod_id)
+  }
+
+  @Watch('$route')
+  onRouteChange() {
+    this.searchField = this.$route.query.search as string
+    this.searchMods()
   }
 }
 </script>
