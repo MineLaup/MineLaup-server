@@ -63,7 +63,7 @@
 
         <div class="flex-1 flex flex-row">
           <div
-            class="md:w-64 bg-gray-900 absolute md:relative z-50 md:z-0 w-screen h-screen md:h-auto text-white top-0 md:block"
+            class="md:w-64 bg-gray-900 absolute md:relative z-50 md:z-0 w-screen h-screen md:h-auto text-white top-0 md:block overflow-y-auto"
             :class="{ hidden: !menuOpen }"
           >
             <span
@@ -83,7 +83,7 @@
                 :to="$store.getters['menu/getAdditional'].path"
                 exact
               >
-                <span class="w-14 h-14">
+                <span class="w-14 h-14 mr-2">
                   <i
                     class="fas"
                     :class="'fa-' + $store.getters['menu/getAdditional'].icon"

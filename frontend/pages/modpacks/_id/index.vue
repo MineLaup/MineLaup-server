@@ -50,7 +50,7 @@
           <span class="flex-1 text-right">
             <span v-if="index === 0">
               <i
-                class="fas fa-trash text-red-500 hover:text-red-400 cursor-pointer"
+                class="fas fa-trash text-gray-900 dark:text-white hover:text-red-500 cursor-pointer"
                 @click.stop="openDeleteVersionModal(version.id)"
               />
             </span>

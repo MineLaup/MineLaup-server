@@ -1,6 +1,7 @@
-import { BaseModel, column, belongsTo, BelongsTo, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, belongsTo, BelongsTo, hasMany, HasMany, beforeDelete } from '@ioc:Adonis/Lucid/Orm'
 import ModpackVersion from './ModpackVersion'
 import Team from './Team'
+
 export default class Modpack extends BaseModel {
   @column({ isPrimary: true })
   public id: number
@@ -25,4 +26,12 @@ export default class Modpack extends BaseModel {
 
   @belongsTo(() => Team)
   public team: BelongsTo<typeof Team>
+
+  @beforeDelete()
+  public static async onDelete (modpack: Modpack) {
+    await ModpackVersion
+      .query()
+      .where('modpack_id', modpack.id)
+      .delete()
+  }
 }

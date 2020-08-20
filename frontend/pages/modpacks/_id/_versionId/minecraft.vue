@@ -11,6 +11,7 @@
           :error="errors.mcVersion ? $t(errors.mcVersion) : ''"
           icon="code-branch"
           class="mb-4"
+          :disabled="!!version.published"
         >
           <option
             v-for="version in mcVersions"
@@ -29,6 +30,7 @@
           :on-text="$t('pages.modpacks.minecraft.forge_enabled')"
           :off-text="$t('pages.modpacks.minecraft.forge_disabled')"
           class="mb-4"
+          :disabled="!!version.published"
         />
 
         <t-select
@@ -38,7 +40,7 @@
           :errors="errors.forgeVersion ? $t(errors.forgeVersion) : ''"
           icon="code-branch"
           class="mb-4"
-          :disabled="!form.enableForge"
+          :disabled="!form.enableForge || !!version.published"
         >
           <option
             v-for="version in forgeVersions"

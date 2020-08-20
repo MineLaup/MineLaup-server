@@ -133,7 +133,7 @@
                         <i class="fas fa-pen"></i>
                       </span>
                       <span
-                        class="text-red-600 cursor-pointer w-5 h-5 hover:text-red-500"
+                        class="text-gray-900 dark:text-white hover:text-red-500 cursor-pointer w-5 h-5"
                         @click="deleteUser(user.user.id)"
                       >
                         <i class="fas fa-trash"></i>

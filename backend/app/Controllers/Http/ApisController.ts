@@ -41,9 +41,9 @@ export default class ApisController {
       .query()
       .preload('version', (query) => {
         query.where('published', true)
-        query.whereNot('disabled', true)
         query.select('id', 'version', 'summary', 'created_at')
       })
+      .whereNot('disabled', true)
       .select('id', 'name', 'summary')
       .where('id', data.id)
       .first()
@@ -95,6 +95,49 @@ export default class ApisController {
         'forge_version',
         'created_at'
       )
+      .where('id', data.v)
+      .first()
+
+    if (!version) {
+      return response.status(404)
+    }
+
+    return response.json(version)
+  }
+
+  /**
+   * Get mods from a version function
+   */
+  public async getVersionMods ({ request, response }: HttpContextContract) {
+    let data: Partial<any>
+    try {
+    // Validate datas
+      data = await request.validate({
+        schema: schema.create({
+          id: schema.number([
+            rules.exists({
+              column: 'id',
+              table: 'modpacks',
+            }),
+            rules.unsigned(),
+          ]),
+          v: schema.number([
+            rules.exists({
+              column: 'id',
+              table: 'modpack_versions',
+            }),
+          ]),
+        }),
+      })
+    } catch(e) {
+      return response.status(404)
+    }
+
+    const version = await ModpackVersion
+      .query()
+      .select('id', 'version', 'mc_version', 'forge_version')
+      .where('published', true)
+      .preload('mods')
       .where('id', data.v)
       .first()
 

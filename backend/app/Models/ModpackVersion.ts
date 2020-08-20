@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeDelete, BelongsTo, belongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Modpack from './Modpack'
+import Mod from './Mod'
 
 export default class ModpackVersion extends BaseModel {
   protected table_name = ''
@@ -29,9 +30,20 @@ export default class ModpackVersion extends BaseModel {
   @column()
   public forgeVersion: string | null
 
+  @hasMany(() => Mod)
+  public mods: HasMany<typeof Mod>
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @beforeDelete()
+  public static async onDelete (version: ModpackVersion) {
+    await Mod
+      .query()
+      .where('modpack_version_id', version.id)
+      .delete()
+  }
 }

@@ -239,6 +239,14 @@
         "forge_enabled": "Forge est activé",
         "forge_disabled": "Forge est désactivé",
         "forge_version": "Version de Forge"
+      },
+      "mods": {
+        "search": "Chercher",
+        "add-mods": "Ajouter des mods",
+        "back": "Retour",
+        "optionnal": "Le mod est optionnel",
+        "required": "Le mod est requis",
+        "state": "État d'exigence du mod"
       }
     }
   },
