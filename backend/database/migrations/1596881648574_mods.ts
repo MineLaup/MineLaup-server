@@ -10,7 +10,7 @@ export default class Mods extends BaseSchema {
       table.integer('mod_id').notNullable()
       table.integer('file_id').notNullable()
       table.string('hash').nullable()
-      table.string('optional').notNullable().defaultTo(false)
+      table.boolean('optional').notNullable().defaultTo(false)
     })
   }
 

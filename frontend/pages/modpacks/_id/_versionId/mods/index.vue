@@ -12,6 +12,7 @@
 
       <div class="pt-2">
         <nuxt-link
+          v-if="!version.published"
           :to="`/modpacks/${$route.params.id}/${$route.params.versionId}/mods/search`"
           class="hover:text-green-400 flex flex-row px-4 py-3"
         >
@@ -40,7 +41,7 @@
         </a>
       </div>
     </div>
-    <div class="flex-1 p-4 overflow-auto max-h-full">
+    <div class="flex-1 p-4 overflow-auto max-h-full flex flex-col">
       <div class="pb-1 border-b mb-4 flex flex-row justify-between">
         <h1 class="text-2xl font-semibold">
           <a
@@ -60,19 +61,34 @@
           <i class="fas fa-trash"></i>
         </a>
       </div>
-      {{ /* eslint-disable-next-line */ }}
-      <div v-html="currentView.content" class="mod-content"></div>
+      <div v-if="Object.keys(currentView).length" class="flex flex-col flex-1">
+        <t-checkbox
+          id="required"
+          class="p-4"
+          :value="currentView.optional"
+          :label="$t('pages.modpacks.mods.state')"
+          :on-text="$t('pages.modpacks.mods.required')"
+          :off-text="$t('pages.modpacks.mods.optionnal')"
+          :disabled="!!version.published"
+          @input="changeModState"
+        />
+        {{ /* eslint-disable-next-line */ }}
+        <div v-html="currentView.content" class="mod-content flex-1"></div>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
+import { Context } from '@nuxt/types'
 import TInput from '~/components/forms/TInput.vue'
+import TCheckbox from '~/components/forms/TCheckbox.vue'
 
 @Component({
   components: {
     TInput,
+    TCheckbox,
   },
 })
 export default class ModpackViewInstalledMods extends Vue {
@@ -82,6 +98,18 @@ export default class ModpackViewInstalledMods extends Vue {
   selected: number = 0
 
   currentView: Partial<any> = {}
+
+  async asyncData({ $axios, params }: Context) {
+    const version = await $axios.$get(`/api/modpack/${params.id}/version`, {
+      params: {
+        id: params.versionId,
+      },
+    })
+
+    return {
+      version,
+    }
+  }
 
   async fetch() {
     let mods = await this.$axios.$get(
@@ -98,12 +126,14 @@ export default class ModpackViewInstalledMods extends Vue {
       return mod.mod_id
     })
 
-    mods = await this.$axios.$post('/curse/addon', mods)
+    if (mods.length) {
+      mods = await this.$axios.$post('/curse/addon', mods)
 
-    this.modsList = mods
-    this.selected = mods[0]?.id
+      this.modsList = mods
+      this.selected = mods[0]?.id
 
-    this.selectMod(this.modsList[0])
+      this.selectMod(this.modsList[0])
+    }
   }
 
   get list() {
@@ -116,12 +146,23 @@ export default class ModpackViewInstalledMods extends Vue {
 
   async selectMod(mod: Partial<any>) {
     this.selected = mod.id
+
+    const { mod: modInfo } = await this.$axios.$get(
+      `/api/modpack/${this.$route.params.id}/mod/${mod.id}`,
+      {
+        params: {
+          v: this.$route.params.versionId,
+        },
+      }
+    )
+
     const description = await this.$axios.$get(
       `/curse/addon/${mod.id}/description`
     )
 
     this.currentView = {
       name: mod.name,
+      id: mod.id,
       content: this.$sanitize(description, {
         allowedTags: [
           'img',
@@ -190,6 +231,7 @@ export default class ModpackViewInstalledMods extends Vue {
           },
         },
       }),
+      optional: modInfo.optional,
       websiteUrl: mod.websiteUrl,
     }
   }
@@ -208,6 +250,25 @@ export default class ModpackViewInstalledMods extends Vue {
       .catch((error) => {
         // eslint-disable-next-line
         console.error(error)
+      })
+  }
+
+  async changeModState() {
+    await this.$axios
+      .$post(
+        `/api/modpack/${this.$route.params.id}/mods/state`,
+        {
+          state: this.currentView.optional,
+        },
+        {
+          params: {
+            id: this.selected,
+            v: this.$route.params.versionId,
+          },
+        }
+      )
+      .then(() => {
+        this.selectMod(this.currentView)
       })
   }
 }

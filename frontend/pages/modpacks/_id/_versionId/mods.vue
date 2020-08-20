@@ -6,8 +6,21 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
+import { Context } from '@nuxt/types'
+
 @Component
-export default class ModpackViewMods extends Vue {}
+export default class ModpackViewMods extends Vue {
+  async asyncData({ $axios, params, redirect }: Context) {
+    const version = await $axios.$get(`/api/modpack/${params.id}/version`, {
+      params: {
+        id: params.versionId,
+      },
+    })
+    if (version.forge_version === null) {
+      return redirect(`/modpacks/${params.id}/${params.versionId}/`)
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

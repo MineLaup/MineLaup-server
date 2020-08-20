@@ -33,9 +33,14 @@ Route.group(() => {
   Route.post('/modpack/:id/minecraft', 'ModpacksController.updateMinecraft').where('id', /^[0-9]+$/)
   // Change modpack state
   Route.put('/modpack/:id/state', 'ModpacksController.updateState').where('id', /^[0-9]+$/)
-  // Get mods list
+  // Get mods from modpack
   Route.get('/modpack/:id/mods', 'ModsController.getMods').where('id', /^[0-9]+$/)
+  // Get mod
+  Route.get('/modpack/:id/mod/:mid', 'ModsController.getMod').where('id', /^[0-9]+$/).where('mid', /^[0-9]+$/)
   // Add mod to modpack
   Route.post('/modpack/:id/mods', 'ModsController.addMod').where('id', /^[0-9]+$/)
+  // Remove mod to modpack
   Route.delete('/modpack/:id/mods', 'ModsController.removeMod').where('id', /^[0-9]+$/)
+  // Change mod state
+  Route.post('/modpack/:id/mods/state', 'ModsController.modState').where('id', /^[0-9]+$/)
 }).middleware('auth')

@@ -134,12 +134,16 @@ export default class ModpackViewSearchMods extends Vue {
 
   debounceMe = debounce((fnc: Function) => fnc(), 250)
 
-  async asyncData({ $axios, params }: Context) {
+  async asyncData({ $axios, params, redirect }: Context) {
     const version = await $axios.$get(`/api/modpack/${params.id}/version`, {
       params: {
         id: params.versionId,
       },
     })
+
+    if (version.published) {
+      return redirect(`/modpacks/${params.id}/${params.versionId}/mods`)
+    }
 
     const { mods } = await $axios.$get(`/api/modpack/${params.id}/mods`, {
       params: {

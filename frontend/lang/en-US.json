@@ -243,7 +243,10 @@
       "mods": {
         "search": "Search",
         "add-mods": "Add mods",
-        "back": "Back"
+        "back": "Back",
+        "optionnal": "Mod is optional",
+        "required": "Mod is required",
+        "state": "Mod requirement state"
       }
     }
   },
