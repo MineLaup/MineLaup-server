@@ -17,7 +17,7 @@
           v-model="form.name"
           :label="$t('pages.teams.create.name')"
           icon="user-friends"
-          class="w-2/3 mb-4"
+          class="mb-4"
           autocomplete="off"
           :error="errors.name ? $t(errors.name) : ''"
         />
@@ -73,16 +73,22 @@ export default class TeamCreate extends Vue {
 
   mounted() {
     // Submit the form when the user press CTRL+ENTER
-    document.addEventListener('keypress', (event: KeyboardEvent) => {
-      if (event.keyCode !== 10 || !event.ctrlKey) return
+    document.addEventListener('keypress', this.onKeypressed)
+  }
 
-      this.createTeam()
-    })
+  unmounted() {
+    document.removeEventListener('keypress', this.onKeypressed)
+  }
+
+  onKeypressed(event: KeyboardEvent) {
+    if (event.keyCode !== 10 || !event.ctrlKey || !this.formValid) return
+
+    this.createTeam()
   }
 
   // Check if the form is valid
   get formValid() {
-    return this.form.name.length > 0 && this.form.summary.length > 0
+    return this.form.name.length > 0
   }
 
   // Called when the form is submited
@@ -95,16 +101,18 @@ export default class TeamCreate extends Vue {
       .post('/api/teams', this.form)
       .then(async ({ data }) => {
         // On success, fetch teams list and update it in side bar
-        const teams = await this.$axios.$get('/api/teams')
-        await this.$store.commit(
-          'menu/setList',
-          teams.map((team: Partial<any>) => {
-            return {
-              name: team.name,
-              path: `/teams/${team.id}`,
-            }
-          })
+        const teams: Array<Partial<any>> = await this.$axios.$get(
+          '/api/modpacks'
         )
+
+        this.$store.commit(
+          'menu/setList',
+          teams.map((team: Partial<any>) => ({
+            name: team.name,
+            path: `/teams/${team.id}`,
+          }))
+        )
+
         // Redirect the user to the new team page
         this.$router.push(`/teams/${data.id}`)
       })

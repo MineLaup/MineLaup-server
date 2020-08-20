@@ -145,7 +145,7 @@
                     </nuxt-link>
                     <span
                       v-if="user.id !== $auth.user.id"
-                      class="text-red-600 cursor-pointer w-5 h-5 hover:text-red-500"
+                      class="cursor-pointer w-5 h-5 text-gray-900 dark:text-white hover:text-red-500"
                       @click="openDeleteModal(user)"
                     >
                       <i class="fas fa-trash"></i>

@@ -13,7 +13,7 @@
           v-model="form.name"
           :label="$t('pages.teams.view.index.name')"
           icon="user-friends"
-          class="w-2/3 mb-4"
+          class="mb-4"
           autocomplete="off"
           :error="errors.name ? $t(errors.name) : ''"
           :disabled="!(team.userPerms.owner || team.userPerms.manage_team)"
@@ -133,7 +133,7 @@
                         <i class="fas fa-pen"></i>
                       </span>
                       <span
-                        class="text-red-600 cursor-pointer w-5 h-5 hover:text-red-500"
+                        class="text-gray-900 dark:text-white hover:text-red-500 cursor-pointer w-5 h-5"
                         @click="deleteUser(user.user.id)"
                       >
                         <i class="fas fa-trash"></i>
@@ -235,7 +235,7 @@
       <div slot="actions">
         <div class="flex flex-col mb-4 text-left">
           <p class="mb-6">
-            {{ $t('pages.team.view.index.add-user-info') }}
+            {{ $t('pages.teams.view.index.add-user-info') }}
           </p>
           <t-input
             id="user-invite"
@@ -248,7 +248,7 @@
         </div>
         <div class="flex flex-col">
           <t-button class="mb-2" @click="inviteUser">
-            {{ $t('pages.team.view.index.invite-user') }}
+            {{ $t('pages.teams.view.index.invite-user') }}
           </t-button>
           <t-button
             class="mb-2"
@@ -273,6 +273,7 @@ import TInput from '~/components/forms/TInput.vue'
 import TTextarea from '~/components/forms/TTextarea.vue'
 import TButton from '~/components/forms/TButton.vue'
 import TModal from '~/components/bases/TModal.vue'
+import TAlert from '~/components/bases/TAlert.vue'
 
 @Component({
   components: {
@@ -280,6 +281,7 @@ import TModal from '~/components/bases/TModal.vue'
     TTextarea,
     TButton,
     TModal,
+    TAlert,
   },
 })
 export default class TeamViewIndex extends Vue {
@@ -338,11 +340,24 @@ export default class TeamViewIndex extends Vue {
   mounted() {
     // Fill the form with the team informations
     this.form = this.team
+
+    // Submit the form when the user press CTRL+ENTER
+    document.addEventListener('keypress', this.onKeypressed)
+  }
+
+  unmounted() {
+    document.removeEventListener('keypress', this.onKeypressed)
+  }
+
+  onKeypressed(event: KeyboardEvent) {
+    if (event.keyCode !== 10 || !event.ctrlKey || !this.formValid) return
+
+    this.updateTeam()
   }
 
   // Check if the form is valid
   get formValid() {
-    return this.form.name.length > 0 && this.form.summary.length > 0
+    return this.form.name.length > 0
   }
 
   editUser(_id: number) {}
@@ -415,7 +430,7 @@ export default class TeamViewIndex extends Vue {
 
     // Send a request to the API to update the team
     this.$axios
-      .put('/api/teams', this.form)
+      .put(`/api/teams/${this.$route.params.id}`, this.form)
       .then(async () => {
         // On success, fetch teams list and update it in the side bar
         const teams = await this.$axios.$get('/api/teams')

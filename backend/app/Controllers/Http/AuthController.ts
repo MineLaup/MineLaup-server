@@ -6,17 +6,27 @@ export default class AuthController {
   /**
    * Login function
    */
-  public async login ({ auth, request }: HttpContextContract) {
+  public async login ({ auth, request, response }: HttpContextContract) {
     // Validate datas
     const data = await request.validate({
       schema: schema.create({
-        username: schema.string(),
-        password: schema.string(),
+        username: schema.string({}, [
+          rules.required(),
+          rules.regex(/^[a-z0-9_-]+$/),
+        ]),
+        password: schema.string({}, [
+          rules.required(),
+        ]),
       }),
       cacheKey: request.url(),
     })
 
     await auth.attempt(data.username, data.password)
+
+    if (auth.user!.disabled) {
+      await auth.logout()
+      return response.status(403)
+    }
   }
 
   /**

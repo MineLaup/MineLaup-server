@@ -1,6 +1,6 @@
 <template>
   <li
-    class="relative"
+    class="md:relative"
     @mouseenter="showTitle = true"
     @mouseleave="showTitle = false"
   >
@@ -15,7 +15,7 @@
     </nuxt-link>
     <span
       v-if="showTitle"
-      class="absolute bg-gray-800 px-1 rounded top-0 left-0 mt-10 md:mt-2 md:ml-12 z-20 whitespace-no-wrap select-none"
+      class="absolute bg-gray-800 px-1 rounded left-0 md:mt-2 md:top-0 md:ml-12 w-full md:w-auto z-20 whitespace-no-wrap select-none"
     >
       {{ name }}
     </span>

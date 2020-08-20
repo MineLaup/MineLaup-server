@@ -11,10 +11,12 @@
     "form": {
       "required": "Ce champ est requis",
       "unique": "La valeur existe déjà",
-      "exists": "La valeur n'existe pas"
+      "exists": "La valeur n'existe pas",
+      "regex": "La valeur dois être sous ce format: \"{regex}\""
     },
     "login": {
-      "wrong_ids": "Nom d'utilisateur ou mot de passe invalide"
+      "wrong_ids": "Nom d'utilisateur ou mot de passe invalide",
+      "account_disabled": "Vous ne pouvez pas être connecté parce que votre compte est actuellement désactivé."
     },
     "unknown": "Une erreur inattendu est survenue."
   },
@@ -35,9 +37,14 @@
     "side-menu": {
       "administration-title": "Administration",
       "settings": "Paramètres",
+      "about": "À propos",
       "team-new": "Nouvelle équipe",
       "team-title": "Équipes",
-      "users": "Utilisateurs"
+      "users": "Utilisateurs",
+      "launcher-title": "Launchers",
+      "launcher-list": "Liste des launchers",
+      "modpack-title": "Modpacks",
+      "modpack-list": "Liste des modpacks"
     }
   },
   "pages": {
@@ -76,6 +83,11 @@
           "title": "Mise à jours du compte",
           "username": "Nom d'utilisateur"
         }
+      },
+      "about": {
+        "title": "À propos",
+        "version": "Nom",
+        "author": "Auteur"
       }
     },
     "login": {
@@ -117,7 +129,9 @@
           "owner": "Propriétaire",
           "default_role": "Rôle par défaut",
           "add-user-to-team": "Ajouter un utilisateur à l'équipe",
-          "username": "Nom d'utilisateur"
+          "username": "Nom d'utilisateur",
+          "add-user-info": "Entrez le nom d'utilisateur de la personne que vous voulez inviter dans l'équipe.",
+          "invite-user": "Inviter l'utilisateur"
         },
         "roles": {
           "title": "Role de l'équipe \"{name}\"",
@@ -129,14 +143,6 @@
         }
       }
     },
-    "team": {
-      "view": {
-        "index": {
-          "add-user-info": "Entrez le nom d'utilisateur de la personne que vous voulez inviter dans l'équipe.",
-          "invite-user": "Inviter l'utilisateur"
-        }
-      }
-    },
     "settings": {
       "title": "Paramètres",
       "submit": "Mettre à jour",
@@ -145,6 +151,103 @@
       "first_name": "Prénom",
       "last_name": "Nom",
       "language": "Langue"
+    },
+    "launchers": {
+      "list": {
+        "title": "Launchers",
+        "new": "Nouveau"
+      },
+      "create": {
+        "title": "Créer un nouveau launcher",
+        "name": "Nom",
+        "summary": "Description",
+        "select_team": "Veuillez sélectionner une équipe",
+        "submit": "Créer",
+        "team": "Équipe"
+      },
+      "index": {
+        "team_name": "Équipe: {0}",
+        "confirm_delete": "Êtes vous sûr de vouloir supprimer ce launcher ?"
+      },
+      "view": {
+        "api_key": "Clée d'API",
+        "regenerate_key": "Régénérer",
+        "assigned_modpack": "Modpacks assignés",
+        "search_modpack": "Chercher un modpack",
+        "add_modpacks": "Ajouter des modpacks",
+        "no_modpacks": "Il n'y a aucun modpack acutellement",
+        "no_modpack_found": "Aucun modpack trouvé !"
+      },
+      "edit": {
+        "title": "Modifier le launcher",
+        "name": "Nom",
+        "summary": "Description",
+        "team": "Équipe",
+        "select_team": "Veuillez sélectionner une équipe",
+        "submit": "Mettre à jour"
+      }
+    },
+    "modpacks": {
+      "create": {
+        "title": "Créer un nouveau modpack",
+        "name": "Nom",
+        "summary": "Description",
+        "submit": "Créer",
+        "team": "Équipe",
+        "select_team": "Veuillez sélectionner une équipe"
+      },
+      "list": {
+        "title": "Liste des modpacks",
+        "new": "Nouveau"
+      },
+      "view": {
+        "confirmDelete": "Êtes vous sûr de vouloir supprimer ce modpack ?",
+        "team_name": "Équipe: {0}",
+        "menu": {
+          "version": "Versions",
+          "mods": "Mods",
+          "minecraft": "Minecraft",
+          "settings": "Paramètres",
+          "files": "Fichiers",
+          "infos": "Informations"
+        }
+      },
+      "index": {
+        "versions": "Versions",
+        "no_version": "Il n'y aucune version pour l'instant",
+        "published": "Publiée",
+        "not_published": "Non publiée",
+        "no_summary": "Pas de description"
+      },
+      "new-version": {
+        "title": "Créer une nouvelle version de modpack",
+        "summary": "Description",
+        "version": "Version",
+        "submit": "Créer",
+        "information": "Une nouvelle version va être créée pour le modpack mais elle ne sera pas directement publiée. Pour publier une version, vous devrez le faire manuellement sur l'interface."
+      },
+      "version": {
+        "name": "Nom",
+        "summary": "Description",
+        "published": "Publier",
+        "is-published": "La version est publié",
+        "not-published": "La version n'est pas publié"
+      },
+      "minecraft": {
+        "mc_version": "Minecraft Version",
+        "enable_forge": "Activer Forge",
+        "forge_enabled": "Forge est activé",
+        "forge_disabled": "Forge est désactivé",
+        "forge_version": "Version de Forge"
+      },
+      "mods": {
+        "search": "Chercher",
+        "add-mods": "Ajouter des mods",
+        "back": "Retour",
+        "optionnal": "Le mod est optionnel",
+        "required": "Le mod est requis",
+        "state": "État d'exigence du mod"
+      }
     }
   },
   "roles": {
@@ -170,5 +273,10 @@
         "disabled": "L'utilisateur ne peut pas gérer les utilisateurs"
       }
     }
+  },
+  "social": {
+    "discord": "Discord",
+    "github": "Github",
+    "title": "Nos réseaux"
   }
 }
