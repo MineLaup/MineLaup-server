@@ -1,6 +1,6 @@
 {
   "name": "minelaup-server-frontend",
-  "version": "0.16.0",
+  "version": "0.16.1",
   "description": "The server side of the project MineLaup.",
   "author": "Bricklou",
   "license": "gplv3",
