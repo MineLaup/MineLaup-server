@@ -1,6 +1,6 @@
 {
   "name": "minelaup-server-backend",
-  "version": "0.16.0",
+  "version": "0.16.1",
   "private": true,
   "description": "The server side of the project MineLaup.",
   "scripts": {
